@@ -1,7 +1,9 @@
 package com.calenaur.necron;
 
+import com.calenaur.necron.item.ItemJeffPickaxe;
 import com.calenaur.necron.item.ItemNecrodermisPickaxe;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemTier;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -23,6 +25,7 @@ public class NecronMod {
         @SubscribeEvent
         public static void onItemRegistry(final RegistryEvent.Register<Item> event) {
             event.getRegistry().register(new ItemNecrodermisPickaxe());
+            event.getRegistry().register(new ItemJeffPickaxe());
         }
     }
 }

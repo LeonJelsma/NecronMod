@@ -9,6 +9,9 @@ import java.util.function.Supplier;
 public enum ItemTier implements IItemTier {
     NECRODERMIS(4, 4096, 18.0F, 0.0F, 22, () -> {
         return Ingredient.fromItems(Items.DIAMOND); //Repair material
+    }),
+    JEFFITE(4, 4096, 18.0F, 0.0F, 22, () -> {
+        return Ingredient.fromItems(Items.DIAMOND); //Repair material
     });
 
     private final int harvestLevel;
