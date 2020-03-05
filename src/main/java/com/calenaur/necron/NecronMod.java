@@ -1,9 +1,13 @@
 package com.calenaur.necron;
 
+import com.calenaur.necron.blocks.BlockNecrodermisOre;
+import com.calenaur.necron.blocks.Blocks;
 import com.calenaur.necron.item.ItemNecrodermisAxe;
 import com.calenaur.necron.item.ItemNecrodermisHoe;
 import com.calenaur.necron.item.ItemNecrodermisPickaxe;
 import com.calenaur.necron.item.ItemNecrodermisShovel;
+import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -29,6 +33,12 @@ public class NecronMod {
             event.getRegistry().register(new ItemNecrodermisHoe());
             event.getRegistry().register(new ItemNecrodermisPickaxe());
             event.getRegistry().register(new ItemNecrodermisShovel());
+            event.getRegistry().register(new BlockItem(new BlockNecrodermisOre(), new Item.Properties()));
+        }
+
+        @SubscribeEvent
+        public static void onBlockRegistry(final RegistryEvent.Register<Block> event){
+            event.getRegistry().register(new BlockNecrodermisOre());
         }
     }
 }
