@@ -9,7 +9,7 @@ public class ItemJeffPickaxe extends PickaxeItem {
 
     public ItemJeffPickaxe() {
 
-        super(ItemTier.NECRODERMIS, 1, -2.8F, (new Item.Properties()).group(ItemGroup.TOOLS));
+        super(ItemTier.JEFFITE, 1, -2.8F, (new Item.Properties()).group(ItemGroup.TOOLS));
         setRegistryName("jeffite_pickaxe");
     }
 }

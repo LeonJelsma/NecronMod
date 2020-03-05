@@ -8,7 +8,7 @@ public class ItemNecrodermisPickaxe extends PickaxeItem {
 
 
     public ItemNecrodermisPickaxe() {
-        super(ItemTier.JEFFITE, 1, -2.8F, (new Item.Properties()).group(ItemGroup.TOOLS));
+        super(ItemTier.NECRODERMIS, 1, -2.8F, (new Item.Properties()).group(ItemGroup.TOOLS));
         setRegistryName("necrodermis_pickaxe");
     }
 
