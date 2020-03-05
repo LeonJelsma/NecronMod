@@ -17,4 +17,7 @@ public class Items {
 
     @ObjectHolder("necron:necrodermis_shovel")
     public static ItemNecrodermisShovel NECRON_SHOVEL;
+
+    @ObjectHolder("necron:necrodermis_mote")
+    public static ItemNecrodermisMote NECRON_MOTE;
 }

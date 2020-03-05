@@ -41,6 +41,7 @@ public class Registrar {
 		event.getRegistry().register(new ItemNecrodermisShovel());
 		event.getRegistry().register(new ItemNecrodermisIngot());
 		event.getRegistry().register(new ItemNecrodermisOre());
+		event.getRegistry().register(new ItemNecrodermisMote());
 		event.getRegistry().register(new ItemNecronSoldierSpawnEgg());
 
 	}
