@@ -1,18 +1,11 @@
 package com.calenaur.necron;
 
-import com.calenaur.necron.blocks.BlockNecrodermisOre;
-import com.calenaur.necron.blocks.ModBlocks;
 import com.calenaur.necron.item.ItemNecrodermisAxe;
 import com.calenaur.necron.item.ItemNecrodermisHoe;
+import com.calenaur.necron.item.ItemJeffPickaxe;
 import com.calenaur.necron.item.ItemNecrodermisPickaxe;
 import com.calenaur.necron.item.ItemNecrodermisShovel;
-import com.calenaur.necron.misc.OreGeneration;
-import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
