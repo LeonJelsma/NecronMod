@@ -1,13 +1,11 @@
-package com.calenaur.necron.blocks;
+package com.calenaur.necron.block;
 
 
 import net.minecraft.block.OreBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.ResourceLocation;
 
 public class BlockNecrodermisOre extends OreBlock {
-
     public BlockNecrodermisOre() {
         super(Properties.create(Material.ROCK)
                 .harvestLevel(3)
@@ -16,11 +14,4 @@ public class BlockNecrodermisOre extends OreBlock {
         );
         setRegistryName("necrodermis_ore");
     }
-
-    @Override
-    public ResourceLocation getLootTable() {
-        return super.getLootTable();
-    }
-
-
 }

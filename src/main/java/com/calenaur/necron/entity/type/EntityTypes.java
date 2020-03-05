@@ -5,8 +5,5 @@ import net.minecraft.entity.EntityType;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityTypes {
-
-	@ObjectHolder("necron:necron_soldier")
-	public static EntityType<EntityNecronSoldier> NECRON_SOLDIER;
-
+	public static final EntityType<EntityNecronSoldier> NECRON_SOLDIER = new EntityTypeNecronSoldier();
 }
