@@ -6,7 +6,6 @@ import com.calenaur.necron.item.ItemJeffPickaxe;
 import com.calenaur.necron.item.ItemNecrodermisPickaxe;
 import com.calenaur.necron.item.ItemNecrodermisShovel;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemTier;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,7 +15,6 @@ import org.apache.logging.log4j.Logger;
 
 @Mod("necron")
 public class NecronMod {
-
     private static final Logger LOGGER = LogManager.getLogger();
 
     public NecronMod() {

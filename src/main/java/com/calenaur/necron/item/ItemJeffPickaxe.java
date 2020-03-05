@@ -6,9 +6,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.PickaxeItem;
 
 public class ItemJeffPickaxe extends PickaxeItem {
-
     public ItemJeffPickaxe() {
-
         super(ItemTier.JEFFITE, 1, -2.8F, (new Item.Properties()).group(ItemGroup.TOOLS));
         setRegistryName("jeffite_pickaxe");
     }

@@ -3,7 +3,6 @@ package com.calenaur.necron.item;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class Items {
-
     @ObjectHolder("necron:jeffite_pickaxe")
     public static ItemJeffPickaxe JEFF_PICKAXE;
 
