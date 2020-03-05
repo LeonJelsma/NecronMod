@@ -27,11 +27,11 @@ public class NecronMod {
     public static class RegistryEvents {
         @SubscribeEvent
         public static void onItemRegistry(final RegistryEvent.Register<Item> event) {
+            event.getRegistry().register(new ItemJeffPickaxe());
             event.getRegistry().register(new ItemNecrodermisAxe());
             event.getRegistry().register(new ItemNecrodermisHoe());
             event.getRegistry().register(new ItemNecrodermisPickaxe());
             event.getRegistry().register(new ItemNecrodermisShovel());
-            event.getRegistry().register(new ItemJeffPickaxe());
         }
     }
 }
