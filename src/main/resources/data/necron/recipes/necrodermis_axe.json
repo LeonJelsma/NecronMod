@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "X#",
+    " #"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "item": "necron:necrodermis_ingot"
+    }
+  },
+  "result": {
+    "item": "necron:necrodermis_axe"
+  }
+}
