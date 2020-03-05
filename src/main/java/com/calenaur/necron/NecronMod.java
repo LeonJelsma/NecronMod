@@ -1,6 +1,12 @@
 package com.calenaur.necron;
 
-import net.minecraft.block.Block;
+import com.calenaur.necron.item.ItemNecrodermisAxe;
+import com.calenaur.necron.item.ItemNecrodermisHoe;
+import com.calenaur.necron.item.ItemJeffPickaxe;
+import com.calenaur.necron.item.ItemNecrodermisPickaxe;
+import com.calenaur.necron.item.ItemNecrodermisShovel;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemTier;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,7 +26,12 @@ public class NecronMod {
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
         @SubscribeEvent
-        public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
+        public static void onItemRegistry(final RegistryEvent.Register<Item> event) {
+            event.getRegistry().register(new ItemJeffPickaxe());
+            event.getRegistry().register(new ItemNecrodermisAxe());
+            event.getRegistry().register(new ItemNecrodermisHoe());
+            event.getRegistry().register(new ItemNecrodermisPickaxe());
+            event.getRegistry().register(new ItemNecrodermisShovel());
         }
     }
 }
