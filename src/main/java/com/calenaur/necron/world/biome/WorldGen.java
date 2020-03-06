@@ -2,6 +2,7 @@ package com.calenaur.necron.world.biome;
 
 import com.calenaur.necron.world.gen.ore.OreNecrodermis;
 import com.calenaur.necron.world.gen.structure.StructureNecronRuin;
+import com.calenaur.necron.world.gen.structure.Structures;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -18,7 +19,7 @@ public class WorldGen {
                 case NETHER:
                     break;
                 default:
-                    System.out.println("TEST123: " + biome.getCategory());
+                    System.out.println("NecronMod: Registering Generation -> " + biome.getRegistryName());
                     addOres(biome);
                     addStructures(biome);
                     break;
@@ -30,7 +31,9 @@ public class WorldGen {
     }
 
     public static void addStructures(Biome biomeIn) {
-        biomeIn.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, new ConfiguredFeature(new StructureNecronRuin(), NoFeatureConfig.NO_FEATURE_CONFIG));
-        biomeIn.func_226711_a_(new ConfiguredFeature(new StructureNecronRuin(), NoFeatureConfig.NO_FEATURE_CONFIG));
+    biomeIn.addFeature(
+        GenerationStage.Decoration.SURFACE_STRUCTURES,
+        new ConfiguredFeature(Structures.NECRON_RUIN, NoFeatureConfig.NO_FEATURE_CONFIG));
+        biomeIn.func_226711_a_(new ConfiguredFeature(Structures.NECRON_RUIN, NoFeatureConfig.NO_FEATURE_CONFIG));
     }
 }

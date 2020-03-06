@@ -43,7 +43,7 @@ public class StructureNecronRuin extends ScatteredStructure<NoFeatureConfig> {
         }
 
         public void init(ChunkGenerator<?> generator, TemplateManager templateManagerIn, int chunkX, int chunkZ, Biome biomeIn) {
-            NoFeatureConfig nofeatureconfig = (NoFeatureConfig) generator.getStructureConfig(biomeIn, Features.NECRON_RUIN);
+            NoFeatureConfig nofeatureconfig = (NoFeatureConfig) generator.getStructureConfig(biomeIn, Structures.NECRON_RUIN);
             int i = chunkX * 16;
             int j = chunkZ * 16;
             BlockPos blockpos = new BlockPos(i, 90, j);
