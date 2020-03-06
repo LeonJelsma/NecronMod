@@ -10,11 +10,15 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.registries.IForgeRegistry;
+
+import static com.calenaur.necron.world.structure.Structures.NECRON_TEST;
 
 @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
 public class Registrar {
@@ -49,5 +53,13 @@ public class Registrar {
 	@SubscribeEvent
 	public static void onBiomeRegistry(final RegistryEvent.Register<Biome> event){
 		OreGeneration.setupOreGen();
+	}
+
+	@SubscribeEvent
+	public static void registerStructures(RegistryEvent.Register<Feature<?>> event) {
+		IForgeRegistry<Feature<?>> registry = event.getRegistry();
+
+		registry.register(NECRON_TEST);
+
 	}
 }
