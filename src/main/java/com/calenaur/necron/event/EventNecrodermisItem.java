@@ -44,12 +44,13 @@ public class EventNecrodermisItem {
 		for (NonNullList<ItemStack> container : allInventories)
 			for (ItemStack inventoryStack : container)
 				if (!inventoryStack.isEmpty() && inventoryStack.getCount() == 1)
-					for (ItemStack necronStack : NECRODERMIS_ITEMS)
-						if (inventoryStack.isItemEqual(necronStack)) {
-							inventoryStack.damageItem(-REGEN_REPAIR_AMOUNT, player, (playerEntity) -> {
-								playerEntity.sendBreakAnimation(playerEntity.getActiveHand());
-							});
-						}
+					if (player.getHeldItemMainhand() != inventoryStack && player.getHeldItemOffhand() != inventoryStack)
+						for (ItemStack necronStack : NECRODERMIS_ITEMS)
+							if (inventoryStack.isItemEqual(necronStack)) {
+								inventoryStack.damageItem(-REGEN_REPAIR_AMOUNT, player, (playerEntity) -> {
+									playerEntity.sendBreakAnimation(playerEntity.getActiveHand());
+								});
+							}
 	}
 
 	@SubscribeEvent
