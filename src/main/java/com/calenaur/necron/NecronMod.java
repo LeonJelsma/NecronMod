@@ -10,5 +10,6 @@ public class NecronMod {
     public NecronMod() {
         MinecraftForge.EVENT_BUS.register(new Registrar());
         FMLJavaModLoadingContext.get().getModEventBus().addListener(Registrar::clientSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(Registrar::commonSetup);
     }
 }
