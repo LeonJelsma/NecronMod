@@ -1,6 +1,8 @@
 package com.calenaur.necron.world.gen.structure;
 
 
+import com.calenaur.necron.NecronMod;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -10,45 +12,98 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.*;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
+/**
+ * The structure class is mostly used to decide where the structure will be, structure pieces focus on actual generation
+ * This is a scattered structure that spawns randomly in the world
+ * See getStartPositionForPosition in ScatteredStructure for details on how placement is chosen
+ * For custom placement, overwrite Structure itself and implement the hasStartAt method
+ */
 public class StructureNecronRuin extends ScatteredStructure<NoFeatureConfig> {
+    public static final String NAME = "necron_ruin";
 
     public StructureNecronRuin(){
         super(NoFeatureConfig::deserialize);
-        setRegistryName("necron_ruin");
+        setRegistryName(NAME);
     }
 
+    /**
+     * Get the start of the structure
+     * In vanilla the start is usually a static inner class of the structure class, follow this convention if you wish
+     *
+     * @return method reference to Start constructor
+     */
     @Override
     public IStartFactory getStartFactory() {
         return StructureNecronRuin.Start::new;
     }
 
+    /**
+     * An 'id' for the structure, distinct from registry id
+     * Used for the Locate command (by forge only, vanilla uses its own system)
+     * Should probably be in the format 'modid:name'
+     *
+     * @return name of structure
+     */
     @Override
     public String getStructureName() {
-        return "Necron Ruin";
+        return NecronMod.MOD_ID + ":necron_ruin";
     }
 
+    /**
+     * Legacy code, only used to update from old structure format
+     *
+     * @return irrelevant
+     */
     @Override
     public int getSize() {
-        return 3;
+        return 1;
     }
 
+    /**
+     * A modifier to the random seed for scattered structures, so that every structure does not spawn in the same place
+     *
+     * @return a number, vanilla likes to specifically use 8 digit numbers
+     */
     @Override
     protected int getSeedModifier() {
-        return 2502;
+        return 24758293;
     }
 
+    /**
+     * The structure start is responsible for creating the structure in memory, but not for placing the blocks themselves
+     */
     public static class Start extends StructureStart {
-        public Start(Structure<?> p_i225806_1_, int p_i225806_2_, int p_i225806_3_, MutableBoundingBox p_i225806_4_, int p_i225806_5_, long p_i225806_6_) {
-            super(p_i225806_1_, p_i225806_2_, p_i225806_3_, p_i225806_4_, p_i225806_5_, p_i225806_6_);
+
+        public Start(Structure<?> structure, int chunkX, int chunkZ, MutableBoundingBox boundingBox, int references, long seed) {
+            super(structure, chunkX, chunkZ, boundingBox, references, seed);
         }
 
-        public void init(ChunkGenerator<?> generator, TemplateManager templateManagerIn, int chunkX, int chunkZ, Biome biomeIn) {
-            NoFeatureConfig nofeatureconfig = (NoFeatureConfig) generator.getStructureConfig(biomeIn, Structures.NECRON_RUIN);
-            int i = chunkX * 16;
-            int j = chunkZ * 16;
-            BlockPos blockpos = new BlockPos(i, 90, j);
+        /**
+         * For most structures this is the only method you will need to care about
+         * Not a lot needs to be done here, most of the work is done by structure pieces
+         * Examples of things vanilla does for different structures here include:
+         * - Getting configs from the chunk generator
+         * - Deciding the rotation of the structure
+         * - Getting height (rarely, most times height is determined in the piece)
+         */
+        @Override
+        public void init(ChunkGenerator<?> generator, TemplateManager templateManager, int chunkX, int chunkZ, Biome biome) {
+            //For the purposes of this demonstration I am using this space to decide which structure file to use and what rotation the structure is at
+            ResourceLocation templateResource;
+            if(this.rand.nextBoolean()) {
+                //data/structureexample/structures/oak_hut.nbt
+                templateResource = new ResourceLocation(NecronMod.MOD_ID, "oak_hut");
+            } else {
+                //data/structureexample/structures/spruce_hut.nbt
+                templateResource = new ResourceLocation(NecronMod.MOD_ID, "spruce_hut");
+            }
+
             Rotation rotation = Rotation.values()[this.rand.nextInt(Rotation.values().length)];
-            IglooPieces.func_207617_a(templateManagerIn, blockpos, rotation, this.components, this.rand, nofeatureconfig);
+            StructureNecronRuinPiece piece = new StructureNecronRuinPiece(templateManager, templateResource, new BlockPos(chunkX * 16, 0, chunkZ * 16), rotation);
+            //The important thing is that pieces are added like this
+            //See the shipwreck and igloo for an alternate take on this process
+            this.components.add(piece);
+            //This should be called last, after all components have been added
             this.recalculateStructureSize();
         }
     }

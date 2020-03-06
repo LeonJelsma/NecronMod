@@ -1,13 +1,20 @@
 package com.calenaur.necron.registry;
 
+import com.calenaur.necron.NecronMod;
 import com.calenaur.necron.block.BlockNecrodermisOre;
 import com.calenaur.necron.entity.type.EntityTypes;
 import com.calenaur.necron.item.*;
 import com.calenaur.necron.renderer.RendererNecronSoldier;
 import com.calenaur.necron.world.biome.WorldGen;
+import com.calenaur.necron.world.gen.structure.StructureNecronRuin;
+import com.calenaur.necron.world.gen.structure.StructureNecronRuinPiece;
+import com.calenaur.necron.world.gen.structure.Structures;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -46,5 +53,12 @@ public class Registrar {
 		event.getRegistry().register(new ItemNecrodermisOre());
 		event.getRegistry().register(new ItemNecrodermisMote());
 		event.getRegistry().register(new ItemNecronSoldierSpawnEgg());
+	}
+
+	@SubscribeEvent
+	public static void onStructureRegistry(final RegistryEvent.Register<Feature<?>> event) {
+		//Using the registry directly like this is bad, however this is currently the only way to register a structure piece
+		Structures.NECRON_RUIN_PIECE = Registry.register(Registry.STRUCTURE_PIECE, NecronMod.MOD_ID + ":" + StructureNecronRuinPiece.NAME, StructureNecronRuinPiece::new);
+    	event.getRegistry().register(new StructureNecronRuin());
 	}
 }

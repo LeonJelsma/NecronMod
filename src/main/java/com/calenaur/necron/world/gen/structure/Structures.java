@@ -1,5 +1,10 @@
 package com.calenaur.necron.world.gen.structure;
 
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraftforge.registries.ObjectHolder;
+
 public class Structures {
-	public static StructureNecronRuin NECRON_RUIN = new StructureNecronRuin();
+	@ObjectHolder("necron:necron_ruin")
+	public static StructureNecronRuin NECRON_RUIN;
+	public static IStructurePieceType NECRON_RUIN_PIECE;
 }
