@@ -1,7 +1,8 @@
-package com.calenaur.necron.world.gen.structure;
+package com.calenaur.necron.world.gen.feature.structure.ruin;
 
 
 import com.calenaur.necron.NecronMod;
+import com.calenaur.necron.world.gen.feature.structure.ModifiableRarityStructure;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -18,11 +19,11 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
  * See getStartPositionForPosition in ScatteredStructure for details on how placement is chosen
  * For custom placement, overwrite Structure itself and implement the hasStartAt method
  */
-public class StructureNecronRuin extends ScatteredStructure<NoFeatureConfig> {
+public class StructureNecronRuin extends ModifiableRarityStructure {
     public static final String NAME = "necron_ruin";
 
     public StructureNecronRuin(){
-        super(NoFeatureConfig::deserialize);
+        super(NoFeatureConfig::deserialize, 4, 1);
         setRegistryName(NAME);
     }
 
@@ -90,13 +91,7 @@ public class StructureNecronRuin extends ScatteredStructure<NoFeatureConfig> {
         public void init(ChunkGenerator<?> generator, TemplateManager templateManager, int chunkX, int chunkZ, Biome biome) {
             //For the purposes of this demonstration I am using this space to decide which structure file to use and what rotation the structure is at
             ResourceLocation templateResource;
-            if(this.rand.nextBoolean()) {
-                //data/structureexample/structures/oak_hut.nbt
-                templateResource = new ResourceLocation(NecronMod.MOD_ID, "oak_hut");
-            } else {
-                //data/structureexample/structures/spruce_hut.nbt
-                templateResource = new ResourceLocation(NecronMod.MOD_ID, "spruce_hut");
-            }
+            templateResource = new ResourceLocation(NecronMod.MOD_ID, "necron_ruin");
 
             Rotation rotation = Rotation.values()[this.rand.nextInt(Rotation.values().length)];
             StructureNecronRuinPiece piece = new StructureNecronRuinPiece(templateManager, templateResource, new BlockPos(chunkX * 16, 0, chunkZ * 16), rotation);

@@ -1,5 +1,6 @@
-package com.calenaur.necron.world.gen.structure;
+package com.calenaur.necron.world.gen.feature.structure.ruin;
 
+import com.calenaur.necron.world.gen.feature.structure.Structures;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;

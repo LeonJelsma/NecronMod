@@ -1,4 +1,4 @@
-package com.calenaur.necron.world.gen.ore;
+package com.calenaur.necron.world.gen.feature.ore;
 
 import com.calenaur.necron.block.Blocks;
 import net.minecraft.world.gen.feature.OreFeatureConfig;

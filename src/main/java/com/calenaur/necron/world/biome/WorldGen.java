@@ -1,15 +1,12 @@
 package com.calenaur.necron.world.biome;
 
-import com.calenaur.necron.world.gen.ore.OreNecrodermis;
-import com.calenaur.necron.world.gen.structure.Structures;
+import com.calenaur.necron.world.gen.feature.ore.OreNecrodermis;
+import com.calenaur.necron.world.gen.feature.structure.Structures;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.IFeatureConfig;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.placement.IPlacementConfig;
-import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.world.gen.placement.*;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class WorldGen {

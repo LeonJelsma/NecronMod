@@ -1,5 +1,6 @@
-package com.calenaur.necron.world.gen.structure;
+package com.calenaur.necron.world.gen.feature.structure;
 
+import com.calenaur.necron.world.gen.feature.structure.ruin.StructureNecronRuin;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraftforge.registries.ObjectHolder;
 
