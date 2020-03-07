@@ -2,6 +2,8 @@ package com.calenaur.necron;
 
 import com.calenaur.necron.event.EventNecrodermisItem;
 import com.calenaur.necron.registry.Registrar;
+import com.calenaur.necron.world.gen.feature.structure.ruin.StructureNecronRuinPiece;
+import net.minecraft.tileentity.FurnaceTileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -16,5 +18,9 @@ public class NecronMod {
         MinecraftForge.EVENT_BUS.register(new EventNecrodermisItem());
         FMLJavaModLoadingContext.get().getModEventBus().addListener(Registrar::clientSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(Registrar::commonSetup);
+    }
+
+    public static String namespace(String key) {
+        return NecronMod.MOD_ID + ":" + key;
     }
 }

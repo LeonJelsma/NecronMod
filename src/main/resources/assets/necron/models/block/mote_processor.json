@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "necron:block/mote_processor_top",
+    "down": "necron:block/mote_processor_top",
+    "up": "necron:block/mote_processor_top",
+    "east": "necron:block/mote_processor_side",
+    "west": "necron:block/mote_processor_side",
+    "north": "necron:block/mote_processor_front",
+    "south": "necron:block/mote_processor_side"
+  }
+}

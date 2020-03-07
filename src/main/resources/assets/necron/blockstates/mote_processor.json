@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=north": { "model": "necron:block/mote_processor" },
+    "facing=south": { "model": "necron:block/mote_processor", "y": 180 },
+    "facing=west": { "model": "necron:block/mote_processor", "y": 270 },
+    "facing=east": { "model": "necron:block/mote_processor", "y": 90 },
+    "facing=up": { "model": "necron:block/mote_processor", "x": -90 },
+    "facing=down": { "model": "necron:block/mote_processor", "x": 90 }
+  }
+}
