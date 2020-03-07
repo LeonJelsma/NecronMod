@@ -3,6 +3,7 @@ package com.calenaur.necron.world.gen.feature.structure.ruin;
 
 import com.calenaur.necron.NecronMod;
 import com.calenaur.necron.world.gen.feature.structure.ModifiableRarityStructure;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -13,6 +14,8 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.*;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
+import static net.minecraft.world.biome.Biome.Category.*;
+
 /**
  * The structure class is mostly used to decide where the structure will be, structure pieces focus on actual generation
  * This is a scattered structure that spawns randomly in the world
@@ -21,6 +24,18 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
  */
 public class StructureNecronRuin extends ModifiableRarityStructure {
     public static final String NAME = "necron_ruin";
+    public static final ImmutableList<Biome.Category> BIOME_WHITELIST = ImmutableList.of(
+            TAIGA,
+            EXTREME_HILLS,
+            JUNGLE,
+            MESA,
+            PLAINS,
+            SAVANNA,
+            ICY,
+            FOREST,
+            DESERT,
+            SWAMP
+    );
 
     public StructureNecronRuin(){
         super(NoFeatureConfig::deserialize, 4, 1);
@@ -91,7 +106,18 @@ public class StructureNecronRuin extends ModifiableRarityStructure {
         public void init(ChunkGenerator<?> generator, TemplateManager templateManager, int chunkX, int chunkZ, Biome biome) {
             //For the purposes of this demonstration I am using this space to decide which structure file to use and what rotation the structure is at
             ResourceLocation templateResource;
-            templateResource = new ResourceLocation(NecronMod.MOD_ID, "necron_ruin");
+
+            switch (this.rand.nextInt(3)) {
+                case 1:
+                    templateResource = new ResourceLocation(NecronMod.MOD_ID, "necron_ruin_1");
+                    break;
+                case 2:
+                    templateResource = new ResourceLocation(NecronMod.MOD_ID, "necron_ruin_2");
+                    break;
+                default:
+                    templateResource = new ResourceLocation(NecronMod.MOD_ID, "necron_ruin_0");
+                    break;
+            }
 
             Rotation rotation = Rotation.values()[this.rand.nextInt(Rotation.values().length)];
             StructureNecronRuinPiece piece = new StructureNecronRuinPiece(templateManager, templateResource, new BlockPos(chunkX * 16, 0, chunkZ * 16), rotation);

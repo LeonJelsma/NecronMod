@@ -5,7 +5,7 @@ import com.calenaur.necron.block.BlockNecrodermisOre;
 import com.calenaur.necron.entity.type.EntityTypes;
 import com.calenaur.necron.item.*;
 import com.calenaur.necron.renderer.RendererNecronSoldier;
-import com.calenaur.necron.world.biome.WorldGen;
+import com.calenaur.necron.world.WorldGen;
 import com.calenaur.necron.world.gen.feature.structure.ruin.StructureNecronRuin;
 import com.calenaur.necron.world.gen.feature.structure.ruin.StructureNecronRuinPiece;
 import com.calenaur.necron.world.gen.feature.structure.Structures;

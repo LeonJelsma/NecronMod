@@ -97,18 +97,20 @@ public class StructureNecronRuinPiece extends TemplateStructurePiece {
 	 */
 	@Override
 	public boolean func_225577_a_(IWorld world, ChunkGenerator<?> chunkGenerator, Random rand, MutableBoundingBox boundingBox, ChunkPos chunkPos) {
-		float height = 0;
-		BlockPos structureSize = this.templatePosition.add(this.template.getSize().getX() - 1, 0, this.template.getSize().getZ() - 1);
-
-		for(BlockPos pos : BlockPos.getAllInBoxMutable(this.templatePosition, structureSize)) {
-			int k = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos.getX(), pos.getZ());
-			height += k;
+		BlockPos size = this.template.getSize();
+		BlockPos startPos = this.templatePosition;
+		BlockPos endPos = this.templatePosition.add(size.getX()-1, 0, size.getZ()-1);
+		int floor = 0;
+		int ceiling = 256;
+		int x = startPos.getX();
+		int z = startPos.getZ();
+		for(BlockPos pos : BlockPos.getAllInBoxMutable(startPos, endPos)) {
+			int l = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos.getX(), pos.getZ());
+			floor += l;
+			ceiling = Math.min(floor, l);
 		}
 
-		height = height / (this.template.getSize().getX() * this.template.getSize().getZ()) - 1;
-
-		this.templatePosition = new BlockPos(this.templatePosition.getX() + 8, height, this.templatePosition.getZ() + 8);
-
+		this.templatePosition = new BlockPos(x, ceiling - size.getY() / 2 - rand.nextInt(2), z);
 		return super.func_225577_a_(world, chunkGenerator, rand, boundingBox, chunkPos);
 	}
 }
