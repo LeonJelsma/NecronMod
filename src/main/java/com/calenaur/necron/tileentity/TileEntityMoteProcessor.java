@@ -20,6 +20,7 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -39,6 +40,7 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
     private int processingChargeLeft;
     private int processingProgress;
     private int requiredProcessingProgress;
+    private int[] fields = new int[3];
 
 
     private IRecipeType recipeType = RecipeTypes.MOTE_PROCESSING;
@@ -55,6 +57,10 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
         boolean isProcessingFlag = this.isProcessing();
         boolean tileCHanged = false;
 
+        fields[0] = processingChargeLeft;
+        fields[1] = processingProgress;
+        fields[2] = requiredProcessingProgress;
+
         if (!this.world.isRemote) {
             ItemStack[] fuel = {this.items.get(1), this.items.get(2)};
 
@@ -70,7 +76,7 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
                         tileCHanged = true;
 
                         if (isFuel(fuel[0]) && isFuel(fuel[1])){
-                            processingChargeLeft += 200;
+                            processingChargeLeft += 300;
 
                             if (fuel[0].hasContainerItem()) {
                                 this.items.set(1, fuel[0].getContainerItem());
@@ -126,7 +132,7 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
 
 
     protected int getProcessingTime() {
-        return this.world.getRecipeManager().getRecipe((IRecipeType<ProcessingRecipe>)this.recipeType, this, this.world).map(ProcessingRecipe::getProcessingTime).orElse(200);
+        return this.world.getRecipeManager().getRecipe((IRecipeType<ProcessingRecipe>)this.recipeType, this, this.world).map(ProcessingRecipe::getProcessingTime).orElse(300);
     }
 
     private void useRecipe(@Nullable IRecipe<?> recipe) {
@@ -185,6 +191,18 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
         }
     }
 
+    public int GetRequiredProgress(){
+        return requiredProcessingProgress;
+    }
+
+    public int GetProgress(){
+        return processingProgress;
+    }
+
+    public int GetCurrentCharge(){
+        return processingChargeLeft;
+    }
+
     @Override
     public ITextComponent getDisplayName() {
         return new StringTextComponent(getType().getRegistryName().getPath());
@@ -193,7 +211,7 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
     @Nullable
     @Override
     public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new ContainerMoteProcessor(id, playerInventory, this);
+        return new ContainerMoteProcessor(fields, id, playerInventory, this);
     }
 
     @Override

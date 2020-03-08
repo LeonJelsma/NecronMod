@@ -10,6 +10,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.util.IIntArray;
 import net.minecraft.world.World;
 
 public class ContainerMoteProcessor extends Container {
@@ -18,17 +19,20 @@ public class ContainerMoteProcessor extends Container {
 	private IInventory processorInventory;
 	private World world;
 	private IRecipeType<ProcessingRecipe> recipeType;
+	public int[] tileData = new int[3];
+
 
 	public ContainerMoteProcessor(int id, PlayerInventory playerInventory) {
-    	this(ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory, new Inventory(4));
+    	this(null,ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory, new Inventory(4));
 	}
 
-	public ContainerMoteProcessor(int id, PlayerInventory playerInventory, IInventory processorInventory) {
-		this(ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory, processorInventory);
+	public ContainerMoteProcessor(int[] tileData, int id, PlayerInventory playerInventory, IInventory processorInventory) {
+		this(tileData, ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory, processorInventory);
 	}
 
-	public ContainerMoteProcessor(ContainerType<?> containerTypeIn, IRecipeType<ProcessingRecipe> recipeTypeIn, int id, PlayerInventory playerInventoryIn, IInventory processorInventory){
+	public ContainerMoteProcessor(int[] tileData, ContainerType<?> containerTypeIn, IRecipeType<ProcessingRecipe> recipeTypeIn, int id, PlayerInventory playerInventoryIn, IInventory processorInventory){
         super(containerTypeIn, id);
+        this.tileData = tileData;
         this.processorInventory = processorInventory;
 		this.world = playerInventoryIn.player.world;
 		this.recipeType = recipeTypeIn;
@@ -99,4 +103,5 @@ public class ContainerMoteProcessor extends Container {
 	protected boolean itemHasRecipe(ItemStack itemStack) {
 		return this.world.getRecipeManager().getRecipe(this.recipeType, new Inventory(itemStack), this.world).isPresent();
 	}
+
 }

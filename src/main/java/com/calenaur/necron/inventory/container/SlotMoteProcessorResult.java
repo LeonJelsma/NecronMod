@@ -53,13 +53,4 @@ public class SlotMoteProcessorResult extends Slot {
 	/**
 	 * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood.
 	 */
-	protected void onCrafting(ItemStack stack) {
-		stack.onCrafting(this.player.world, this.player, this.removeCount);
-		if (!this.player.world.isRemote && this.inventory instanceof TileEntityMoteProcessor) {
-			((TileEntityMoteProcessor)this.inventory).func_213995_d(this.player);
-		}
-
-		this.removeCount = 0;
-		net.minecraftforge.fml.hooks.BasicEventHooks.firePlayerSmeltedEvent(this.player, stack);
-	}
 }
