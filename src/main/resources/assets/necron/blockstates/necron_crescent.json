@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=down": { "model": "necron:block/necron_crescent", "x": 180 },
+    "facing=up": { "model": "necron:block/necron_crescent" },
+    "facing=north": { "model": "necron:block/necron_crescent", "x": 90 },
+    "facing=south": { "model": "necron:block/necron_crescent", "x": 90, "y": 180 },
+    "facing=west": { "model": "necron:block/necron_crescent", "x": 90, "y": 270 },
+    "facing=east": { "model": "necron:block/necron_crescent", "x": 90, "y": 90 }
+  }
+}

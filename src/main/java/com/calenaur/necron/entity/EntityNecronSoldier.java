@@ -1,6 +1,5 @@
 package com.calenaur.necron.entity;
 
-import net.minecraft.client.renderer.entity.WitherSkeletonRenderer;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.WitherSkeletonEntity;
 import net.minecraft.world.World;
