@@ -34,7 +34,7 @@ public class ProcessorScreen extends ContainerScreen<ContainerMoteProcessor> {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        drawString(Minecraft.getInstance().fontRenderer, "Test", 10 ,10, 0xffffff);
+        drawString(Minecraft.getInstance().fontRenderer, "Mote Processor", 44 ,4, 0xffffff);
     }
 
     @Override
@@ -45,29 +45,11 @@ public class ProcessorScreen extends ContainerScreen<ContainerMoteProcessor> {
         int j = this.guiTop;
         this.blit(i, j, 0, 0, this.xSize, this.ySize);
 
-        //int l = getProgressScaled(24, counter);
-        //int k = getProgressScaled(15, counter);
-
         int l = getProgressScaled(24, this.container.processorData.get(2), this.container.processorData.get(1));
-        int k = getProgressScaled(14, 200, this.container.processorData.get(0));
-
-        //AbstractFurnaceScreen
+        int k = getProgressScaled(13, 200, this.container.processorData.get(0));
 
         this.blit(80 + i, 34 + j, 176, 14, l, 17);
-
-
-        this.blit(44 + i, 37 + j - k, 176, 0 + k, 19, 14 - k);
-        //this.blit(lvt_4_1_ + 56, lvt_5_1_ + 36 + 12 - lvt_6_2_, 176, 12 - lvt_6_2_, 14, lvt_6_2_ + 1);
-
-        }
-
-
-        private void drawChargeMeter(){
-
-        }
-
-        private void drawProgressMeter(){
-
+        this.blit(44 + i, 50 + j - k, 176, 13 - k, 19, 0 + k);
         }
 
     public int getProgressScaled(int width, int progress, int max_value) {
