@@ -24,4 +24,6 @@ public class Blocks {
     public static BlockNecronStraightSingle NECRON_STRAIGHT_SINGLE;
     @ObjectHolder("necron:necrodermis_ore")
     public static BlockNecrodermisOre NECRON_ORE;
+    @ObjectHolder("necron:mote_processor")
+    public static BlockMoteProcessor MOTE_PROCESSOR;
 }

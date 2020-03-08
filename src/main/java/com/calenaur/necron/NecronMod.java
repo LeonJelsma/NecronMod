@@ -17,4 +17,8 @@ public class NecronMod {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(Registrar::clientSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(Registrar::commonSetup);
     }
+
+    public static String namespace(String key) {
+        return NecronMod.MOD_ID + ":" + key;
+    }
 }
