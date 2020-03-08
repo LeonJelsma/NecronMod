@@ -3,6 +3,7 @@ package com.calenaur.necron.inventory.container;
 import com.calenaur.necron.recipe.ProcessingRecipe;
 import com.calenaur.necron.recipe.RecipeTypes;
 import com.calenaur.necron.registry.Registrar;
+import com.calenaur.necron.tileentity.TileEntityMoteProcessor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -25,19 +26,9 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 public class MoteProcessorContainer extends Container {
 	public static final String NAME = "mote_processor";
 
-    private final int HOTBAR_SLOT_COUNT = 9;
-	private final int PLAYER_INVENTORY_ROW_COUNT = 3;
-	private final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
-	private final int PLAYER_INVENTORY_SLOT_COUNT = PLAYER_INVENTORY_COLUMN_COUNT * PLAYER_INVENTORY_ROW_COUNT;
-	private final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
-
-	private final int VANILLA_FIRST_SLOT_INDEX = 0;
-	private final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
-	private final int TE_INVENTORY_SLOT_COUNT = 9;
-
-
-    private PlayerEntity player;
-    private IInventory processorInventory;
+	private IInventory processorInventory;
+	private World world;
+	private IRecipeType<ProcessingRecipe> recipeType;
 
 	public MoteProcessorContainer(int id, PlayerInventory playerInventory) {
     	this(ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory, new Inventory(4));
@@ -50,6 +41,8 @@ public class MoteProcessorContainer extends Container {
 	public MoteProcessorContainer(ContainerType<?> containerTypeIn, IRecipeType<ProcessingRecipe> recipeTypeIn, int id, PlayerInventory playerInventoryIn, IInventory processorInventory){
         super(containerTypeIn, id);
         this.processorInventory = processorInventory;
+		this.world = playerInventoryIn.player.world;
+		this.recipeType = recipeTypeIn;
 		addSlot(new Slot(processorInventory, 0, 45, 17));
 		addSlot(new Slot(processorInventory, 1, 34, 53));
 		addSlot(new Slot(processorInventory, 2, 56, 53));
@@ -71,45 +64,51 @@ public class MoteProcessorContainer extends Container {
     }
 
     @Override
-    public boolean canInteractWith(PlayerEntity playerIn) {
-        //return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), player, Registrar.PROCESSOR.get());
-        return true;
-    }
-
-
+	public boolean canInteractWith(PlayerEntity playerIn) {
+		return this.processorInventory.isUsableByPlayer(playerIn);
+	}
 
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity player, int sourceSlotIndex)
-	{
-		Slot sourceSlot = (Slot)inventorySlots.get(sourceSlotIndex);
-		if (sourceSlot == null || !sourceSlot.getHasStack()) return ItemStack.EMPTY;  //EMPTY_ITEM
-		ItemStack sourceStack = sourceSlot.getStack();
-		ItemStack copyOfSourceStack = sourceStack.copy();
+	public ItemStack transferStackInSlot(PlayerEntity player, int slotIndex){
+		ItemStack itemStack = ItemStack.EMPTY;
+		Slot slot = this.inventorySlots.get(slotIndex);
+		if (slot == null || !slot.getHasStack())
+			return itemStack;
 
-		// Check if the slot clicked is one of the vanilla container slots
-		if (sourceSlotIndex >= VANILLA_FIRST_SLOT_INDEX && sourceSlotIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
-			// This is a vanilla container slot so merge the stack into the tile inventory
-			if (!mergeItemStack(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT, false)){
-				return ItemStack.EMPTY;  // EMPTY_ITEM
-			}
-		} else if (sourceSlotIndex >= TE_INVENTORY_FIRST_SLOT_INDEX && sourceSlotIndex < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
-			// This is a TE slot so merge the stack into the players inventory
-			if (!mergeItemStack(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
-				return ItemStack.EMPTY;   // EMPTY_ITEM
-			}
-		} else {
-			System.err.print("Invalid slotIndex:" + sourceSlotIndex);
-			return ItemStack.EMPTY;   // EMPTY_ITEM
-		}
+		ItemStack originItemStack = slot.getStack();
+		itemStack = originItemStack.copy();
+		if (slotIndex == 3) { //Is the item in the output slot?
+			if (!mergeItemStack(originItemStack, 4, 40, true)) //Place item in the players inventory or toolbar
+				return ItemStack.EMPTY;
+			slot.onSlotChange(originItemStack, itemStack);
+		} else if (slotIndex > 3) {
+			if (itemHasRecipe(originItemStack)) {//Is the item part of a recipe?
+				if (!mergeItemStack(originItemStack, 0, 1, false))//Place in the ingredient slot
+					return ItemStack.EMPTY;
+			} else if (TileEntityMoteProcessor.isFuel(originItemStack)) {//Is the item considered fuel for this mote processor?
+				if (!mergeItemStack(originItemStack, 1, 3, false))//Place in one of the 2 fuel slots
+					return ItemStack.EMPTY;
+			} else if (slotIndex < 31) { //Is the item in the players inventory?
+				if (!mergeItemStack(originItemStack, 30, 40, false)) //Place in toolbar
+					return ItemStack.EMPTY;
+			} else if (slotIndex < 40 && !mergeItemStack(originItemStack, 4, 31, false)) //Is the item in the players? then place in inventory
+				return ItemStack.EMPTY;
+		} else if (!mergeItemStack(originItemStack, 4, 40, false))
+			return ItemStack.EMPTY;
 
-		// If stack size == 0 (the entire stack was moved) set slot contents to null
-		if (sourceStack.getCount() == 0) {  // getStackSize
-			sourceSlot.putStack(ItemStack.EMPTY);  // EMPTY_ITEM
-		} else {
-    		sourceSlot.onSlotChanged();
-		}
+		if (originItemStack.isEmpty()) { //Any items left?
+			slot.putStack(ItemStack.EMPTY); //Tell the client that the old slot is now empty
+		} else
+			slot.onSlotChanged(); //Make sure the client knows that we changed their itemStack
 
-		sourceSlot.onTake(player, sourceStack);  //onPickupFromSlot()
-		return copyOfSourceStack;
+		if (originItemStack.getCount() == itemStack.getCount()) //Contingency plan
+			return ItemStack.EMPTY;
+
+		slot.onTake(player, originItemStack);
+		return itemStack;
+	}
+
+	protected boolean itemHasRecipe(ItemStack itemStack) {
+		return this.world.getRecipeManager().getRecipe(this.recipeType, new Inventory(itemStack), this.world).isPresent();
 	}
 }

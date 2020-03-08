@@ -3,6 +3,7 @@ package com.calenaur.necron.tileentity;
 import com.calenaur.necron.inventory.container.MoteProcessorContainer;
 import com.calenaur.necron.recipe.ProcessingRecipe;
 import com.calenaur.necron.recipe.RecipeTypes;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
@@ -132,6 +133,9 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
         }
     }
 
+    public static boolean isFuel(ItemStack itemStack) {
+        return itemStack.getItem() == Items.LAVA_BUCKET || itemStack.getItem() == Items.BLAZE_POWDER;
+    }
 
     protected int getBurnTime(ItemStack fuelStack) {
         if (fuelStack.isEmpty()) {
@@ -237,6 +241,9 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
 
     @Override
     public boolean isUsableByPlayer(PlayerEntity player) {
+        if (this.world == null)
+            return false;
+
         if (this.world.getTileEntity(this.pos) != this) {
             return false;
         } else

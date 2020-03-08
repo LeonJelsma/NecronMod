@@ -1,7 +1,7 @@
 {
-  "type": "minecraft:smelting",
+  "type": "minecraft:processing",
   "ingredient": {
-    "item": "necron:necrodermis_ore"
+    "item": "necron:necrodermis_mote"
   },
   "result": "necron:necrodermis_ingot",
   "experience": 0.7,
