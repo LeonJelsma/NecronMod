@@ -2,7 +2,6 @@ package com.calenaur.necron.inventory.container;
 
 import com.calenaur.necron.recipe.ProcessingRecipe;
 import com.calenaur.necron.recipe.RecipeTypes;
-import com.calenaur.necron.registry.Registrar;
 import com.calenaur.necron.tileentity.TileEntityMoteProcessor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -10,44 +9,33 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.*;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.AbstractCookingRecipe;
 import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.tileentity.FurnaceTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.IntArray;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class MoteProcessorContainer extends Container {
+public class ContainerMoteProcessor extends Container {
 	public static final String NAME = "mote_processor";
 
 	private IInventory processorInventory;
 	private World world;
 	private IRecipeType<ProcessingRecipe> recipeType;
 
-	public MoteProcessorContainer(int id, PlayerInventory playerInventory) {
+	public ContainerMoteProcessor(int id, PlayerInventory playerInventory) {
     	this(ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory, new Inventory(4));
 	}
 
-	public MoteProcessorContainer(int id, PlayerInventory playerInventory, IInventory processorInventory) {
+	public ContainerMoteProcessor(int id, PlayerInventory playerInventory, IInventory processorInventory) {
 		this(ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory, processorInventory);
 	}
 
-	public MoteProcessorContainer(ContainerType<?> containerTypeIn, IRecipeType<ProcessingRecipe> recipeTypeIn, int id, PlayerInventory playerInventoryIn, IInventory processorInventory){
+	public ContainerMoteProcessor(ContainerType<?> containerTypeIn, IRecipeType<ProcessingRecipe> recipeTypeIn, int id, PlayerInventory playerInventoryIn, IInventory processorInventory){
         super(containerTypeIn, id);
         this.processorInventory = processorInventory;
 		this.world = playerInventoryIn.player.world;
 		this.recipeType = recipeTypeIn;
 		addSlot(new Slot(processorInventory, 0, 45, 17));
-		addSlot(new Slot(processorInventory, 1, 34, 53));
-		addSlot(new Slot(processorInventory, 2, 56, 53));
-		addSlot(new Slot(processorInventory, 3, 116, 35));
-
+		addSlot(new SlotMoteProcessorFuel(processorInventory, 1, 34, 53));
+		addSlot(new SlotMoteProcessorFuel(processorInventory, 2, 56, 53));
+		addSlot(new SlotMoteProcessorResult(processorInventory, 3, 116, 35));
 		layoutPlayerInventorySlots(playerInventoryIn);
     }
 

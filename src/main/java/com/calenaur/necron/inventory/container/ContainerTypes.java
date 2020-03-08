@@ -5,5 +5,5 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerTypes {
     @ObjectHolder("necron:mote_processor")
-    public static ContainerType<MoteProcessorContainer> MOTE_PROCESSOR;
+    public static ContainerType<ContainerMoteProcessor> MOTE_PROCESSOR;
 }

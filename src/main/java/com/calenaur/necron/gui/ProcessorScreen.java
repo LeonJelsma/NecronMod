@@ -1,23 +1,21 @@
 package com.calenaur.necron.gui;
 
 import com.calenaur.necron.NecronMod;
-import com.calenaur.necron.inventory.container.MoteProcessorContainer;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.calenaur.necron.inventory.container.ContainerMoteProcessor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.AbstractFurnaceContainer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
-public class ProcessorScreen extends ContainerScreen<MoteProcessorContainer> {
+public class ProcessorScreen extends ContainerScreen<ContainerMoteProcessor> {
 
     private ResourceLocation GUI = new ResourceLocation(NecronMod.MOD_ID, "textures/gui/mote_processor_gui.png");
 
     public ProcessorScreen(Container container, PlayerInventory inventory, ITextComponent textComponent) {
-        super((MoteProcessorContainer) container, inventory, textComponent);
+        super((ContainerMoteProcessor) container, inventory, textComponent);
     }
 
     @Override

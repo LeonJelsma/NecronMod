@@ -7,8 +7,8 @@ import com.calenaur.necron.block.Blocks;
 import com.calenaur.necron.block.necron.*;
 import com.calenaur.necron.entity.type.EntityTypes;
 import com.calenaur.necron.gui.ProcessorScreen;
+import com.calenaur.necron.inventory.container.ContainerMoteProcessor;
 import com.calenaur.necron.inventory.container.ContainerTypes;
-import com.calenaur.necron.inventory.container.MoteProcessorContainer;
 import com.calenaur.necron.item.*;
 import com.calenaur.necron.recipe.RecipeSerializerTypes;
 import com.calenaur.necron.item.necron.*;
@@ -101,7 +101,7 @@ public class Registrar {
 
 	@SubscribeEvent
 	public static void onContainerTypeRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
-		event.getRegistry().register(new ContainerType<>(MoteProcessorContainer::new).setRegistryName(MoteProcessorContainer.NAME));
+		event.getRegistry().register(new ContainerType<>(ContainerMoteProcessor::new).setRegistryName(ContainerMoteProcessor.NAME));
 	}
 
 	@SubscribeEvent
