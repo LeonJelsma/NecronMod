@@ -1,7 +1,6 @@
 package com.calenaur.necron.item;
 
 import com.calenaur.necron.entity.type.EntityTypes;
-import net.minecraft.entity.EntityType;
 import net.minecraft.item.SpawnEggItem;
 
 public class ItemNecronSoldierSpawnEgg extends SpawnEggItem {
