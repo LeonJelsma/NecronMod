@@ -35,7 +35,7 @@ public class ContainerMoteProcessor extends Container {
 		addSlot(new Slot(processorInventory, 0, 45, 17));
 		addSlot(new SlotMoteProcessorFuel(processorInventory, 1, 34, 53));
 		addSlot(new SlotMoteProcessorFuel(processorInventory, 2, 56, 53));
-		addSlot(new SlotMoteProcessorResult(processorInventory, 3, 116, 35));
+		addSlot(new SlotMoteProcessorResult(playerInventoryIn.player, processorInventory, 3, 116, 35));
 		layoutPlayerInventorySlots(playerInventoryIn);
     }
 
