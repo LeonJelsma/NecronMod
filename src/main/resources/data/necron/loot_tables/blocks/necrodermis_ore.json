@@ -52,6 +52,17 @@
               "name": "necron:necrodermis_mote"
             }
           ]
+      "name": "necron:necrodermis_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "necron:necrodermis_ore"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
         }
       ]
     }

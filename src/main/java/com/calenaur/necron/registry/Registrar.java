@@ -30,7 +30,7 @@ public class Registrar {
 	}
 
 	public static void commonSetup(final FMLCommonSetupEvent event) {
-			WorldGen.register();
+		WorldGen.register();
 	}
 
 	@SubscribeEvent
@@ -78,6 +78,6 @@ public class Registrar {
 	public static void onStructureRegistry(final RegistryEvent.Register<Feature<?>> event) {
 		//Using the registry directly like this is bad, however this is currently the only way to register a structure piece
 		Structures.NECRON_RUIN_PIECE = Registry.register(Registry.STRUCTURE_PIECE, NecronMod.MOD_ID + ":" + StructureNecronRuinPiece.NAME, StructureNecronRuinPiece::new);
-    	event.getRegistry().register(new StructureNecronRuin());
+		event.getRegistry().register(new StructureNecronRuin());
 	}
 }
