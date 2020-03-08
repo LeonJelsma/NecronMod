@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
 public class SlotMoteProcessorFuel extends Slot {
+
 	private Item item;
 	public SlotMoteProcessorFuel(IInventory inventoryIn, int index, int xPosition, int yPosition, Item allowed) {
 		super(inventoryIn, index, xPosition, yPosition);

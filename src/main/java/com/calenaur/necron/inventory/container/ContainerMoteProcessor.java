@@ -14,8 +14,6 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ContainerMoteProcessor extends Container {
 	public static final String NAME = "mote_processor";
