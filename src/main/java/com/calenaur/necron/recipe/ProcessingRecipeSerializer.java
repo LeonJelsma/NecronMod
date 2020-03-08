@@ -10,19 +10,21 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public class ProcessingRecipeSerializer<T extends AbstractProcessingRecipe> extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<T> {
+public class ProcessingRecipeSerializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ProcessingRecipe> {
 
-	private final int processingTime;
-	private final ProcessingRecipeSerializer.IFactory<T> recipeFactory;
+	//private final int processingTime;
+	//private final ProcessingRecipeSerializer.IFactory<AbstractProcessingRecipe> recipeFactory;
 
-	public ProcessingRecipeSerializer(ProcessingRecipeSerializer.IFactory<T> factory, int processingTime) {
+	/*
+	public ProcessingRecipeSerializer(ProcessingRecipeSerializer.IFactory<AbstractProcessingRecipe> factory, int processingTime) {
 		this.processingTime = processingTime;
 		this.recipeFactory = factory;
 	}
 
-	public T read(ResourceLocation recipeId, JsonObject json) {
+	 */
+
+	public ProcessingRecipe read(ResourceLocation recipeId, JsonObject json) {
 		String s = JSONUtils.getString(json, "group", "");
 		JsonElement jsonelement = (JsonElement)(JSONUtils.isJsonArray(json, "ingredient") ? JSONUtils.getJsonArray(json, "ingredient") : JSONUtils.getJsonObject(json, "ingredient"));
 		Ingredient ingredient = Ingredient.deserialize(jsonelement);
@@ -39,20 +41,21 @@ public class ProcessingRecipeSerializer<T extends AbstractProcessingRecipe> exte
 			}));
 		}
 		float f = JSONUtils.getFloat(json, "experience", 0.0F);
-		int i = JSONUtils.getInt(json, "processingtime", this.processingTime);
-		return this.recipeFactory.create(recipeId, s, ingredient, itemstack, f, i);
+		int i = JSONUtils.getInt(json, "processingtime", 200);
+		return new ProcessingRecipe(recipeId, s, ingredient, itemstack, f, i);
 	}
 
-	public T read(ResourceLocation recipeId, PacketBuffer buffer) {
+	public ProcessingRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
 		String s = buffer.readString(32767);
 		Ingredient ingredient = Ingredient.read(buffer);
 		ItemStack itemstack = buffer.readItemStack();
 		float f = buffer.readFloat();
 		int i = buffer.readVarInt();
-		return this.recipeFactory.create(recipeId, s, ingredient, itemstack, f, i);
+		return new ProcessingRecipe(recipeId, s, ingredient, itemstack, f, i);
 	}
 
-	public void write(PacketBuffer buffer, T recipe) {
+	@Override
+	public void write(PacketBuffer buffer, ProcessingRecipe recipe) {
 		buffer.writeString(recipe.group);
 		recipe.ingredient.write(buffer);
 		buffer.writeItemStack(recipe.result);
@@ -60,7 +63,7 @@ public class ProcessingRecipeSerializer<T extends AbstractProcessingRecipe> exte
 		buffer.writeVarInt(recipe.processingTime);
 	}
 
-	interface IFactory<T extends AbstractProcessingRecipe> {
+	interface IFactory<T extends ProcessingRecipe> {
 		T create(ResourceLocation resourceLocation, String name, Ingredient ingredient, ItemStack itemStack, float experience, int processingTime);
 	}
 }

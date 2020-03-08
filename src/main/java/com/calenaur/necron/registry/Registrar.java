@@ -10,7 +10,8 @@ import com.calenaur.necron.inventory.container.ContainerTypes;
 import com.calenaur.necron.inventory.container.MoteProcessorContainer;
 import com.calenaur.necron.item.*;
 import com.calenaur.necron.recipe.ProcessingRecipe;
-import com.calenaur.necron.recipe.RecipeTypes;
+import com.calenaur.necron.recipe.ProcessingRecipeSerializer;
+import com.calenaur.necron.recipe.RecipeSerializerTypes;
 import com.calenaur.necron.renderer.RendererNecronSoldier;
 import com.calenaur.necron.tileentity.TileEntityMoteProcessor;
 import com.calenaur.necron.world.WorldGen;
@@ -20,16 +21,18 @@ import com.calenaur.necron.world.gen.feature.structure.Structures;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.EntityType;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -77,14 +80,10 @@ public class Registrar {
 	}
 
 	@SubscribeEvent
-	public static void onRecipeRegistry(final RegistryEvent.Register<IRecipeSerializer<?>> event) {
-		//event.getRegistry().register(new CookingRecipeSerializer(ProcessingRecipe::new, 1));
-		RecipeTypes.MOTE_PROCESSING = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(NecronMod.namespace(ProcessingRecipe.NAME)), new IRecipeType<ProcessingRecipe>() {
-			public String toString() {
-				return ProcessingRecipe.NAME;
-			}
-		});
+	public static void onRecipeSerializerRegistry(final RegistryEvent.Register<IRecipeSerializer<?>> event) {
+		event.getRegistry().register(RecipeSerializerTypes.PROCESSING);
 	}
+	
 
 	@SubscribeEvent
 	public static void onContainerTypeRegistry(final RegistryEvent.Register<ContainerType<?>> event) {

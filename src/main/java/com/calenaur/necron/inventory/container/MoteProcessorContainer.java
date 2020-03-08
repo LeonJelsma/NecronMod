@@ -1,15 +1,13 @@
 package com.calenaur.necron.inventory.container;
 
+import com.calenaur.necron.recipe.ProcessingRecipe;
 import com.calenaur.necron.recipe.RecipeTypes;
 import com.calenaur.necron.registry.Registrar;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.FurnaceContainer;
-import net.minecraft.inventory.container.Slot;
+import net.minecraft.inventory.container.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.AbstractCookingRecipe;
 import net.minecraft.item.crafting.IRecipeType;
@@ -42,21 +40,21 @@ public class MoteProcessorContainer extends Container {
     private IInventory processorInventory;
 
 	public MoteProcessorContainer(int id, PlayerInventory playerInventory) {
-    	this(ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory);
+    	this(ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory, new Inventory(4));
 	}
 
 	public MoteProcessorContainer(int id, PlayerInventory playerInventory, IInventory processorInventory) {
 		this(ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory, processorInventory);
 	}
 
-	protected MoteProcessorContainer(ContainerType<?> containerTypeIn, IRecipeType<? extends AbstractCookingRecipe> recipeTypeIn, int id, PlayerInventory playerInventoryIn) {
-		this(containerTypeIn, recipeTypeIn, id, playerInventoryIn, new Inventory(3));
-	}
-
-	public MoteProcessorContainer(ContainerType<?> containerTypeIn, IRecipeType<? extends AbstractCookingRecipe> recipeTypeIn, int id, PlayerInventory playerInventoryIn, IInventory processorInventory){
+	public MoteProcessorContainer(ContainerType<?> containerTypeIn, IRecipeType<ProcessingRecipe> recipeTypeIn, int id, PlayerInventory playerInventoryIn, IInventory processorInventory){
         super(containerTypeIn, id);
         this.processorInventory = processorInventory;
-		addSlot(new Slot(processorInventory, 0, 56, 17));
+		addSlot(new Slot(processorInventory, 0, 45, 17));
+		addSlot(new Slot(processorInventory, 1, 34, 53));
+		addSlot(new Slot(processorInventory, 2, 56, 53));
+		addSlot(new Slot(processorInventory, 3, 116, 35));
+
 		layoutPlayerInventorySlots(playerInventoryIn);
     }
 
