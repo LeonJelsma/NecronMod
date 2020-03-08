@@ -2,6 +2,7 @@ package com.calenaur.necron.tileentity;
 
 import com.calenaur.necron.block.BlockMoteProcessor;
 import com.calenaur.necron.inventory.container.ContainerMoteProcessor;
+import com.calenaur.necron.inventory.container.ContainerTypes;
 import com.calenaur.necron.recipe.ProcessingRecipe;
 import com.calenaur.necron.recipe.RecipeTypes;
 import com.google.common.collect.Lists;
@@ -10,6 +11,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -26,6 +28,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -40,7 +44,40 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
     private int processingChargeLeft;
     private int processingProgress;
     private int requiredProcessingProgress;
-    private int[] fields = new int[3];
+
+    public final IIntArray processorData = new IIntArray() {
+
+        public int get(int index) {
+            switch(index) {
+                case 0:
+                    return TileEntityMoteProcessor.this.processingChargeLeft;
+                case 1:
+                    return TileEntityMoteProcessor.this.processingProgress;
+                case 2:
+                    return TileEntityMoteProcessor.this.requiredProcessingProgress;
+                default:
+                    return 0;
+            }
+        }
+
+        public void set(int index, int value) {
+            switch(index) {
+                case 0:
+                    TileEntityMoteProcessor.this.processingChargeLeft = value;
+                    break;
+                case 1:
+                    TileEntityMoteProcessor.this.processingProgress = value;
+                    break;
+                case 2:
+                    TileEntityMoteProcessor.this.requiredProcessingProgress = value;
+            }
+
+        }
+
+        public int size() {
+            return 3;
+        }
+    };
 
 
     private IRecipeType recipeType = RecipeTypes.MOTE_PROCESSING;
@@ -57,10 +94,6 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
         boolean isProcessingFlag = this.isProcessing();
         boolean tileCHanged = false;
 
-        fields[0] = processingChargeLeft;
-        fields[1] = processingProgress;
-        fields[2] = requiredProcessingProgress;
-
         if (!this.world.isRemote) {
             ItemStack[] fuel = {this.items.get(1), this.items.get(2)};
 
@@ -76,7 +109,7 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
                         tileCHanged = true;
 
                         if (isFuel(fuel[0]) && isFuel(fuel[1])){
-                            processingChargeLeft += 300;
+                            processingChargeLeft += 200;
 
                             if (fuel[0].hasContainerItem()) {
                                 this.items.set(1, fuel[0].getContainerItem());
@@ -211,8 +244,9 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
     @Nullable
     @Override
     public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new ContainerMoteProcessor(fields, id, playerInventory, this);
+        return new ContainerMoteProcessor(id, playerInventory, this, this. processorData);
     }
+
 
     @Override
     public void read(CompoundNBT compound) {
@@ -291,5 +325,6 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
     public void clear() {
         this.items.clear();
     }
+
 }
 

@@ -4,11 +4,15 @@ import com.calenaur.necron.NecronMod;
 import com.calenaur.necron.inventory.container.ContainerMoteProcessor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.inventory.AbstractFurnaceScreen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.screen.inventory.FurnaceScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ProcessorScreen extends ContainerScreen<ContainerMoteProcessor> {
 
@@ -41,28 +45,18 @@ public class ProcessorScreen extends ContainerScreen<ContainerMoteProcessor> {
         int j = this.guiTop;
         this.blit(i, j, 0, 0, this.xSize, this.ySize);
 
+        //int l = getProgressScaled(24, counter);
+        //int k = getProgressScaled(15, counter);
 
-        tick_slower++;
+        int l = getProgressScaled(24, this.container.processorData.get(2), this.container.processorData.get(1));
+        int k = getProgressScaled(14, 200, this.container.processorData.get(0));
 
-        int l;
-        int k;
-
-        if (tick_slower >= 5) {
-
-
-            tick_slower = 0;
-            counter++;
-
-            if (counter > 100){
-                counter = 0;
-            }
-        }
-
-        l = getProgressScaled(24, counter);
-        k = getProgressScaled(15, counter);
+        //AbstractFurnaceScreen
 
         this.blit(80 + i, 34 + j, 176, 14, l, 17);
-        this.blit(44 + i, 49 + j, 176, 0, 19, k);
+        this.blit(44 + i, 49 + j, 176, 0 + k, 19, k);
+        //this.blit(56 + i, j + 36 + 12 - k, 176, 0 - k, 19, k + 1);
+
         }
 
 
@@ -74,12 +68,11 @@ public class ProcessorScreen extends ContainerScreen<ContainerMoteProcessor> {
 
         }
 
-    public int getProgressScaled(int width, int progress) {
+    public int getProgressScaled(int width, int progress, int max_value) {
 
-        int max_value = 100;
+        int i = max_value;
+        int j = progress;
 
-        int i = progress;
-        int j = max_value;
         return i != 0 && j != 0 ? i * width / j : 0;
     }
 }

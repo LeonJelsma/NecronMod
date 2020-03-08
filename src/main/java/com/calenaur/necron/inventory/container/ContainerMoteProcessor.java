@@ -11,7 +11,10 @@ import net.minecraft.inventory.container.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.IIntArray;
+import net.minecraft.util.IntArray;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ContainerMoteProcessor extends Container {
 	public static final String NAME = "mote_processor";
@@ -19,21 +22,20 @@ public class ContainerMoteProcessor extends Container {
 	private IInventory processorInventory;
 	private World world;
 	private IRecipeType<ProcessingRecipe> recipeType;
-	public int[] tileData = new int[3];
-
+	public IIntArray processorData;
 
 	public ContainerMoteProcessor(int id, PlayerInventory playerInventory) {
-    	this(new int[3],ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory, new Inventory(4));
+		this(ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory, new Inventory(4), new IntArray(3));
 	}
 
-	public ContainerMoteProcessor(int[] tileData, int id, PlayerInventory playerInventory, IInventory processorInventory) {
-		this(tileData, ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory, processorInventory);
+	public ContainerMoteProcessor(int id, PlayerInventory playerInventory, IInventory processorInventory, IIntArray processorData) {
+		this(ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory, processorInventory, processorData);
 	}
 
-	public ContainerMoteProcessor(int[] tileData, ContainerType<?> containerTypeIn, IRecipeType<ProcessingRecipe> recipeTypeIn, int id, PlayerInventory playerInventoryIn, IInventory processorInventory){
-        super(containerTypeIn, id);
-        this.tileData = tileData;
-        this.processorInventory = processorInventory;
+	public ContainerMoteProcessor(ContainerType<ContainerMoteProcessor> containerTypeIn, IRecipeType<ProcessingRecipe> recipeTypeIn, int windowId, PlayerInventory playerInventoryIn, IInventory processorInventory, IIntArray processorData) {
+		super(containerTypeIn, windowId);
+		this.processorData = processorData;
+		this.processorInventory = processorInventory;
 		this.world = playerInventoryIn.player.world;
 		this.recipeType = recipeTypeIn;
 		addSlot(new Slot(processorInventory, 0, 45, 17));
@@ -41,9 +43,11 @@ public class ContainerMoteProcessor extends Container {
 		addSlot(new SlotMoteProcessorFuel(processorInventory, 2, 56, 53));
 		addSlot(new SlotMoteProcessorResult(playerInventoryIn.player, processorInventory, 3, 116, 35));
 		layoutPlayerInventorySlots(playerInventoryIn);
-    }
 
-    private void layoutPlayerInventorySlots(PlayerInventory playerInventoryIn){
+		this.trackIntArray(processorData);
+	}
+
+	private void layoutPlayerInventorySlots(PlayerInventory playerInventoryIn){
 		for(int i = 0; i < 3; ++i) {
 			for(int j = 0; j < 9; ++j) {
 				this.addSlot(new Slot(playerInventoryIn, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
@@ -53,10 +57,6 @@ public class ContainerMoteProcessor extends Container {
 		for(int k = 0; k < 9; ++k) {
 			this.addSlot(new Slot(playerInventoryIn, k, 8 + k * 18, 142));
 		}
-    }
-
-    public int getProgress(){
-		return this.tileData[0];
 	}
 
     @Override
@@ -107,5 +107,4 @@ public class ContainerMoteProcessor extends Container {
 	protected boolean itemHasRecipe(ItemStack itemStack) {
 		return this.world.getRecipeManager().getRecipe(this.recipeType, new Inventory(itemStack), this.world).isPresent();
 	}
-
 }
