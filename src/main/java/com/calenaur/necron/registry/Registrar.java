@@ -6,7 +6,7 @@ import com.calenaur.necron.block.BlockNecrodermisOre;
 import com.calenaur.necron.block.Blocks;
 import com.calenaur.necron.block.necron.*;
 import com.calenaur.necron.entity.type.EntityTypes;
-import com.calenaur.necron.gui.ProcessorScreen;
+import com.calenaur.necron.gui.ScreenMoteProcessor;
 import com.calenaur.necron.inventory.container.ContainerMoteProcessor;
 import com.calenaur.necron.inventory.container.ContainerTypes;
 import com.calenaur.necron.item.*;
@@ -38,7 +38,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 public class Registrar {
 	public static void clientSetup(final FMLClientSetupEvent event) {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes.NECRON_SOLDIER, RendererNecronSoldier::new);
-    	ScreenManager.registerFactory(ContainerTypes.MOTE_PROCESSOR, ProcessorScreen::new);
+    	ScreenManager.registerFactory(ContainerTypes.MOTE_PROCESSOR, ScreenMoteProcessor::new);
 	}
 
 	public static void commonSetup(final FMLCommonSetupEvent event) {

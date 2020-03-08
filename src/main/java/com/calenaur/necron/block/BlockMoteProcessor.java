@@ -7,10 +7,12 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -61,6 +63,17 @@ public class BlockMoteProcessor extends Block {
     public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
         if (entity != null) {
             world.setBlockState(pos, state.with(BlockStateProperties.FACING, getFacingFromEntity(pos, entity)), 2);
+        }
+    }
+
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (state.getBlock() != newState.getBlock()) {
+            TileEntity tileentity = worldIn.getTileEntity(pos);
+            if (tileentity instanceof TileEntityMoteProcessor) {
+                InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityMoteProcessor)tileentity);
+                worldIn.updateComparatorOutputLevel(pos, this);
+            }
+            super.onReplaced(state, worldIn, pos, newState, isMoving);
         }
     }
 

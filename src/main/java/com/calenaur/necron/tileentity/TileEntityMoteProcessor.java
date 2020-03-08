@@ -195,7 +195,7 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
     }
 
     public static boolean isFuel(ItemStack itemStack) {
-        return itemStack.getItem() == Items.LAVA_BUCKET || itemStack.getItem() == Items.BLAZE_POWDER;
+        return itemStack.getItem() == Items.MAGMA_CREAM || itemStack.getItem() == Items.BLAZE_POWDER;
     }
 
     private boolean isProcessing() {
