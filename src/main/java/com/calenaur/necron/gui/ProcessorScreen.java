@@ -22,9 +22,6 @@ public class ProcessorScreen extends ContainerScreen<ContainerMoteProcessor> {
         super((ContainerMoteProcessor) container, inventory, textComponent);
     }
 
-    int counter = 0;
-    int tick_slower = 0;
-
     @Override
     public void render(int mouseX, int mouseY, float partialTicks){
         this.renderBackground();
