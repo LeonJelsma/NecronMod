@@ -9,12 +9,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.*;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ContainerMoteProcessor extends Container {
 	public static final String NAME = "mote_processor";
@@ -39,8 +38,8 @@ public class ContainerMoteProcessor extends Container {
 		this.world = playerInventoryIn.player.world;
 		this.recipeType = recipeTypeIn;
 		addSlot(new Slot(processorInventory, 0, 45, 17));
-		addSlot(new SlotMoteProcessorFuel(processorInventory, 1, 34, 53));
-		addSlot(new SlotMoteProcessorFuel(processorInventory, 2, 56, 53));
+    	addSlot(new SlotMoteProcessorFuel(processorInventory, 1, 34, 53, Items.MAGMA_CREAM));
+		addSlot(new SlotMoteProcessorFuel(processorInventory, 2, 56, 53, Items.BLAZE_POWDER));
 		addSlot(new SlotMoteProcessorResult(playerInventoryIn.player, processorInventory, 3, 116, 35));
 		layoutPlayerInventorySlots(playerInventoryIn);
 

@@ -14,11 +14,11 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ProcessorScreen extends ContainerScreen<ContainerMoteProcessor> {
+public class ScreenMoteProcessor extends ContainerScreen<ContainerMoteProcessor> {
 
     private ResourceLocation GUI = new ResourceLocation(NecronMod.MOD_ID, "textures/gui/mote_processor_gui.png");
 
-    public ProcessorScreen(Container container, PlayerInventory inventory, ITextComponent textComponent) {
+    public ScreenMoteProcessor(Container container, PlayerInventory inventory, ITextComponent textComponent) {
         super((ContainerMoteProcessor) container, inventory, textComponent);
     }
 
