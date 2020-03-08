@@ -1,0 +1,8 @@
+{
+    "parent": "block/stairs",
+    "textures": {
+        "bottom": "necron:block/necron_plain",
+        "top": "necron:block/necron_plain",
+        "side": "necron:block/necron_plain"
+    }
+}
