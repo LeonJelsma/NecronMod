@@ -4,7 +4,6 @@ import com.calenaur.necron.item.Items;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
@@ -47,9 +46,7 @@ public class EventNecrodermisItem {
 					if (player.getHeldItemMainhand() != inventoryStack && player.getHeldItemOffhand() != inventoryStack)
 						for (ItemStack necronStack : NECRODERMIS_ITEMS)
 							if (inventoryStack.isItemEqual(necronStack)) {
-								inventoryStack.damageItem(-REGEN_REPAIR_AMOUNT, player, (playerEntity) -> {
-									playerEntity.sendBreakAnimation(playerEntity.getActiveHand());
-								});
+								inventoryStack.damageItem(-REGEN_REPAIR_AMOUNT, player, (playerEntity) -> playerEntity.sendBreakAnimation(playerEntity.getActiveHand()));
 							}
 	}
 

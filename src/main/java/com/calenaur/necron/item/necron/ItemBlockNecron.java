@@ -1,6 +1,5 @@
 package com.calenaur.necron.item.necron;
 
-import com.calenaur.necron.block.Blocks;
 import com.calenaur.necron.item.ItemGroup;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;

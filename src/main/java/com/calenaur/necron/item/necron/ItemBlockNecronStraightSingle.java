@@ -1,7 +1,6 @@
 package com.calenaur.necron.item.necron;
 
 import com.calenaur.necron.block.Blocks;
-import com.calenaur.necron.block.necron.BlockNecron;
 
 public class ItemBlockNecronStraightSingle extends ItemBlockNecron {
 	public ItemBlockNecronStraightSingle() {

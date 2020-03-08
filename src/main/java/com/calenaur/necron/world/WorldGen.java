@@ -3,7 +3,6 @@ package com.calenaur.necron.world;
 import com.calenaur.necron.world.gen.feature.ore.OreNecrodermis;
 import com.calenaur.necron.world.gen.feature.structure.Structures;
 import com.calenaur.necron.world.gen.feature.structure.ruin.StructureNecronRuin;
-import com.google.common.collect.ImmutableList;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;

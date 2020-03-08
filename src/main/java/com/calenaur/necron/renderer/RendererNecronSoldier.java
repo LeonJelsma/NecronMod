@@ -1,7 +1,6 @@
 package com.calenaur.necron.renderer;
 
 import com.calenaur.necron.NecronMod;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.WitherSkeletonRenderer;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
