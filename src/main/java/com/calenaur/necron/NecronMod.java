@@ -7,7 +7,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import static com.calenaur.necron.NecronMod.MOD_ID;
-
 @Mod(MOD_ID)
 public class NecronMod {
     public static final String MOD_ID = "necron";
