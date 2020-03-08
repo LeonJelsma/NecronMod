@@ -18,6 +18,9 @@ public class ProcessorScreen extends ContainerScreen<ContainerMoteProcessor> {
         super((ContainerMoteProcessor) container, inventory, textComponent);
     }
 
+    int counter = 0;
+    int tick_slower = 0;
+
     @Override
     public void render(int mouseX, int mouseY, float partialTicks){
         this.renderBackground();
@@ -32,17 +35,51 @@ public class ProcessorScreen extends ContainerScreen<ContainerMoteProcessor> {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        /*
-        GlStateManager.func_227637_a_(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bindTexture(GUI);
-        int relX = (this.width - this.xSize) / 2;
-        int relY = (this.height - this.ySize) / 2;
-        this.blit(relX, relY, 0, 0, this.xSize, this.ySize);
-         */
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(GUI);
         int i = this.guiLeft;
         int j = this.guiTop;
         this.blit(i, j, 0, 0, this.xSize, this.ySize);
+
+
+        tick_slower++;
+
+        int l;
+        int k;
+
+        if (tick_slower >= 5) {
+
+
+            tick_slower = 0;
+            counter++;
+
+            if (counter > 100){
+                counter = 0;
+            }
+        }
+
+        l = getProgressScaled(24, counter);
+        k = getProgressScaled(15, counter);
+
+        this.blit(80 + i, 34 + j, 176, 14, l, 17);
+        this.blit(44 + i, 49 + j, 176, 0, 19, k);
+        }
+
+
+        private void drawChargeMeter(){
+
+        }
+
+        private void drawProgressMeter(){
+
+        }
+
+    public int getProgressScaled(int width, int progress) {
+
+        int max_value = 100;
+
+        int i = progress;
+        int j = max_value;
+        return i != 0 && j != 0 ? i * width / j : 0;
     }
 }

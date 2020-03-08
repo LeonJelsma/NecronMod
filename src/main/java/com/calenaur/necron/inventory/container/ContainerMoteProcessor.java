@@ -23,7 +23,7 @@ public class ContainerMoteProcessor extends Container {
 
 
 	public ContainerMoteProcessor(int id, PlayerInventory playerInventory) {
-    	this(null,ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory, new Inventory(4));
+    	this(new int[3],ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory, new Inventory(4));
 	}
 
 	public ContainerMoteProcessor(int[] tileData, int id, PlayerInventory playerInventory, IInventory processorInventory) {
@@ -54,6 +54,10 @@ public class ContainerMoteProcessor extends Container {
 			this.addSlot(new Slot(playerInventoryIn, k, 8 + k * 18, 142));
 		}
     }
+
+    public int getProgress(){
+		return this.tileData[0];
+	}
 
     @Override
 	public boolean canInteractWith(PlayerEntity playerIn) {
