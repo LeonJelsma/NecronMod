@@ -54,8 +54,10 @@ public class ProcessorScreen extends ContainerScreen<ContainerMoteProcessor> {
         //AbstractFurnaceScreen
 
         this.blit(80 + i, 34 + j, 176, 14, l, 17);
-        this.blit(44 + i, 49 + j, 176, 0 + k, 19, k);
-        //this.blit(56 + i, j + 36 + 12 - k, 176, 0 - k, 19, k + 1);
+
+
+        this.blit(44 + i, 37 + j - k, 176, 0 + k, 19, 14 - k);
+        //this.blit(lvt_4_1_ + 56, lvt_5_1_ + 36 + 12 - lvt_6_2_, 176, 12 - lvt_6_2_, 14, lvt_6_2_ + 1);
 
         }
 
