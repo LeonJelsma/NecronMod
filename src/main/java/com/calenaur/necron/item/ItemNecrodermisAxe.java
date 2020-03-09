@@ -7,4 +7,6 @@ public class ItemNecrodermisAxe extends AxeItem {
         super(ItemTier.NECRODERMIS, 1, -2.8F, new Properties().group(ItemGroup.NECRON));
         setRegistryName("necrodermis_axe");
     }
+
+
 }

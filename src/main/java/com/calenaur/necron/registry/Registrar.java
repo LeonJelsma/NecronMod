@@ -1,19 +1,19 @@
 package com.calenaur.necron.registry;
 
 import com.calenaur.necron.NecronMod;
-import com.calenaur.necron.block.BlockGreyGoo;
-import com.calenaur.necron.block.BlockMoteProcessor;
-import com.calenaur.necron.block.BlockNecrodermisOre;
-import com.calenaur.necron.block.Blocks;
+import com.calenaur.necron.block.*;
 import com.calenaur.necron.block.necron.*;
 import com.calenaur.necron.entity.type.EntityTypes;
+import com.calenaur.necron.gui.ScreenGooMaker;
 import com.calenaur.necron.gui.ScreenMoteProcessor;
+import com.calenaur.necron.inventory.container.ContainerGooMaker;
 import com.calenaur.necron.inventory.container.ContainerMoteProcessor;
 import com.calenaur.necron.inventory.container.ContainerTypes;
 import com.calenaur.necron.item.*;
 import com.calenaur.necron.recipe.RecipeSerializerTypes;
 import com.calenaur.necron.item.necron.*;
 import com.calenaur.necron.renderer.RendererNecronSoldier;
+import com.calenaur.necron.tileentity.TileEntityGooMaker;
 import com.calenaur.necron.tileentity.TileEntityGreyGoo;
 import com.calenaur.necron.tileentity.TileEntityMoteProcessor;
 import com.calenaur.necron.world.WorldGen;
@@ -41,6 +41,7 @@ public class Registrar {
 	public static void clientSetup(final FMLClientSetupEvent event) {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes.NECRON_SOLDIER, RendererNecronSoldier::new);
     	ScreenManager.registerFactory(ContainerTypes.MOTE_PROCESSOR, ScreenMoteProcessor::new);
+    	ScreenManager.registerFactory(ContainerTypes.GOO_MAKER, ScreenGooMaker::new);
 	}
 
 	public static void commonSetup(final FMLCommonSetupEvent event) {
@@ -50,6 +51,7 @@ public class Registrar {
 	@SubscribeEvent
 	public static void onBlockRegistry(final RegistryEvent.Register<Block> event){
 		event.getRegistry().register(new BlockMoteProcessor());
+		event.getRegistry().register(new BlockGooMaker());
 		event.getRegistry().register(new BlockGreyGoo());
 		event.getRegistry().register(new BlockNecronCorner());
 		event.getRegistry().register(new BlockNecronCrescent());
@@ -71,6 +73,7 @@ public class Registrar {
 	@SubscribeEvent
 	public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityMoteProcessor::new, Blocks.MOTE_PROCESSOR).build(null).setRegistryName(TileEntityMoteProcessor.NAME));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityGooMaker::new, Blocks.GOO_MAKER).build(null).setRegistryName(TileEntityGooMaker.NAME));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityGreyGoo::new, Blocks.GREY_GOO).build(null).setRegistryName(TileEntityGreyGoo.NAME));
 	}
 
@@ -87,6 +90,7 @@ public class Registrar {
 		event.getRegistry().register(new ItemBlockNecronStraightSingle());
 		event.getRegistry().register(new ItemJeffPickaxe());
 		event.getRegistry().register(new ItemMoteProcessor());
+		event.getRegistry().register(new ItemGooMaker());
 		event.getRegistry().register(new ItemGreyGoo());
 		event.getRegistry().register(new ItemNecrodermisAxe());
 		event.getRegistry().register(new ItemNecrodermisHoe());
@@ -107,6 +111,7 @@ public class Registrar {
 	@SubscribeEvent
 	public static void onContainerTypeRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
 		event.getRegistry().register(new ContainerType<>(ContainerMoteProcessor::new).setRegistryName(ContainerMoteProcessor.NAME));
+		event.getRegistry().register(new ContainerType<>(ContainerGooMaker::new).setRegistryName(ContainerGooMaker.NAME));
 	}
 
 	@SubscribeEvent

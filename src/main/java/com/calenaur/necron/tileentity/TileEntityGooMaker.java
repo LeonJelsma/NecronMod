@@ -1,8 +1,10 @@
 package com.calenaur.necron.tileentity;
 
 import com.calenaur.necron.block.BlockGreyGoo;
+import com.calenaur.necron.inventory.container.ContainerGooMaker;
 import com.calenaur.necron.inventory.container.ContainerMoteProcessor;
 import com.calenaur.necron.item.ItemGreyGoo;
+import com.calenaur.necron.item.Items;
 import com.calenaur.necron.recipe.ProcessingRecipe;
 import com.calenaur.necron.recipe.RecipeTypes;
 import net.minecraft.block.Block;
@@ -16,10 +18,11 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIntArray;
@@ -31,46 +34,7 @@ import javax.annotation.Nullable;
 public class TileEntityGooMaker extends TileEntity implements IInventory, ITickableTileEntity, INamedContainerProvider {
     public static final String NAME = "goo_maker_tile";
 
-    private NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
-    private int processingChargeLeft;
-    private int processingProgress;
-    private int requiredProcessingProgress;
-    private BlockState blockUsed;
-
-    public final IIntArray processorData = new IIntArray() {
-
-        public int get(int index) {
-            switch(index) {
-                case 0:
-                    return TileEntityGooMaker.this.processingChargeLeft;
-                case 1:
-                    return TileEntityGooMaker.this.processingProgress;
-                case 2:
-                    return TileEntityGooMaker.this.requiredProcessingProgress;
-                default:
-                    return 0;
-            }
-        }
-
-        public void set(int index, int value) {
-            switch(index) {
-                case 0:
-                    TileEntityGooMaker.this.processingChargeLeft = value;
-                    break;
-                case 1:
-                    TileEntityGooMaker.this.processingProgress = value;
-                    break;
-                case 2:
-                    TileEntityGooMaker.this.requiredProcessingProgress = value;
-            }
-
-        }
-
-        public int size() {
-            return 3;
-        }
-    };
-
+    private NonNullList<ItemStack> items = NonNullList.withSize(3, ItemStack.EMPTY);
 
 
     public TileEntityGooMaker() {
@@ -78,103 +42,37 @@ public class TileEntityGooMaker extends TileEntity implements IInventory, ITicka
     }
 
 
+    private boolean isItemBlock(Item item){
+        return item instanceof BlockItem;
+    }
+
+
     @Override
     public void tick() {
-        boolean isProcessingFlag = this.isProcessing();
-        boolean tileCHanged = false;
-
-        if (!this.world.isRemote) {
-            ItemStack[] fuel = {this.items.get(1), this.items.get(2)};
-
-            if (this.isProcessing() || (!fuel[0].isEmpty() && !fuel[1].isEmpty()) &&!this.items.get(0).isEmpty()) {
-
-
-                if (!this.isProcessing() && this.canProcess(irecipe)) {
-
-                    this.requiredProcessingProgress = this.getProcessingTime();
-
-                    if (!this.isProcessing()) {
-                        tileCHanged = true;
-
-                        if (isFuel(fuel[0]) && isFuel(fuel[1])){
-                            processingChargeLeft += 200;
-
-                            if (fuel[0].hasContainerItem()) {
-                                this.items.set(1, fuel[0].getContainerItem());
-                            } else{
-                                fuel[0].shrink(1);
-                            }
-                            if (fuel[1].hasContainerItem()) {
-                                this.items.set(2, fuel[1].getContainerItem());
-                            } else{
-                                fuel[1].shrink(1);
-                            }
-                        }
-
-                        else
-                        if (!fuel[1].isEmpty() && !fuel[1].isEmpty()) {
-
-
-                            if (fuel[1].isEmpty()) {
-                                this.items.set(1, fuel[1].getContainerItem());
-                            }
-                            if (fuel[0].isEmpty()) {
-                                this.items.set(2, fuel[0].getContainerItem());
-                            }
-                        }
-                    }
-                }
-
-                if (this.isProcessing() && this.canProcess(irecipe)) {
-                    --this.processingChargeLeft;
-                    ++this.processingProgress;
-                    if (this.processingProgress >= this.requiredProcessingProgress) {
-                        this.processingProgress = 0;
-                        this.requiredProcessingProgress = this.getProcessingTime();
-                        this.useRecipe(irecipe);
-                        tileCHanged = true;
-                    }
-                } else {
-                    this.processingProgress = 0;
+        if(!world.isRemote){
+            if(canMake(items.get(0).getItem())){
+                if(items.get(1).getItem() == Items.NECRON_MOTE){
+                    make();
                 }
             }
-
-            if (isProcessingFlag != this.isProcessing()) {
-                tileCHanged = true;
-                //this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(BlockMoteProcessor.LIT, Boolean.valueOf(this.isProcessing())), 3);
-            }
-        }
-
-        if (tileCHanged) {
-            this.markDirty();
         }
     }
 
+    private void make(){
+        items.get(0).shrink(1);
+        items.get(1).shrink(1);
 
-
-    protected int getProcessingTime() {
-        return 300;
-    }
-
-    private boolean isItemBlock(Item item){
-        if (item instanceof BlockItem){
-            return true;
+        if(items.get(2).isEmpty()){
+            ItemStack stack = new ItemStack(Items.GREY_GOO);
+            CompoundNBT compoundnbt = new CompoundNBT();
+            compoundnbt.put("target", StringNBT.func_229705_a_(items.get(0).getItem().getRegistryName().toString()));
+            stack.setTag(compoundnbt);
+        }else{
+            items.get(2).grow(1);
         }
     }
 
-    private void setBlockUsed(BlockState state){
-        blockUsed = state;
-    }
-
-    public static boolean isFuel(ItemStack itemStack) {
-        return itemStack.getItem() == Items.MAGMA_CREAM || itemStack.getItem() == Items.BLAZE_POWDER;
-    }
-
-    private boolean isProcessing() {
-        return this.processingChargeLeft > 0;
-    }
-
-    protected boolean canProcess(@Nullable Item itemIn) {
+    private boolean canMake(@Nullable Item itemIn) {
         if (!this.items.get(0).isEmpty() && itemIn != null) {
             if (!isItemBlock(itemIn)) {
                 return false;
@@ -182,40 +80,29 @@ public class TileEntityGooMaker extends TileEntity implements IInventory, ITicka
                 BlockItem itemInput = (BlockItem) itemIn;
                 Block inputBlock = itemInput.getBlock();
 
-                BlockItem itemOutput = (BlockItem) this.items.get(3).getItem();
+                BlockItem itemOutput = (BlockItem) this.items.get(2).getItem();
 
-                ItemGreyGoo gooOutput
+                ItemGreyGoo gooOutput;
                 if (itemOutput instanceof ItemGreyGoo){
                     gooOutput = (ItemGreyGoo) itemOutput;
                 } else{
                     return false;
                 }
-
-                if (this.items.get(3).isEmpty()) {
+                if (this.items.get(2).isEmpty()) {
                     return true;
-                } else if (gooOutput.()) {
+                }
+                StringNBT stringNBT = (StringNBT) this.items.get(2).getStack().getTag().get("target");
+                if (stringNBT.getString() != inputBlock.getBlock().getRegistryType().toString()) {
                     return false;
-                } else if (itemstack1.getCount() + itemstack.getCount() <= this.getInventoryStackLimit() && itemstack1.getCount() + itemstack.getCount() <= itemstack1.getMaxStackSize()) { // Forge fix: make furnace respect stack sizes in furnace recipes
+                } else if (this.items.get(2).getStack().getCount() + 1 <= this.getInventoryStackLimit() && this.items.get(3).getCount() + 1 <= this.items.get(3).getMaxStackSize()) { // Forge fix: make furnace respect stack sizes in furnace recipes
                     return true;
                 } else {
-                    return itemstack1.getCount() + itemstack.getCount() <= itemstack.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
+                    return this.items.get(2).getCount() + 1 <= this.items.get(3).getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
                 }
             }
         } else {
             return false;
         }
-    }
-
-    public int GetRequiredProgress(){
-        return requiredProcessingProgress;
-    }
-
-    public int GetProgress(){
-        return processingProgress;
-    }
-
-    public int GetCurrentCharge(){
-        return processingChargeLeft;
     }
 
     @Override
@@ -226,7 +113,7 @@ public class TileEntityGooMaker extends TileEntity implements IInventory, ITicka
     @Nullable
     @Override
     public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new ContainerMoteProcessor(id, playerInventory, this, this. processorData);
+        return new ContainerGooMaker(id, playerInventory, this );
     }
 
 
@@ -235,18 +122,12 @@ public class TileEntityGooMaker extends TileEntity implements IInventory, ITicka
         super.read(compound);
         this.items = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.items);
-        this.processingChargeLeft = compound.getInt("processingChargeLeft");
-        this.processingProgress = compound.getInt("processingProgress");
-        this.requiredProcessingProgress = compound.getInt("requiredProcessingProgress");
     }
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
-        compound.putInt("processingChargeLeft", this.processingChargeLeft);
-        compound.putInt("processingProgress", this.processingProgress);
-        compound.putInt("requiredProcessingProgress", this.requiredProcessingProgress);
-        ItemStackHelper.saveAllItems(compound, this.items);
         super.write(compound);
+        ItemStackHelper.saveAllItems(compound, this.items);
         return compound;
     }
 

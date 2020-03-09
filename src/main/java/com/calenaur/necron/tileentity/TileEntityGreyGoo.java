@@ -2,6 +2,7 @@ package com.calenaur.necron.tileentity;
 
 import com.calenaur.necron.block.BlockGreyGoo;
 import com.calenaur.necron.block.Blocks;
+import com.calenaur.necron.util.Calculations;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 
@@ -14,21 +15,26 @@ import net.minecraft.world.World;
 
 public class TileEntityGreyGoo extends TileEntity implements ITickableTileEntity {
 
-    private static final int[][] NEIGHBOURS = {
-            {-1, 0, 0},
-            {1, 0, 0},
-
-            {0,-1, 0},
-            {0, 1, 0},
-
-            {0, 0, -1},
-            {0, 0, 1},
-    };
-
     public static final String NAME = "grey_goo_tile";
 
+    private Block targetBlock;
+    private BlockPos startingPos;
+    private boolean removeMe = false;
+    private int maxDistance = 0;
     private int timer = 0;
-    private int spreadRemaining;
+
+
+    public void setStartingPos(BlockPos startingPos) {
+        this.startingPos = startingPos;
+    }
+
+    public void setMaxDistance(int maxDistance){
+        this.maxDistance = maxDistance;
+    }
+
+    public void setTargetBlock(Block target){
+        this.targetBlock = target;
+    }
 
     public TileEntityGreyGoo() {
         super(TileEntities.GREY_GOO);
@@ -36,11 +42,8 @@ public class TileEntityGreyGoo extends TileEntity implements ITickableTileEntity
 
     @Override
     public void tick() {
-        //this.spreadRemaining = getBlockState().get(BlockGreyGoo.spread) - 1;
-
         BlockPos pos = getPos();
         IWorld world = getWorld();
-        BlockState state = getBlockState();
         if (world == null)
             return;
 
@@ -51,16 +54,22 @@ public class TileEntityGreyGoo extends TileEntity implements ITickableTileEntity
         if (tileEntity == null)
             return;
 
-        if (!state.get(BlockGreyGoo.alive)) {
+        if (startingPos == null || targetBlock == null || maxDistance == 0){
+            return;
+        }
+
+        if (removeMe) {
             tileEntity.remove();
             world.setBlockState(pos, net.minecraft.block.Blocks.AIR.getDefaultState(), 3);
             return;
         }
 
-        if (state.get(BlockGreyGoo.spread) <= 0){
-            ((World) world).setBlockState(pos, Blocks.GREY_GOO.getDefaultState().with(BlockGreyGoo.alive, false),3);
+        if (Calculations.GetDistance(getPos(), startingPos) > maxDistance) {
+            tileEntity.remove();
+            world.setBlockState(pos, net.minecraft.block.Blocks.AIR.getDefaultState(), 3);
+            return;
         }
-        if (timer > 100) {
+        if (timer > 4) {
             spread(world, pos);
             timer = 0;
         }
@@ -68,15 +77,35 @@ public class TileEntityGreyGoo extends TileEntity implements ITickableTileEntity
     }
 
     private void spread(IWorld world, BlockPos pos) {
-        for (int[] neighbour : NEIGHBOURS){
+        for (int[] neighbour : Calculations.NEIGHBOURS){
             int x = neighbour[0];
             int y = neighbour[1];
             int z = neighbour[2];
             BlockPos newPos = pos.add(x, y, z);
-            if (world.getBlockState(newPos).isSolid() && !(world.getBlockState(newPos).getBlock() instanceof BlockGreyGoo)) {
-                world.setBlockState(newPos, Blocks.GREY_GOO.getDefaultState().with(BlockGreyGoo.spread, this.spreadRemaining), 1);
+            if (CanSpread(newPos)) {
+                if (world.setBlockState(newPos, Blocks.GREY_GOO.getDefaultState(), 1)) {
+                    TileEntityGreyGoo tileEntity = (TileEntityGreyGoo) world.getTileEntity(newPos);
+                    tileEntity.setStartingPos(this.startingPos);
+                    tileEntity.setMaxDistance(this.maxDistance);
+                    tileEntity.setTargetBlock(this.targetBlock);
+                }
             }
         }
-        world.setBlockState(pos, Blocks.GREY_GOO.getDefaultState().with(BlockGreyGoo.alive, false), 1);
+        removeMe = true;
+    }
+
+    private boolean CanSpread(BlockPos pos){
+        BlockState state = world.getBlockState(pos);
+        if(state.isSolid()){
+            if (state.getBlock() == targetBlock){
+                return true;
+            }
+            if (targetBlock == net.minecraft.block.Blocks.DIRT.getBlock()){
+                if (state.getBlock() == net.minecraft.block.Blocks.GRASS_BLOCK.getBlock() || state.getBlock() == net.minecraft.block.Blocks.COARSE_DIRT.getBlock()){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -4,15 +4,20 @@ package com.calenaur.necron.util;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.state.IProperty;
 import net.minecraft.state.Property;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
-public class StringProperty extends Property<String> {
+public class StringProperty implements IProperty<String> {
 
-    protected StringProperty(String name, String value) {
-        super(name, String.class);
+    private String name;
+
+    public StringProperty(String name, String value) {
+
+        this.name = name;
     }
 
     public static com.calenaur.necron.util.StringProperty create(String name, String value) {
@@ -24,17 +29,30 @@ public class StringProperty extends Property<String> {
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
     public Collection<String> getAllowedValues() {
-        return null;
+        Collection<String> list = new ArrayList<String>();
+        list.add("all");
+        list.add("all");
+        return list;
     }
 
     @Override
-    public Optional<String> parseValue(String value) {
-        return Optional.empty();
+    public Class<String> getValueClass() {
+        return String.class;
     }
 
     @Override
-    public String getName(String value) {
-        return null;
+    public Optional<String> parseValue(String s) {
+        return Optional.of(s);
+    }
+
+    @Override
+    public String getName(String name) {
+        return name;
     }
 }

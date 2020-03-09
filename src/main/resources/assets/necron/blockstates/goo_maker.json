@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=north": { "model": "necron:block/goo_maker" },
+    "facing=south": { "model": "necron:block/goo_maker", "y": 180 },
+    "facing=west": { "model": "necron:block/goo_maker", "y": 270 },
+    "facing=east": { "model": "necron:block/goo_maker", "y": 90 },
+    "facing=up": { "model": "necron:block/goo_maker", "x": -90 },
+    "facing=down": { "model": "necron:block/goo_maker", "x": 90 }
+  }
+}
