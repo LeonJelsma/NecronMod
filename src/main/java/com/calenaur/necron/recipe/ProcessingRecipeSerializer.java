@@ -13,16 +13,6 @@ import net.minecraft.util.registry.Registry;
 
 public class ProcessingRecipeSerializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ProcessingRecipe> {
 
-	//private final int processingTime;
-	//private final ProcessingRecipeSerializer.IFactory<AbstractProcessingRecipe> recipeFactory;
-
-	/*
-	public ProcessingRecipeSerializer(ProcessingRecipeSerializer.IFactory<AbstractProcessingRecipe> factory, int processingTime) {
-		this.processingTime = processingTime;
-		this.recipeFactory = factory;
-	}
-
-	 */
 
 	public ProcessingRecipe read(ResourceLocation recipeId, JsonObject json) {
 		String s = JSONUtils.getString(json, "group", "");

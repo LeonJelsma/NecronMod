@@ -9,4 +9,7 @@ public class TileEntities {
 
     @ObjectHolder("necron:grey_goo_tile")
     public static TileEntityType<TileEntityMoteProcessor> GREY_GOO;
+
+    @ObjectHolder("necron:goo_maker_tile")
+    public static TileEntityType<TileEntityGooMaker> GOO_MAKER;
 }

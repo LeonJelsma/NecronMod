@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 public class BlockGreyGoo extends Block {
 
     public static final IProperty<Boolean> alive = BooleanProperty.create("alive");
-    public static final IProperty<Integer> spread = IntegerProperty.create("charges", 0, 100);
+    public static final IProperty<Integer> spread = IntegerProperty.create("charges", 0, 100) ;
 
     public BlockGreyGoo() {
         super(Properties.create(Material.ROCK)

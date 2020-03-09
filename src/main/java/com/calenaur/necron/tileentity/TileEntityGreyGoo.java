@@ -10,10 +10,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 
 public class TileEntityGreyGoo extends TileEntity implements ITickableTileEntity {
-
-
 
     private static final int[][] NEIGHBOURS = {
             {-1, 0, 0},
@@ -37,7 +36,8 @@ public class TileEntityGreyGoo extends TileEntity implements ITickableTileEntity
 
     @Override
     public void tick() {
-        this.spreadRemaining = getBlockState().get(BlockGreyGoo.spread) - 1;
+        //this.spreadRemaining = getBlockState().get(BlockGreyGoo.spread) - 1;
+
         BlockPos pos = getPos();
         IWorld world = getWorld();
         BlockState state = getBlockState();
@@ -53,8 +53,12 @@ public class TileEntityGreyGoo extends TileEntity implements ITickableTileEntity
 
         if (!state.get(BlockGreyGoo.alive)) {
             tileEntity.remove();
-            world.setBlockState(pos, net.minecraft.block.Blocks.AIR.getDefaultState(), 0);
+            world.setBlockState(pos, net.minecraft.block.Blocks.AIR.getDefaultState(), 3);
             return;
+        }
+
+        if (state.get(BlockGreyGoo.spread) <= 0){
+            ((World) world).setBlockState(pos, Blocks.GREY_GOO.getDefaultState().with(BlockGreyGoo.alive, false),3);
         }
         if (timer > 100) {
             spread(world, pos);
@@ -70,9 +74,9 @@ public class TileEntityGreyGoo extends TileEntity implements ITickableTileEntity
             int z = neighbour[2];
             BlockPos newPos = pos.add(x, y, z);
             if (world.getBlockState(newPos).isSolid() && !(world.getBlockState(newPos).getBlock() instanceof BlockGreyGoo)) {
-                world.setBlockState(newPos, Blocks.GREY_GOO.getDefaultState(), 1);
+                world.setBlockState(newPos, Blocks.GREY_GOO.getDefaultState().with(BlockGreyGoo.spread, this.spreadRemaining), 1);
             }
         }
-        world.setBlockState(pos, Blocks.GREY_GOO.getDefaultState().with(BlockGreyGoo.alive, false).with(BlockGreyGoo.spread, spreadRemaining), 1);
+        world.setBlockState(pos, Blocks.GREY_GOO.getDefaultState().with(BlockGreyGoo.alive, false), 1);
     }
 }
