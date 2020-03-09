@@ -15,7 +15,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ScreenMoteProcessor extends ContainerScreen<ContainerMoteProcessor> {
-
     private ResourceLocation GUI = new ResourceLocation(NecronMod.MOD_ID, "textures/gui/mote_processor_gui.png");
 
     public ScreenMoteProcessor(Container container, PlayerInventory inventory, ITextComponent textComponent) {
@@ -50,10 +49,6 @@ public class ScreenMoteProcessor extends ContainerScreen<ContainerMoteProcessor>
         }
 
     public int getProgressScaled(int width, int progress, int max_value) {
-
-        int i = max_value;
-        int j = progress;
-
-        return i != 0 && j != 0 ? i * width / j : 0;
+        return max_value != 0 && progress != 0 ? max_value * width / progress : 0;
     }
 }

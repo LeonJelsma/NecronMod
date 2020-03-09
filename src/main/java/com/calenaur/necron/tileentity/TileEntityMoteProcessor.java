@@ -24,14 +24,8 @@ import javax.annotation.Nullable;
 
 public class TileEntityMoteProcessor extends TileEntity implements IInventory, ITickableTileEntity, INamedContainerProvider {
     public static final String NAME = "mote_processor_tile";
-
-    private NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
-    private int processingChargeLeft;
-    private int processingProgress;
-    private int requiredProcessingProgress;
-
+    private static final int DEFAULT_PROCESSING_TIME = 300;
     public final IIntArray processorData = new IIntArray() {
-
         public int get(int index) {
             switch(index) {
                 case 0:
@@ -64,119 +58,101 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
         }
     };
 
-
-    private IRecipeType recipeType = RecipeTypes.MOTE_PROCESSING;
-    private IRecipe recipeUsed;
-
-
+    private IRecipeType<ProcessingRecipe> recipeType = RecipeTypes.MOTE_PROCESSING;
+    private NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
+    private int processingChargeLeft;
+    private int processingProgress;
+    private int requiredProcessingProgress;
+    
     public TileEntityMoteProcessor() {
         super(TileEntities.MOTE_PROCESSOR);
     }
-
-
+    
     @Override
     public void tick() {
         boolean isProcessingFlag = this.isProcessing();
         boolean tileCHanged = false;
+        
+        if (this.world == null)
+            return;
+        
+        if (this.world.isRemote)
+            return;
 
-        if (!this.world.isRemote) {
-            ItemStack[] fuel = {this.items.get(1), this.items.get(2)};
+        ItemStack[] fuel = {this.items.get(ContainerMoteProcessor.SLOT_FUEL_LEFT), this.items.get(ContainerMoteProcessor.SLOT_FUEL_RIGHT)};
+        if (this.isProcessing() || (!fuel[0].isEmpty() && !fuel[1].isEmpty() && !this.items.get(ContainerMoteProcessor.SLOT_INPUT).isEmpty())) {
+            IRecipe<?> recipe = this.world.getRecipeManager().getRecipe(this.recipeType, this, this.world).orElse(null);
+            if (!this.isProcessing() && this.canProcess(recipe)) {
+                this.requiredProcessingProgress = this.getProcessingTime();
+                if (!this.isProcessing()) {
+                    tileCHanged = true;
+                    if (isFuel(fuel[0]) && isFuel(fuel[1])){
+                        processingChargeLeft += 200;
+                        if (fuel[0].hasContainerItem()) {
+                            this.items.set(ContainerMoteProcessor.SLOT_FUEL_LEFT, fuel[0].getContainerItem());
+                        } else
+                            fuel[0].shrink(1);
 
-            if (this.isProcessing() || (!fuel[0].isEmpty() && !fuel[1].isEmpty()) &&!this.items.get(0).isEmpty()) {
+                        if (fuel[1].hasContainerItem()) {
+                            this.items.set(ContainerMoteProcessor.SLOT_FUEL_RIGHT, fuel[1].getContainerItem());
+                        } else
+                            fuel[1].shrink(1);
 
-                IRecipe<?> irecipe = this.world.getRecipeManager().getRecipe((IRecipeType<ProcessingRecipe>)this.recipeType, this, this.world).orElse(null);
-
-                if (!this.isProcessing() && this.canProcess(irecipe)) {
-
-                    this.requiredProcessingProgress = this.getProcessingTime();
-
-                    if (!this.isProcessing()) {
-                        tileCHanged = true;
-
-                        if (isFuel(fuel[0]) && isFuel(fuel[1])){
-                            processingChargeLeft += 200;
-
-                            if (fuel[0].hasContainerItem()) {
-                                this.items.set(1, fuel[0].getContainerItem());
-                            } else{
-                                fuel[0].shrink(1);
-                            }
-                            if (fuel[1].hasContainerItem()) {
-                                this.items.set(2, fuel[1].getContainerItem());
-                            } else{
-                                fuel[1].shrink(1);
-                            }
-                        }
-
-                        else
-                        if (!fuel[1].isEmpty() && !fuel[1].isEmpty()) {
-
-
-                            if (fuel[1].isEmpty()) {
-                                this.items.set(1, fuel[1].getContainerItem());
-                            }
-                            if (fuel[0].isEmpty()) {
-                                this.items.set(2, fuel[0].getContainerItem());
-                            }
-                        }
+                    } else if (!fuel[1].isEmpty() && !fuel[1].isEmpty()) {
+                        if (fuel[1].isEmpty())
+                            this.items.set(ContainerMoteProcessor.SLOT_FUEL_LEFT, fuel[1].getContainerItem());
+                        if (fuel[0].isEmpty())
+                            this.items.set(ContainerMoteProcessor.SLOT_FUEL_RIGHT, fuel[0].getContainerItem());
                     }
                 }
+            }
 
-                if (this.isProcessing() && this.canProcess(irecipe)) {
-                    --this.processingChargeLeft;
-                    ++this.processingProgress;
-                    if (this.processingProgress >= this.requiredProcessingProgress) {
-                        this.processingProgress = 0;
-                        this.requiredProcessingProgress = this.getProcessingTime();
-                        this.useRecipe(irecipe);
-                        tileCHanged = true;
-                    }
-                } else {
+            if (this.isProcessing() && this.canProcess(recipe)) {
+                --this.processingChargeLeft;
+                ++this.processingProgress;
+                if (this.processingProgress >= this.requiredProcessingProgress) {
                     this.processingProgress = 0;
+                    this.requiredProcessingProgress = this.getProcessingTime();
+                    this.useRecipe(recipe);
+                    tileCHanged = true;
                 }
-            }
-
-            if (isProcessingFlag != this.isProcessing()) {
-                tileCHanged = true;
-                //this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(BlockMoteProcessor.LIT, Boolean.valueOf(this.isProcessing())), 3);
+            } else {
+                --this.processingChargeLeft;
+                this.processingProgress = 0;
             }
         }
 
-        if (tileCHanged) {
+        if (isProcessingFlag != this.isProcessing())
+            tileCHanged = true;
+
+        if (tileCHanged)
             this.markDirty();
-        }
     }
 
-
-
     protected int getProcessingTime() {
-        return this.world.getRecipeManager().getRecipe((IRecipeType<ProcessingRecipe>)this.recipeType, this, this.world).map(ProcessingRecipe::getProcessingTime).orElse(300);
+        if (this.world == null)
+            return DEFAULT_PROCESSING_TIME;
+        return this.world.getRecipeManager().getRecipe(this.recipeType, this, this.world).map(ProcessingRecipe::getProcessingTime).orElse(DEFAULT_PROCESSING_TIME);
     }
 
     private void useRecipe(@Nullable IRecipe<?> recipe) {
+        if (recipe == null)
+            return;
 
-        int input_slot = 0;
-        int output_slot = 3;
+        if (!this.canProcess(recipe))
+            return;
 
-        if (recipe != null && this.canProcess(recipe)) {
-            ItemStack inputItem = this.items.get(input_slot);
-            ItemStack recipeOutput = recipe.getRecipeOutput();
-            ItemStack outputItem = this.items.get(output_slot);
-            if (outputItem.isEmpty()) {
-                this.items.set(output_slot , recipeOutput.copy());
-            } else if (outputItem.getItem() == recipeOutput.getItem()) {
-                outputItem.grow(recipeOutput.getCount());
-            }
 
-            if (!this.world.isRemote) {
-                this.setRecipeUsed(recipe);
-            }
-            inputItem.shrink(1);
-        }
-    }
+        ItemStack inputItem = this.items.get(ContainerMoteProcessor.SLOT_INPUT);
+        ItemStack outputItem = this.items.get(ContainerMoteProcessor.SLOT_OUTPUT);
+        ItemStack recipeOutput = recipe.getRecipeOutput();
 
-    private void setRecipeUsed(IRecipe recipe){
-        recipeUsed = recipe;
+        if (outputItem.isEmpty()) {
+            this.items.set(ContainerMoteProcessor.SLOT_OUTPUT , recipeOutput.copy());
+        } else if (outputItem.getItem() == recipeOutput.getItem())
+            outputItem.grow(recipeOutput.getCount());
+
+        inputItem.shrink(1);
     }
 
     public static boolean isFuel(ItemStack itemStack) {
@@ -188,39 +164,28 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
     }
 
     protected boolean canProcess(@Nullable IRecipe<?> recipeIn) {
-        if (!this.items.get(0).isEmpty() && recipeIn != null) {
-            ItemStack itemstack = recipeIn.getRecipeOutput();
-            if (itemstack.isEmpty()) {
-                return false;
-            } else {
-                ItemStack itemstack1 = this.items.get(3);
-                if (itemstack1.isEmpty()) {
-                    return true;
-                } else if (!itemstack1.isItemEqual(itemstack)) {
-                    return false;
-                } else if (itemstack1.getCount() + itemstack.getCount() <= this.getInventoryStackLimit() && itemstack1.getCount() + itemstack.getCount() <= itemstack1.getMaxStackSize()) { // Forge fix: make furnace respect stack sizes in furnace recipes
-                    return true;
-                } else {
-                    return itemstack1.getCount() + itemstack.getCount() <= itemstack.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
-                }
-            }
-        } else {
+        if (recipeIn == null)
             return false;
-        }
-    }
 
-    public int GetRequiredProgress(){
-        return requiredProcessingProgress;
-    }
+        if (this.items.get(ContainerMoteProcessor.SLOT_INPUT).isEmpty())
+            return false;
 
-    public int GetProgress(){
-        return processingProgress;
-    }
+        ItemStack resultStack = recipeIn.getRecipeOutput();
+        if (resultStack.isEmpty())
+            return false;
 
-    public int GetCurrentCharge(){
-        return processingChargeLeft;
-    }
+        ItemStack outputStack = this.items.get(ContainerMoteProcessor.SLOT_OUTPUT);
+        if (outputStack.isEmpty())
+            return true;
 
+        if (!outputStack.isItemEqual(resultStack))
+            return false;
+
+        if (outputStack.getCount() + resultStack.getCount() <= this.getInventoryStackLimit() && outputStack.getCount() + resultStack.getCount() <= outputStack.getMaxStackSize()) // Forge fix: make furnace respect stack sizes in furnace recipes
+            return true;
+
+        return outputStack.getCount() + resultStack.getCount() <= resultStack.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
+    }
     @Override
     public ITextComponent getDisplayName() {
         return new StringTextComponent(getType().getRegistryName().getPath());
@@ -231,7 +196,6 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
     public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
         return new ContainerMoteProcessor(id, playerInventory, this, this. processorData);
     }
-
 
     @Override
     public void read(CompoundNBT compound) {
@@ -263,6 +227,7 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
         for(ItemStack itemstack : this.items)
             if (!itemstack.isEmpty())
                 return false;
+
         return true;
     }
 
@@ -284,15 +249,12 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
         ItemStack itemstack = this.items.get(index);
-        boolean flag = !stack.isEmpty() && stack.isItemEqual(itemstack) && ItemStack.areItemStackTagsEqual(stack, itemstack);
         this.items.set(index, stack);
-        if (stack.getCount() > this.getInventoryStackLimit()) {
+        if (stack.getCount() > this.getInventoryStackLimit())
             stack.setCount(this.getInventoryStackLimit());
-        }
 
-        if (index == 0 && !flag) {
+        if (index == 0 && !(!stack.isEmpty() && stack.isItemEqual(itemstack) && ItemStack.areItemStackTagsEqual(stack, itemstack)))
             this.markDirty();
-        }
     }
 
     @Override
@@ -310,6 +272,5 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
     public void clear() {
         this.items.clear();
     }
-
 }
 

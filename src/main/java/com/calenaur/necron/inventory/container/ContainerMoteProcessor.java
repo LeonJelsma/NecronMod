@@ -17,30 +17,32 @@ import net.minecraft.world.World;
 
 public class ContainerMoteProcessor extends Container {
 	public static final String NAME = "mote_processor";
+	public static final int SLOT_INPUT = 0;
+	public static final int SLOT_FUEL_LEFT = 1;
+	public static final int SLOT_FUEL_RIGHT = 2;
+	public static final int SLOT_OUTPUT = 3;
+	private static final int MINECRAFT_INVENTORY_SIZE = 27;
+	private static final int MINECRAFT_HOTBAR_SIZE = 9;
 
-	private IInventory processorInventory;
-	private World world;
-	private IRecipeType<ProcessingRecipe> recipeType;
 	public IIntArray processorData;
+	private World world;
+	private IInventory processorInventory;
+	private IRecipeType<ProcessingRecipe> recipeType;
 
 	public ContainerMoteProcessor(int id, PlayerInventory playerInventory) {
-		this(ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory, new Inventory(4), new IntArray(3));
+		this(id, playerInventory, new Inventory(4), new IntArray(3));
 	}
 
-	public ContainerMoteProcessor(int id, PlayerInventory playerInventory, IInventory processorInventory, IIntArray processorData) {
-		this(ContainerTypes.MOTE_PROCESSOR, RecipeTypes.MOTE_PROCESSING, id, playerInventory, processorInventory, processorData);
-	}
-
-	public ContainerMoteProcessor(ContainerType<ContainerMoteProcessor> containerTypeIn, IRecipeType<ProcessingRecipe> recipeTypeIn, int windowId, PlayerInventory playerInventoryIn, IInventory processorInventory, IIntArray processorData) {
-		super(containerTypeIn, windowId);
+	public ContainerMoteProcessor(int windowId, PlayerInventory playerInventoryIn, IInventory processorInventory, IIntArray processorData) {
+		super(ContainerTypes.MOTE_PROCESSOR, windowId);
+		this.recipeType = RecipeTypes.MOTE_PROCESSING;
 		this.processorData = processorData;
 		this.processorInventory = processorInventory;
 		this.world = playerInventoryIn.player.world;
-		this.recipeType = recipeTypeIn;
-		addSlot(new Slot(processorInventory, 0, 45, 17));
-    	addSlot(new SlotMoteProcessorFuel(processorInventory, 1, 34, 53, Items.MAGMA_CREAM));
-		addSlot(new SlotMoteProcessorFuel(processorInventory, 2, 56, 53, Items.BLAZE_POWDER));
-		addSlot(new SlotMoteProcessorResult(playerInventoryIn.player, processorInventory, 3, 116, 35));
+		addSlot(new Slot(processorInventory, SLOT_INPUT, 45, 17));
+    	addSlot(new SlotMoteProcessorFuel(processorInventory, SLOT_FUEL_LEFT, 34, 53, Items.MAGMA_CREAM));
+		addSlot(new SlotMoteProcessorFuel(processorInventory, SLOT_FUEL_RIGHT, 56, 53, Items.BLAZE_POWDER));
+		addSlot(new SlotMoteProcessorResult(processorInventory, SLOT_OUTPUT, 116, 35));
 		layoutPlayerInventorySlots(playerInventoryIn);
 
 		this.trackIntArray(processorData);
@@ -72,23 +74,23 @@ public class ContainerMoteProcessor extends Container {
 
 		ItemStack originItemStack = slot.getStack();
 		itemStack = originItemStack.copy();
-		if (slotIndex == 3) { //Is the item in the output slot?
-			if (!mergeItemStack(originItemStack, 4, 40, true)) //Place item in the players inventory or toolbar
+		if (slotIndex == SLOT_OUTPUT) { //Is the item in the output slot?
+			if (!mergeItemStack(originItemStack, SLOT_OUTPUT + 1, this.inventorySlots.size(), true)) //Place item in the players inventory or hotbar
 				return ItemStack.EMPTY;
 			slot.onSlotChange(originItemStack, itemStack);
-		} else if (slotIndex > 3) {
+		} else if (slotIndex > SLOT_OUTPUT) {
 			if (itemHasRecipe(originItemStack)) {//Is the item part of a recipe?
-				if (!mergeItemStack(originItemStack, 0, 1, false))//Place in the ingredient slot
+				if (!mergeItemStack(originItemStack, SLOT_INPUT, SLOT_INPUT + 1, false))//Place in the ingredient slot
 					return ItemStack.EMPTY;
 			} else if (TileEntityMoteProcessor.isFuel(originItemStack)) {//Is the item considered fuel for this mote processor?
-				if (!mergeItemStack(originItemStack, 1, 3, false))//Place in one of the 2 fuel slots
+				if (!mergeItemStack(originItemStack, SLOT_FUEL_LEFT, SLOT_FUEL_RIGHT + 1, false))//Place in one of the 2 fuel slots
 					return ItemStack.EMPTY;
-			} else if (slotIndex < 31) { //Is the item in the players inventory?
-				if (!mergeItemStack(originItemStack, 30, 40, false)) //Place in toolbar
+			} else if (slotIndex < processorInventory.getSizeInventory() + MINECRAFT_INVENTORY_SIZE) { //Is the item in the players inventory?
+				if (!mergeItemStack(originItemStack, processorInventory.getSizeInventory() + MINECRAFT_INVENTORY_SIZE, this.inventorySlots.size(), false)) //Place in hotbar
 					return ItemStack.EMPTY;
-			} else if (slotIndex < 40 && !mergeItemStack(originItemStack, 4, 31, false)) //Is the item in the players? then place in inventory
+			} else if (slotIndex < this.inventorySlots.size() && !mergeItemStack(originItemStack, SLOT_OUTPUT + 1, processorInventory.getSizeInventory() + MINECRAFT_INVENTORY_SIZE, false)) //Is the item in the players? then place in inventory
 				return ItemStack.EMPTY;
-		} else if (!mergeItemStack(originItemStack, 4, 40, false))
+		} else if (!mergeItemStack(originItemStack, SLOT_OUTPUT + 1, this.inventorySlots.size(), false))
 			return ItemStack.EMPTY;
 
 		if (originItemStack.isEmpty()) { //Any items left?
