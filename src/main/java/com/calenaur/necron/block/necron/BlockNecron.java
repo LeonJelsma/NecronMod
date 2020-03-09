@@ -13,7 +13,7 @@ import net.minecraft.util.Direction;
 public abstract class BlockNecron extends Block {
 	public static final DirectionProperty PROPERTY_FACING = BlockStateProperties.FACING;
 	public BlockNecron(String registryName) {
-		this(registryName, 0);
+		this(registryName, 8);
 	}
 
 	public BlockNecron(String registryName, int lightValue) {
@@ -21,7 +21,7 @@ public abstract class BlockNecron extends Block {
 				.hardnessAndResistance(-1.0F, 3600000.0F)
 				.noDrops()
 				.sound(SoundType.METAL)
-				.lightValue(8)
+				.lightValue(lightValue)
 		);
 		setDefaultState(stateContainer.getBaseState().with(PROPERTY_FACING, Direction.NORTH));
 		setRegistryName(registryName);
