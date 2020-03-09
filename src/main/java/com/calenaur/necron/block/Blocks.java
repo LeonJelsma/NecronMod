@@ -26,4 +26,6 @@ public class Blocks {
     public static BlockNecrodermisOre NECRON_ORE;
     @ObjectHolder("necron:mote_processor")
     public static BlockMoteProcessor MOTE_PROCESSOR;
+    @ObjectHolder("necron:grey_goo")
+    public static BlockGreyGoo GREY_GOO;
 }

@@ -1,6 +1,7 @@
 package com.calenaur.necron.registry;
 
 import com.calenaur.necron.NecronMod;
+import com.calenaur.necron.block.BlockGreyGoo;
 import com.calenaur.necron.block.BlockMoteProcessor;
 import com.calenaur.necron.block.BlockNecrodermisOre;
 import com.calenaur.necron.block.Blocks;
@@ -13,6 +14,7 @@ import com.calenaur.necron.item.*;
 import com.calenaur.necron.recipe.RecipeSerializerTypes;
 import com.calenaur.necron.item.necron.*;
 import com.calenaur.necron.renderer.RendererNecronSoldier;
+import com.calenaur.necron.tileentity.TileEntityGreyGoo;
 import com.calenaur.necron.tileentity.TileEntityMoteProcessor;
 import com.calenaur.necron.world.WorldGen;
 import com.calenaur.necron.world.gen.feature.structure.ruin.StructureNecronRuin;
@@ -48,6 +50,7 @@ public class Registrar {
 	@SubscribeEvent
 	public static void onBlockRegistry(final RegistryEvent.Register<Block> event){
 		event.getRegistry().register(new BlockMoteProcessor());
+		event.getRegistry().register(new BlockGreyGoo());
 		event.getRegistry().register(new BlockNecronCorner());
 		event.getRegistry().register(new BlockNecronCrescent());
 		event.getRegistry().register(new BlockNecronIntersection());
@@ -68,6 +71,7 @@ public class Registrar {
 	@SubscribeEvent
 	public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityMoteProcessor::new, Blocks.MOTE_PROCESSOR).build(null).setRegistryName(TileEntityMoteProcessor.NAME));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityGreyGoo::new, Blocks.GREY_GOO).build(null).setRegistryName(TileEntityGreyGoo.NAME));
 	}
 
 	@SubscribeEvent
@@ -83,6 +87,7 @@ public class Registrar {
 		event.getRegistry().register(new ItemBlockNecronStraightSingle());
 		event.getRegistry().register(new ItemJeffPickaxe());
 		event.getRegistry().register(new ItemMoteProcessor());
+		event.getRegistry().register(new ItemGreyGoo());
 		event.getRegistry().register(new ItemNecrodermisAxe());
 		event.getRegistry().register(new ItemNecrodermisHoe());
 		event.getRegistry().register(new ItemNecrodermisPickaxe());
