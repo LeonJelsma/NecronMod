@@ -289,7 +289,6 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
         if (stack.getCount() > this.getInventoryStackLimit()) {
             stack.setCount(this.getInventoryStackLimit());
         }
-
         if (index == 0 && !flag) {
             this.markDirty();
         }

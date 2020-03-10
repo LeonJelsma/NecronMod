@@ -9,6 +9,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,6 +37,7 @@ public class ItemGreyGoo extends BlockItem {
     public static String TARGET = "goo_target";
     public static String RADIUS = "goo_radius";
     public static String SPEED = "goo_speed";
+    public static String ISFLUID= "goo_isfluid";
 
     public ItemGreyGoo() {
         super(Blocks.GREY_GOO, new Properties().group(ItemGroup.NECRON).maxStackSize(1));
@@ -65,7 +68,7 @@ public class ItemGreyGoo extends BlockItem {
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
         if(isTargetSet(stack)) {
-                list.add(new StringTextComponent("Target: " + Item.getItemById(Integer.parseInt(stack.getTag().get(TARGET).getString())).getTranslationKey()));
+                list.add(new StringTextComponent("Target: " + Block.getStateById(Integer.parseInt(stack.getTag().get(TARGET).getString())).getBlock()));
             } else {
                 list.add(new StringTextComponent("Target: Unconfigured"));
             }
@@ -83,19 +86,20 @@ public class ItemGreyGoo extends BlockItem {
         return false;
     }
 
-    public static ItemStack configure(ItemStack itemStack, Block target, int radius, int speed){
+    public static ItemStack configure(ItemStack itemStack, BlockState target, int radius, int speed){
         CompoundNBT configuration;
         if (itemStack.getTag() != null){
             configuration = itemStack.getTag();
         } else {
             configuration = new CompoundNBT();
         }
-        configuration.put(TARGET, IntNBT.func_229692_a_(Block.getStateId(target.getDefaultState())));
+        configuration.put(TARGET, IntNBT.func_229692_a_(Block.getStateId(target)));
         configuration.put(RADIUS, IntNBT.func_229692_a_(radius));
         configuration.put(SPEED, IntNBT.func_229692_a_(speed));
         itemStack.setTag(configuration);
         return  itemStack;
     }
+
 
     private Block getTarget(ItemStack stack){
         return Block.getStateById(Integer.parseInt(stack.getTag().get(TARGET).getString())).getBlock();

@@ -13,11 +13,14 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -44,47 +47,45 @@ public class TileEntityGooMaker extends TileEntity implements IInventory, ITicka
         super(TileEntities.GOO_MAKER);
     }
 
-
-    private boolean isItemBlock(Item item){
-        return item instanceof BlockItem;
-    }
-
-
     @Override
     public void tick() {
         if(!world.isRemote){
             if(canMake()){
                 make();
-                int test = Integer.parseInt(this.items.get(3).getTag().get(ItemGreyGoo.TARGET).getString());
-
-                ItemStack product = new ItemStack(Items.GREY_GOO);
-                //product.setTag();
-                //this.items.set(3, new ItemStack())
             }
         }
     }
 
     public void make(){
-        BlockItem target = (BlockItem) items.get(1).getItem();
 
-        items.get(0).shrink(1);
-        items.get(1).shrink(1);
         if(items.get(3).isEmpty()){
             ItemStack stack = new ItemStack(Items.GREY_GOO);
-            ItemStack newStack = ItemGreyGoo.configure(stack, target.getBlock(), 10, 10 );
+            ItemStack newStack;
+            if (items.get(1).getItem() instanceof  BlockItem) {
+                BlockItem targetItem = (BlockItem) items.get(1).getItem();
+                newStack = ItemGreyGoo.configure(stack, targetItem.getBlock().getDefaultState(), items.get(2).getCount()*2, 10 );
+            } else  {
+                BucketItem targetItem = (BucketItem) items.get(1).getItem();
+                newStack = ItemGreyGoo.configure(stack, targetItem.getFluid().getDefaultState().getBlockState(), items.get(2).getCount()*2, 10 );
+            }
+            items.get(0).shrink(1);
+            items.get(1).shrink(1);
+            items.set(2, ItemStack.EMPTY);
             items.set(3, newStack);
         }
     }
 
     private boolean canMake() {
         if (!this.items.get(0).isEmpty() && this.items.get(0).getItem() != null) {
-            if (!isItemBlock(this.items.get(0).getItem())) {
-                return false;
-            }
-
-            boolean test = this.items.get(1).getItem() instanceof BlockItem;
             if (!(this.items.get(1).getItem() instanceof BlockItem)){
-                return false;
+                if (this.items.get(1).getItem() instanceof BucketItem) {
+                    BucketItem bucket = (BucketItem) this.items.get(1).getItem();
+                    if (bucket.getFluid() == Fluids.EMPTY){
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
             }
             if(this.items.get(0).getItem() == Items.GREY_GOO) {
                 if (!ItemGreyGoo.isTargetSet(this.items.get(0))) {

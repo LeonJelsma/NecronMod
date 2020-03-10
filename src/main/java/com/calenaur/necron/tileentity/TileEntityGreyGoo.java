@@ -5,10 +5,16 @@ import com.calenaur.necron.util.Calculations;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 
+import net.minecraft.block.FlowingFluidBlock;
+import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
+import net.minecraftforge.fml.network.FMLStatusPing;
 
 public class TileEntityGreyGoo extends TileEntity implements ITickableTileEntity {
 
@@ -75,7 +81,7 @@ public class TileEntityGreyGoo extends TileEntity implements ITickableTileEntity
                     return;
                 }
 
-                if (Calculations.GetDistance(getPos(), startingPos) > maxDistance) {
+                 if (Calculations.GetDistance(getPos(), startingPos) > maxDistance) {
                     tileEntity.remove();
                     world.setBlockState(pos, net.minecraft.block.Blocks.AIR.getDefaultState(), 3);
                     return;
@@ -92,7 +98,7 @@ public class TileEntityGreyGoo extends TileEntity implements ITickableTileEntity
             int y = neighbour[1];
             int z = neighbour[2];
             BlockPos newPos = pos.add(x, y, z);
-            if (CanSpread(newPos)) {
+            if (canSpread(newPos)) {
                 if (world.setBlockState(newPos, Blocks.GREY_GOO.getDefaultState(), 1)) {
                     TileEntityGreyGoo tileEntity = (TileEntityGreyGoo) world.getTileEntity(newPos);
                     tileEntity.setStartingPos(this.startingPos);
@@ -105,9 +111,14 @@ public class TileEntityGreyGoo extends TileEntity implements ITickableTileEntity
         removeMe = true;
     }
 
-    private boolean CanSpread(BlockPos pos){
+    private boolean canSpread(BlockPos pos){
         BlockState state = world.getBlockState(pos);
-        if(state.isSolid()){
+            if (state.getBlock() instanceof FlowingFluidBlock){
+                FlowingFluidBlock block = (FlowingFluidBlock) state.getBlock();
+                if (block.getFluidState(state).getLevel() == 0){
+                    return true;
+                }
+            }
             if (state.getBlock() == targetBlock){
                 return true;
             }
@@ -121,7 +132,33 @@ public class TileEntityGreyGoo extends TileEntity implements ITickableTileEntity
                     return true;
                 }
             }
-        }
         return false;
+    }
+
+    @Override
+    public void read(CompoundNBT compound) {
+        super.read(compound);
+        this.startingPos = new BlockPos(compound.getInt("startx"), compound.getInt("starty"), compound.getInt("startz"));
+        this.targetBlock = Block.getStateById(compound.getInt("target")).getBlock();
+        this.configured = compound.getBoolean("configured");
+        this.removeMe = compound.getBoolean("removeme");
+        this.maxDistance = compound.getInt("maxdistance");
+        this.speed = compound.getInt("speed");
+        this.timer = compound.getInt("timer");
+    }
+
+    @Override
+    public CompoundNBT write(CompoundNBT compound) {
+        compound.putInt("startx", startingPos.getX());
+        compound.putInt("starty", startingPos.getY());
+        compound.putInt("startz", startingPos.getZ());
+        compound.putInt("target", Block.getStateId(targetBlock.getDefaultState()));
+        compound.putBoolean("configured", this.configured);
+        compound.putBoolean("removeme", this.removeMe);
+        compound.putInt("maxdistance", this.maxDistance);
+        compound.putInt("speed", this.speed);
+        compound.putInt("timer", this.timer);
+        super.write(compound);
+        return compound;
     }
 }

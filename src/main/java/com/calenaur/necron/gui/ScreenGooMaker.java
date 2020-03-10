@@ -6,6 +6,8 @@ import com.calenaur.necron.inventory.container.ContainerMoteProcessor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.util.ResourceLocation;
@@ -39,7 +41,11 @@ public class ScreenGooMaker extends ContainerScreen<ContainerGooMaker> {
         int j = this.guiTop;
         this.blit(i, j, 0, 0, this.xSize, this.ySize);
 
+        this.buttons.add(new Button(10,10,10,10, "TEST", x -> test()));
+    }
 
-        }
-
+    public void test(){
+        System.out.println("TESTIKEL");
+        return;
+    }
 }
