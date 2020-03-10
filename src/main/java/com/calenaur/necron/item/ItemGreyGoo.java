@@ -37,7 +37,6 @@ public class ItemGreyGoo extends BlockItem {
     public static String TARGET = "goo_target";
     public static String RADIUS = "goo_radius";
     public static String SPEED = "goo_speed";
-    public static String ISFLUID= "goo_isfluid";
 
     public ItemGreyGoo() {
         super(Blocks.GREY_GOO, new Properties().group(ItemGroup.NECRON).maxStackSize(1));
@@ -69,6 +68,7 @@ public class ItemGreyGoo extends BlockItem {
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
         if(isTargetSet(stack)) {
                 list.add(new StringTextComponent("Target: " + Block.getStateById(Integer.parseInt(stack.getTag().get(TARGET).getString())).getBlock()));
+                list.add(new StringTextComponent("Radius: " + Integer.parseInt(stack.getTag().get(RADIUS).getString())));
             } else {
                 list.add(new StringTextComponent("Target: Unconfigured"));
             }

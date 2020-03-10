@@ -1,7 +1,6 @@
 package com.calenaur.necron.inventory.container;
 
 import com.calenaur.necron.recipe.ProcessingRecipe;
-import com.calenaur.necron.recipe.RecipeTypes;
 import com.calenaur.necron.tileentity.TileEntityGooMaker;
 import com.calenaur.necron.tileentity.TileEntityMoteProcessor;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,16 +11,13 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.IntArray;
 import net.minecraft.world.World;
 
 public class ContainerGooMaker extends Container {
 	public static final String NAME = "goo_maker";
 
-	private IInventory processorInventory;
+	private IInventory gooMakerInventory;
 	private World world;
 	private IRecipeType<ProcessingRecipe> recipeType;
 	private TileEntityGooMaker tileEntityGooMaker;
@@ -36,13 +32,13 @@ public class ContainerGooMaker extends Container {
 
 	public ContainerGooMaker(ContainerType<ContainerGooMaker> containerTypeIn, int windowId, PlayerInventory playerInventoryIn, IInventory processorInventory, TileEntityGooMaker tileEntityGooMaker) {
 		super(containerTypeIn, windowId);
-		this.processorInventory = processorInventory;
+		this.gooMakerInventory = processorInventory;
 		this.world = playerInventoryIn.player.world;
 		this.tileEntityGooMaker = tileEntityGooMaker;
 		addSlot(new Slot(processorInventory, 0, 31, 22));
 		addSlot(new Slot(processorInventory, 1, 68, 22));
 		addSlot(new Slot(processorInventory, 2, 31, 48));
-		addSlot(new SlotGooMakerResult(processorInventory, 3, 112, 20, this));
+		addSlot(new SlotGooMakerResult(processorInventory, 3, 114, 22, this));
 
 		layoutPlayerInventorySlots(playerInventoryIn);
 	}
@@ -61,7 +57,7 @@ public class ContainerGooMaker extends Container {
 
     @Override
 	public boolean canInteractWith(PlayerEntity playerIn) {
-		return this.processorInventory.isUsableByPlayer(playerIn);
+		return this.gooMakerInventory.isUsableByPlayer(playerIn);
 	}
 
 	@Override
@@ -108,7 +104,8 @@ public class ContainerGooMaker extends Container {
 		return this.world.getRecipeManager().getRecipe(this.recipeType, new Inventory(itemStack), this.world).isPresent();
 	}
 
-	public void Make(){
-
+	public void make(){
+		tileEntityGooMaker.take();
+		detectAndSendChanges();
 	}
 }

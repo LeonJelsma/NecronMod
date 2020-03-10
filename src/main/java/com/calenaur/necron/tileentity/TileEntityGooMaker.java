@@ -41,7 +41,7 @@ public class TileEntityGooMaker extends TileEntity implements IInventory, ITicka
     public static final String NAME = "goo_maker_tile";
 
     private NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
-
+    private boolean preview = false;
 
     public TileEntityGooMaker() {
         super(TileEntities.GOO_MAKER);
@@ -52,27 +52,33 @@ public class TileEntityGooMaker extends TileEntity implements IInventory, ITicka
         if(!world.isRemote){
             if(canMake()){
                 make();
+            } else if (preview){
+                items.set(3, ItemStack.EMPTY);
             }
         }
     }
 
     public void make(){
-
-        if(items.get(3).isEmpty()){
-            ItemStack stack = new ItemStack(Items.GREY_GOO);
-            ItemStack newStack;
-            if (items.get(1).getItem() instanceof  BlockItem) {
-                BlockItem targetItem = (BlockItem) items.get(1).getItem();
-                newStack = ItemGreyGoo.configure(stack, targetItem.getBlock().getDefaultState(), items.get(2).getCount()*2, 10 );
-            } else  {
-                BucketItem targetItem = (BucketItem) items.get(1).getItem();
-                newStack = ItemGreyGoo.configure(stack, targetItem.getFluid().getDefaultState().getBlockState(), items.get(2).getCount()*2, 10 );
-            }
-            items.get(0).shrink(1);
-            items.get(1).shrink(1);
-            items.set(2, ItemStack.EMPTY);
-            items.set(3, newStack);
+        if(items.get(3).isEmpty() || preview){
+                ItemStack stack = new ItemStack(Items.GREY_GOO);
+                ItemStack newStack;
+                if (items.get(1).getItem() instanceof BlockItem) {
+                    BlockItem targetItem = (BlockItem) items.get(1).getItem();
+                    newStack = ItemGreyGoo.configure(stack, targetItem.getBlock().getDefaultState(), items.get(2).getCount() * 2, 10);
+                } else {
+                    BucketItem targetItem = (BucketItem) items.get(1).getItem();
+                    newStack = ItemGreyGoo.configure(stack, targetItem.getFluid().getDefaultState().getBlockState(), items.get(2).getCount() * 2, 10);
+                }
+                items.set(3, newStack);
+                preview = true;
         }
+    }
+
+    public void take(){
+        items.get(0).shrink(1);
+        items.get(1).shrink(1);
+        items.set(2, ItemStack.EMPTY);
+        preview = false;
     }
 
     private boolean canMake() {

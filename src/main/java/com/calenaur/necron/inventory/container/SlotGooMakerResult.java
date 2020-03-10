@@ -36,7 +36,7 @@ public class SlotGooMakerResult extends Slot {
 	public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
 		this.onCrafting(stack);
 		super.onTake(thePlayer, stack);
-		containerGooMaker.Make();
+		containerGooMaker.make();
 		return stack;
 	}
 
