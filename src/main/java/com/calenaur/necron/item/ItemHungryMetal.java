@@ -42,12 +42,12 @@ public class ItemHungryMetal extends BlockItem {
         if (!worldIn.isRemote()) {
             if (worldIn.getTileEntity(pos) instanceof TileEntityHungryMetal) {
                 if (isTargetSet(stack)) {
-                    TileEntityHungryMetal tileEntityGreyGoo = (TileEntityHungryMetal) worldIn.getTileEntity(pos);
-                    tileEntityGreyGoo.setTargetBlock(getTarget(stack));
-                    tileEntityGreyGoo.setMaxDistance(getRadius(stack));
-                    tileEntityGreyGoo.setSpeed(getSpeed(stack));
-                    tileEntityGreyGoo.setStartingPos(pos);
-                    tileEntityGreyGoo.activate();
+                    TileEntityHungryMetal tileEntityHungryMetal = (TileEntityHungryMetal) worldIn.getTileEntity(pos);
+                    tileEntityHungryMetal.setTargetBlock(getTarget(stack));
+                    tileEntityHungryMetal.setMaxDistance(getRadius(stack));
+                    tileEntityHungryMetal.setSpeed(getSpeed(stack));
+                    tileEntityHungryMetal.setStartingPos(pos);
+                    tileEntityHungryMetal.activate();
                 }
             }
         }
