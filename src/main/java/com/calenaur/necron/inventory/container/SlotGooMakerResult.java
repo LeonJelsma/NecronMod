@@ -8,9 +8,9 @@ import net.minecraft.item.ItemStack;
 public class SlotGooMakerResult extends Slot {
 
 	private int removeCount;
-	private ContainerGooMaker containerGooMaker;
+	private ContainerHungryMetalArranger containerGooMaker;
 
-	public SlotGooMakerResult(IInventory inventoryIn, int index, int xPosition, int yPosition, ContainerGooMaker containerGooMaker) {
+	public SlotGooMakerResult(IInventory inventoryIn, int index, int xPosition, int yPosition, ContainerHungryMetalArranger containerGooMaker) {
 		super(inventoryIn, index, xPosition, yPosition);
 		this.containerGooMaker = containerGooMaker;
 	}

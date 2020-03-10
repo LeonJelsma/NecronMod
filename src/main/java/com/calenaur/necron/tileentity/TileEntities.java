@@ -7,9 +7,9 @@ public class TileEntities {
     @ObjectHolder("necron:mote_processor_tile")
     public static TileEntityType<TileEntityMoteProcessor> MOTE_PROCESSOR;
 
-    @ObjectHolder("necron:grey_goo_tile")
-    public static TileEntityType<TileEntityMoteProcessor> GREY_GOO;
+    @ObjectHolder("necron:hungry_goo_tile")
+    public static TileEntityType<TileEntityMoteProcessor> HUNGRY_METAL;
 
-    @ObjectHolder("necron:goo_maker_tile")
-    public static TileEntityType<TileEntityGooMaker> GOO_MAKER;
+    @ObjectHolder("necron:hungry_metal_arranger_tile")
+    public static TileEntityType<TileEntityHungryMetalArranger> HUNGRY_METAL_MAKER;
 }

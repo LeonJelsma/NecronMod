@@ -38,8 +38,8 @@ public class Items {
     public static ItemMoteProcessor MOTE_PROCESSOR;
     @ObjectHolder("necron:necrodermis_ingot")
     public static ItemNecrodermisIngot NECRON_INGOT;
-    @ObjectHolder("necron:grey_goo")
-    public static ItemGreyGoo GREY_GOO;
-    @ObjectHolder("necron:goo_maker")
-    public static ItemGooMaker GOO_MAKER;
+    @ObjectHolder("necron:hungry_metal")
+    public static ItemHungryMetal HUNGRY_METAL;
+    @ObjectHolder("necron:hungry_metal_arranger")
+    public static ItemHungryMetalArranger HUNGRY_METAL_ARRANGER;
 }

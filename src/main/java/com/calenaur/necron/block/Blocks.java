@@ -26,8 +26,8 @@ public class Blocks {
     public static BlockNecrodermisOre NECRON_ORE;
     @ObjectHolder("necron:mote_processor")
     public static BlockMoteProcessor MOTE_PROCESSOR;
-    @ObjectHolder("necron:goo_maker")
-    public static BlockGooMaker GOO_MAKER;
-    @ObjectHolder("necron:grey_goo")
-    public static BlockGreyGoo GREY_GOO;
+    @ObjectHolder("necron:hungry_metal_arranger")
+    public static BlockHungryMetalArranger HUNGRY_METAL_ARRANGER;
+    @ObjectHolder("necron:hungry_metal")
+    public static BlockHungryMetal HUNGRY_METAL;
 }

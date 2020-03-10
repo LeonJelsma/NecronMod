@@ -1,22 +1,21 @@
 package com.calenaur.necron.gui;
 
 import com.calenaur.necron.NecronMod;
-import com.calenaur.necron.inventory.container.ContainerGooMaker;
+import com.calenaur.necron.inventory.container.ContainerHungryMetalArranger;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
-public class ScreenGooMaker extends ContainerScreen<ContainerGooMaker> {
+public class ScreenHungryMetalArranger extends ContainerScreen<ContainerHungryMetalArranger> {
 
-    private ResourceLocation GUI = new ResourceLocation(NecronMod.MOD_ID, "textures/gui/goo_maker_gui.png");
+    private ResourceLocation GUI = new ResourceLocation(NecronMod.MOD_ID, "textures/gui/hungry_metal_arranger_gui.png");
 
-    public ScreenGooMaker(Container container, PlayerInventory inventory, ITextComponent textComponent) {
-        super((ContainerGooMaker) container, inventory, textComponent);
+    public ScreenHungryMetalArranger(Container container, PlayerInventory inventory, ITextComponent textComponent) {
+        super((ContainerHungryMetalArranger) container, inventory, textComponent);
     }
 
     @Override
@@ -28,7 +27,7 @@ public class ScreenGooMaker extends ContainerScreen<ContainerGooMaker> {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        drawString(Minecraft.getInstance().fontRenderer, "Goo maker", 44 ,4, 0xffffff);
+        drawString(Minecraft.getInstance().fontRenderer, "Hungry Metal Arranger", 44 ,4, 0xffffff);
     }
 
     @Override

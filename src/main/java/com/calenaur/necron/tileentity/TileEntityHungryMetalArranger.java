@@ -1,19 +1,10 @@
 package com.calenaur.necron.tileentity;
 
-import com.calenaur.necron.block.BlockGreyGoo;
-import com.calenaur.necron.inventory.container.ContainerGooMaker;
-import com.calenaur.necron.inventory.container.ContainerMoteProcessor;
-import com.calenaur.necron.item.ItemGreyGoo;
+import com.calenaur.necron.inventory.container.ContainerHungryMetalArranger;
+import com.calenaur.necron.item.ItemHungryMetal;
 import com.calenaur.necron.item.Items;
-import com.calenaur.necron.recipe.ProcessingRecipe;
-import com.calenaur.necron.recipe.RecipeTypes;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
@@ -21,30 +12,23 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.StringNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import javax.annotation.Nullable;
-import java.util.List;
 
-public class TileEntityGooMaker extends TileEntity implements IInventory, ITickableTileEntity, INamedContainerProvider {
-    public static final String NAME = "goo_maker_tile";
+public class TileEntityHungryMetalArranger extends TileEntity implements IInventory, ITickableTileEntity, INamedContainerProvider {
+    public static final String NAME = "hungry_metal_arranger_tile";
 
     private NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
     private boolean preview = false;
 
-    public TileEntityGooMaker() {
-        super(TileEntities.GOO_MAKER);
+    public TileEntityHungryMetalArranger() {
+        super(TileEntities.HUNGRY_METAL_MAKER);
     }
 
     @Override
@@ -60,14 +44,14 @@ public class TileEntityGooMaker extends TileEntity implements IInventory, ITicka
 
     public void make(){
         if(items.get(3).isEmpty() || preview){
-                ItemStack stack = new ItemStack(Items.GREY_GOO);
+                ItemStack stack = new ItemStack(Items.HUNGRY_METAL);
                 ItemStack newStack;
                 if (items.get(1).getItem() instanceof BlockItem) {
                     BlockItem targetItem = (BlockItem) items.get(1).getItem();
-                    newStack = ItemGreyGoo.configure(stack, targetItem.getBlock().getDefaultState(), items.get(2).getCount() * 2, 10);
+                    newStack = ItemHungryMetal.configure(stack, targetItem.getBlock().getDefaultState(), items.get(2).getCount() * 2, 10);
                 } else {
                     BucketItem targetItem = (BucketItem) items.get(1).getItem();
-                    newStack = ItemGreyGoo.configure(stack, targetItem.getFluid().getDefaultState().getBlockState(), items.get(2).getCount() * 2, 10);
+                    newStack = ItemHungryMetal.configure(stack, targetItem.getFluid().getDefaultState().getBlockState(), items.get(2).getCount() * 2, 10);
                 }
                 items.set(3, newStack);
                 preview = true;
@@ -93,8 +77,8 @@ public class TileEntityGooMaker extends TileEntity implements IInventory, ITicka
                     return false;
                 }
             }
-            if(this.items.get(0).getItem() == Items.GREY_GOO) {
-                if (!ItemGreyGoo.isTargetSet(this.items.get(0))) {
+            if(this.items.get(0).getItem() == Items.HUNGRY_METAL) {
+                if (!ItemHungryMetal.isTargetSet(this.items.get(0))) {
                     if (this.items.get(2).getItem() == Items.NECRON_INGOT) {
                         return true;
                     }
@@ -112,7 +96,7 @@ public class TileEntityGooMaker extends TileEntity implements IInventory, ITicka
     @Nullable
     @Override
     public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new ContainerGooMaker(id, playerInventory, this , this);
+        return new ContainerHungryMetalArranger(id, playerInventory, this , this);
     }
 
 

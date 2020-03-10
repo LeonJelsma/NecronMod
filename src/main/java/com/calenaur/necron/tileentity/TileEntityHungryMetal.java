@@ -6,19 +6,15 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 
 import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
-import net.minecraftforge.fml.network.FMLStatusPing;
 
-public class TileEntityGreyGoo extends TileEntity implements ITickableTileEntity {
+public class TileEntityHungryMetal extends TileEntity implements ITickableTileEntity {
 
-    public static final String NAME = "grey_goo_tile";
+    public static final String NAME = "hungry_metal_tile";
 
     private Block targetBlock;
     private BlockPos startingPos;
@@ -49,8 +45,8 @@ public class TileEntityGreyGoo extends TileEntity implements ITickableTileEntity
         this.configured = true;
     }
 
-    public TileEntityGreyGoo() {
-        super(TileEntities.GREY_GOO);
+    public TileEntityHungryMetal() {
+        super(TileEntities.HUNGRY_METAL);
     }
 
     @Override
@@ -99,8 +95,8 @@ public class TileEntityGreyGoo extends TileEntity implements ITickableTileEntity
             int z = neighbour[2];
             BlockPos newPos = pos.add(x, y, z);
             if (canSpread(newPos)) {
-                if (world.setBlockState(newPos, Blocks.GREY_GOO.getDefaultState(), 1)) {
-                    TileEntityGreyGoo tileEntity = (TileEntityGreyGoo) world.getTileEntity(newPos);
+                if (world.setBlockState(newPos, Blocks.HUNGRY_METAL.getDefaultState(), 1)) {
+                    TileEntityHungryMetal tileEntity = (TileEntityHungryMetal) world.getTileEntity(newPos);
                     tileEntity.setStartingPos(this.startingPos);
                     tileEntity.setMaxDistance(this.maxDistance);
                     tileEntity.setTargetBlock(this.targetBlock);

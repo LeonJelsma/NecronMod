@@ -1,7 +1,7 @@
 package com.calenaur.necron.inventory.container;
 
 import com.calenaur.necron.recipe.ProcessingRecipe;
-import com.calenaur.necron.tileentity.TileEntityGooMaker;
+import com.calenaur.necron.tileentity.TileEntityHungryMetalArranger;
 import com.calenaur.necron.tileentity.TileEntityMoteProcessor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -14,27 +14,27 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.world.World;
 
-public class ContainerGooMaker extends Container {
-	public static final String NAME = "goo_maker";
+public class ContainerHungryMetalArranger extends Container {
+	public static final String NAME = "hungry_metal_arranger";
 
 	private IInventory gooMakerInventory;
 	private World world;
 	private IRecipeType<ProcessingRecipe> recipeType;
-	private TileEntityGooMaker tileEntityGooMaker;
+	private TileEntityHungryMetalArranger tileEntityHungryMetalArranger;
 
-	public ContainerGooMaker(int id, PlayerInventory playerInventory) {
-		this(ContainerTypes.GOO_MAKER, id, playerInventory, new Inventory(4), new TileEntityGooMaker());
+	public ContainerHungryMetalArranger(int id, PlayerInventory playerInventory) {
+		this(ContainerTypes.HUNGRY_METAL_ARRANGER, id, playerInventory, new Inventory(4), new TileEntityHungryMetalArranger());
 	}
 
-	public ContainerGooMaker(int id, PlayerInventory playerInventory, IInventory processorInventory, TileEntityGooMaker tileEntityGooMaker) {
-		this(ContainerTypes.GOO_MAKER, id, playerInventory, processorInventory, tileEntityGooMaker);
+	public ContainerHungryMetalArranger(int id, PlayerInventory playerInventory, IInventory processorInventory, TileEntityHungryMetalArranger tileEntityHungryMetalArranger) {
+		this(ContainerTypes.HUNGRY_METAL_ARRANGER, id, playerInventory, processorInventory, tileEntityHungryMetalArranger);
 	}
 
-	public ContainerGooMaker(ContainerType<ContainerGooMaker> containerTypeIn, int windowId, PlayerInventory playerInventoryIn, IInventory processorInventory, TileEntityGooMaker tileEntityGooMaker) {
+	public ContainerHungryMetalArranger(ContainerType<ContainerHungryMetalArranger> containerTypeIn, int windowId, PlayerInventory playerInventoryIn, IInventory processorInventory, TileEntityHungryMetalArranger tileEntityHungryMetalArranger) {
 		super(containerTypeIn, windowId);
 		this.gooMakerInventory = processorInventory;
 		this.world = playerInventoryIn.player.world;
-		this.tileEntityGooMaker = tileEntityGooMaker;
+		this.tileEntityHungryMetalArranger = tileEntityHungryMetalArranger;
 		addSlot(new Slot(processorInventory, 0, 31, 22));
 		addSlot(new Slot(processorInventory, 1, 68, 22));
 		addSlot(new Slot(processorInventory, 2, 31, 48));
@@ -105,7 +105,7 @@ public class ContainerGooMaker extends Container {
 	}
 
 	public void make(){
-		tileEntityGooMaker.take();
+		tileEntityHungryMetalArranger.take();
 		detectAndSendChanges();
 	}
 }

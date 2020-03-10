@@ -1,35 +1,25 @@
 package com.calenaur.necron.item;
 
-import com.calenaur.necron.NecronMod;
-import com.calenaur.necron.block.BlockGreyGoo;
 import com.calenaur.necron.block.Blocks;
-import com.calenaur.necron.tileentity.TileEntityGreyGoo;
+import com.calenaur.necron.tileentity.TileEntityHungryMetal;
 import com.calenaur.necron.util.StringProperty;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.*;
 import net.minecraft.state.IProperty;
-import net.minecraft.util.JSONUtils;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextComponent;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.io.DataOutput;
 import java.util.List;
 
-public class ItemGreyGoo extends BlockItem {
+public class ItemHungryMetal extends BlockItem {
 
     IProperty<String> targetBlock = StringProperty.create("targetBlockName", "minecraft:air");
 
@@ -38,9 +28,9 @@ public class ItemGreyGoo extends BlockItem {
     public static String RADIUS = "goo_radius";
     public static String SPEED = "goo_speed";
 
-    public ItemGreyGoo() {
-        super(Blocks.GREY_GOO, new Properties().group(ItemGroup.NECRON).maxStackSize(1));
-        setRegistryName("grey_goo");
+    public ItemHungryMetal() {
+        super(Blocks.HUNGRY_METAL, new Properties().group(ItemGroup.NECRON).maxStackSize(1));
+        setRegistryName("hungry_metal");
     }
 
     @Override
@@ -50,9 +40,9 @@ public class ItemGreyGoo extends BlockItem {
 
     protected boolean onBlockPlaced(BlockPos pos, World worldIn, @Nullable PlayerEntity player, ItemStack stack, BlockState state) {
         if (!worldIn.isRemote()) {
-            if (worldIn.getTileEntity(pos) instanceof TileEntityGreyGoo) {
+            if (worldIn.getTileEntity(pos) instanceof TileEntityHungryMetal) {
                 if (isTargetSet(stack)) {
-                    TileEntityGreyGoo tileEntityGreyGoo = (TileEntityGreyGoo) worldIn.getTileEntity(pos);
+                    TileEntityHungryMetal tileEntityGreyGoo = (TileEntityHungryMetal) worldIn.getTileEntity(pos);
                     tileEntityGreyGoo.setTargetBlock(getTarget(stack));
                     tileEntityGreyGoo.setMaxDistance(getRadius(stack));
                     tileEntityGreyGoo.setSpeed(getSpeed(stack));

@@ -1,9 +1,7 @@
 package com.calenaur.necron.inventory.container;
 
-import com.calenaur.necron.NecronMod;
 import com.calenaur.necron.recipe.ProcessingRecipe;
 import com.calenaur.necron.recipe.RecipeTypes;
-import com.calenaur.necron.tileentity.TileEntityMoteProcessor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -78,7 +76,7 @@ public class ContainerMoteProcessor extends Container {
 				return ItemStack.EMPTY;
 			slot.onSlotChange(originItemStack, itemStack);
 		} else if (slotIndex > 2) {
-			if (originItemStack.getItem() == com.calenaur.necron.item.Items.GREY_GOO) {//Is the item part of a recipe?
+			if (originItemStack.getItem() == com.calenaur.necron.item.Items.HUNGRY_METAL) {//Is the item part of a recipe?
 				if (!mergeItemStack(originItemStack, 0, 1, false))//Place in the ingredient slot
 					return ItemStack.EMPTY;
 			} else if (originItemStack.getItem() == com.calenaur.necron.item.Items.NECRON_MOTE) {//Is the item considered fuel for this mote processor?

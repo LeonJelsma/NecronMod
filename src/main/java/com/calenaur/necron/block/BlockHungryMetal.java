@@ -1,29 +1,25 @@
 package com.calenaur.necron.block;
 
-import com.calenaur.necron.tileentity.TileEntityGreyGoo;
-import com.calenaur.necron.util.StringProperty;
+import com.calenaur.necron.tileentity.TileEntityHungryMetal;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.IProperty;
-import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nullable;
 
-public class BlockGreyGoo extends Block {
+public class BlockHungryMetal extends Block {
 
-    public BlockGreyGoo() {
+    public BlockHungryMetal() {
         super(Properties.create(Material.ROCK)
                 .harvestLevel(3)
                 .hardnessAndResistance(3)
                 .sound(SoundType.STONE)
         );
-        setRegistryName("grey_goo");
+        setRegistryName("hungry_metal");
     }
 
     @Override
@@ -34,7 +30,7 @@ public class BlockGreyGoo extends Block {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TileEntityGreyGoo();
+        return new TileEntityHungryMetal();
     }
 
 

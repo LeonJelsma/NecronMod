@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "necron:block/grey_goo"
+    "all": "necron:block/hungry_metal"
   }
 }

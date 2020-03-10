@@ -10,6 +10,8 @@
   "block.necron.necron_straight_single": "Necron Straight Single",
   "block.necron.necrodermis_ore": "Necrodermis Ore",
   "block.necron.mote_processor": "Mote Processor",
+  "block.necron.hungry_metal": "Hungry Metal Block",
+  "block.necron.hungry_metal_arranger": "Hungry Metal Arranger",
   "entity.necron.necron_soldier": "Necron Soldier",
   "itemGroup.necron": "Necron",
   "item.necron.jeffite_pickaxe": "Jeffite Pickaxe",

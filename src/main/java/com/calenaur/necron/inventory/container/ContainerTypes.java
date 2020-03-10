@@ -7,6 +7,6 @@ public class ContainerTypes {
     @ObjectHolder("necron:mote_processor")
     public static ContainerType<ContainerMoteProcessor> MOTE_PROCESSOR;
 
-    @ObjectHolder("necron:goo_maker")
-    public static ContainerType<ContainerGooMaker> GOO_MAKER;
+    @ObjectHolder("necron:hungry_metal_arranger")
+    public static ContainerType<ContainerHungryMetalArranger> HUNGRY_METAL_ARRANGER;
 }

@@ -1,6 +1,6 @@
 package com.calenaur.necron.block;
 
-import com.calenaur.necron.tileentity.TileEntityGooMaker;
+import com.calenaur.necron.tileentity.TileEntityHungryMetalArranger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -24,15 +24,15 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockGooMaker extends Block {
+public class BlockHungryMetalArranger extends Block {
 
-    public BlockGooMaker() {
+    public BlockHungryMetalArranger() {
         super(Properties.create(Material.ROCK)
                 .harvestLevel(3)
                 .hardnessAndResistance(3)
                 .sound(SoundType.METAL)
         );
-        setRegistryName("goo_maker");
+        setRegistryName("hungry_metal_arranger");
     }
 
     @Override
@@ -43,7 +43,7 @@ public class BlockGooMaker extends Block {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TileEntityGooMaker();
+        return new TileEntityHungryMetalArranger();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class BlockGooMaker extends Block {
             return ActionResultType.SUCCESS;
 
         TileEntity tileentity = world.getTileEntity(pos);
-        if (tileentity instanceof TileEntityGooMaker)
+        if (tileentity instanceof TileEntityHungryMetalArranger)
             player.openContainer((INamedContainerProvider)tileentity);
 
         return ActionResultType.SUCCESS;
@@ -68,8 +68,8 @@ public class BlockGooMaker extends Block {
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             TileEntity tileentity = worldIn.getTileEntity(pos);
-            if (tileentity instanceof TileEntityGooMaker) {
-                InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityGooMaker)tileentity);
+            if (tileentity instanceof TileEntityHungryMetalArranger) {
+                InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityHungryMetalArranger)tileentity);
                 worldIn.updateComparatorOutputLevel(pos, this);
             }
             super.onReplaced(state, worldIn, pos, newState, isMoving);
