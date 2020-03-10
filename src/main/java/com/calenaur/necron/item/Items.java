@@ -34,7 +34,6 @@ public class Items {
     public static ItemNecrodermisShovel NECRON_SHOVEL;
     @ObjectHolder("necron:necrodermis_mote")
     public static ItemNecrodermisMote NECRON_MOTE;
-
     @ObjectHolder("necron:mote_processor")
     public static ItemMoteProcessor MOTE_PROCESSOR;
 }
