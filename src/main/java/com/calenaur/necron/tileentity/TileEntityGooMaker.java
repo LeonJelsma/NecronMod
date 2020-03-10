@@ -9,6 +9,8 @@ import com.calenaur.necron.recipe.ProcessingRecipe;
 import com.calenaur.necron.recipe.RecipeTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -30,11 +32,12 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class TileEntityGooMaker extends TileEntity implements IInventory, ITickableTileEntity, INamedContainerProvider {
     public static final String NAME = "goo_maker_tile";
 
-    private NonNullList<ItemStack> items = NonNullList.withSize(3, ItemStack.EMPTY);
+    private NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
 
 
     public TileEntityGooMaker() {
@@ -50,59 +53,48 @@ public class TileEntityGooMaker extends TileEntity implements IInventory, ITicka
     @Override
     public void tick() {
         if(!world.isRemote){
-            if(canMake(items.get(0).getItem())){
-                if(items.get(1).getItem() == Items.NECRON_MOTE){
-                    make();
-                }
+            if(canMake()){
+                make();
+                int test = Integer.parseInt(this.items.get(3).getTag().get(ItemGreyGoo.TARGET).getString());
+
+                ItemStack product = new ItemStack(Items.GREY_GOO);
+                //product.setTag();
+                //this.items.set(3, new ItemStack())
             }
         }
     }
 
-    private void make(){
+    public void make(){
+        BlockItem target = (BlockItem) items.get(1).getItem();
+
         items.get(0).shrink(1);
         items.get(1).shrink(1);
-
-        if(items.get(2).isEmpty()){
+        if(items.get(3).isEmpty()){
             ItemStack stack = new ItemStack(Items.GREY_GOO);
-            CompoundNBT compoundnbt = new CompoundNBT();
-            compoundnbt.put("target", StringNBT.func_229705_a_(items.get(0).getItem().getRegistryName().toString()));
-            stack.setTag(compoundnbt);
-        }else{
-            items.get(2).grow(1);
+            ItemStack newStack = ItemGreyGoo.configure(stack, target.getBlock(), 10, 10 );
+            items.set(3, newStack);
         }
     }
 
-    private boolean canMake(@Nullable Item itemIn) {
-        if (!this.items.get(0).isEmpty() && itemIn != null) {
-            if (!isItemBlock(itemIn)) {
+    private boolean canMake() {
+        if (!this.items.get(0).isEmpty() && this.items.get(0).getItem() != null) {
+            if (!isItemBlock(this.items.get(0).getItem())) {
                 return false;
-            } else {
-                BlockItem itemInput = (BlockItem) itemIn;
-                Block inputBlock = itemInput.getBlock();
+            }
 
-                BlockItem itemOutput = (BlockItem) this.items.get(2).getItem();
-
-                ItemGreyGoo gooOutput;
-                if (itemOutput instanceof ItemGreyGoo){
-                    gooOutput = (ItemGreyGoo) itemOutput;
-                } else{
-                    return false;
-                }
-                if (this.items.get(2).isEmpty()) {
-                    return true;
-                }
-                StringNBT stringNBT = (StringNBT) this.items.get(2).getStack().getTag().get("target");
-                if (stringNBT.getString() != inputBlock.getBlock().getRegistryType().toString()) {
-                    return false;
-                } else if (this.items.get(2).getStack().getCount() + 1 <= this.getInventoryStackLimit() && this.items.get(3).getCount() + 1 <= this.items.get(3).getMaxStackSize()) { // Forge fix: make furnace respect stack sizes in furnace recipes
-                    return true;
-                } else {
-                    return this.items.get(2).getCount() + 1 <= this.items.get(3).getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
+            boolean test = this.items.get(1).getItem() instanceof BlockItem;
+            if (!(this.items.get(1).getItem() instanceof BlockItem)){
+                return false;
+            }
+            if(this.items.get(0).getItem() == Items.GREY_GOO) {
+                if (!ItemGreyGoo.isTargetSet(this.items.get(0))) {
+                    if (this.items.get(2).getItem() == Items.NECRON_INGOT) {
+                        return true;
+                    }
                 }
             }
-        } else {
-            return false;
         }
+        return false;
     }
 
     @Override
@@ -113,7 +105,7 @@ public class TileEntityGooMaker extends TileEntity implements IInventory, ITicka
     @Nullable
     @Override
     public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new ContainerGooMaker(id, playerInventory, this );
+        return new ContainerGooMaker(id, playerInventory, this , this);
     }
 
 

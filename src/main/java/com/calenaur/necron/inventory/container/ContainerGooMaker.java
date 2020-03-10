@@ -2,6 +2,7 @@ package com.calenaur.necron.inventory.container;
 
 import com.calenaur.necron.recipe.ProcessingRecipe;
 import com.calenaur.necron.recipe.RecipeTypes;
+import com.calenaur.necron.tileentity.TileEntityGooMaker;
 import com.calenaur.necron.tileentity.TileEntityMoteProcessor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -23,22 +24,25 @@ public class ContainerGooMaker extends Container {
 	private IInventory processorInventory;
 	private World world;
 	private IRecipeType<ProcessingRecipe> recipeType;
+	private TileEntityGooMaker tileEntityGooMaker;
 
 	public ContainerGooMaker(int id, PlayerInventory playerInventory) {
-		this(ContainerTypes.GOO_MAKER, id, playerInventory, new Inventory(4));
+		this(ContainerTypes.GOO_MAKER, id, playerInventory, new Inventory(4), new TileEntityGooMaker());
 	}
 
-	public ContainerGooMaker(int id, PlayerInventory playerInventory, IInventory processorInventory) {
-		this(ContainerTypes.GOO_MAKER, id, playerInventory, processorInventory);
+	public ContainerGooMaker(int id, PlayerInventory playerInventory, IInventory processorInventory, TileEntityGooMaker tileEntityGooMaker) {
+		this(ContainerTypes.GOO_MAKER, id, playerInventory, processorInventory, tileEntityGooMaker);
 	}
 
-	public ContainerGooMaker(ContainerType<ContainerGooMaker> containerTypeIn, int windowId, PlayerInventory playerInventoryIn, IInventory processorInventory) {
+	public ContainerGooMaker(ContainerType<ContainerGooMaker> containerTypeIn, int windowId, PlayerInventory playerInventoryIn, IInventory processorInventory, TileEntityGooMaker tileEntityGooMaker) {
 		super(containerTypeIn, windowId);
 		this.processorInventory = processorInventory;
 		this.world = playerInventoryIn.player.world;
-		addSlot(new Slot(processorInventory, 0, 45, 17));
-		addSlot(new Slot(processorInventory, 1, 45, 50));
-		addSlot(new Slot(processorInventory, 2, 166, 35));
+		this.tileEntityGooMaker = tileEntityGooMaker;
+		addSlot(new Slot(processorInventory, 0, 31, 22));
+		addSlot(new Slot(processorInventory, 1, 68, 22));
+		addSlot(new Slot(processorInventory, 2, 31, 48));
+		addSlot(new SlotGooMakerResult(processorInventory, 3, 112, 20, this));
 
 		layoutPlayerInventorySlots(playerInventoryIn);
 	}
@@ -102,5 +106,9 @@ public class ContainerGooMaker extends Container {
 
 	protected boolean itemHasRecipe(ItemStack itemStack) {
 		return this.world.getRecipeManager().getRecipe(this.recipeType, new Inventory(itemStack), this.world).isPresent();
+	}
+
+	public void Make(){
+
 	}
 }
