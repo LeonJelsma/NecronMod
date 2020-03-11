@@ -1,12 +1,12 @@
 {
   "parent": "block/cube",
   "textures": {
-    "particle": "necron:block/mote_processor_top",
-    "down": "necron:block/mote_processor_top",
-    "up": "necron:block/mote_processor_top",
-    "east": "necron:block/mote_processor_side",
-    "west": "necron:block/mote_processor_side",
-    "north": "necron:block/mote_processor_front",
-    "south": "necron:block/mote_processor_side"
+    "particle": "necron:block/hungry_metal_arranger_bottom",
+    "down": "necron:block/hungry_metal_arranger_bottom",
+    "up": "necron:block/hungry_metal_arranger_top",
+    "east": "necron:block/hungry_metal_arranger_side",
+    "west": "necron:block/hungry_metal_arranger_side",
+    "north": "necron:block/hungry_metal_arranger_front",
+    "south": "necron:block/hungry_metal_arranger_front"
   }
 }

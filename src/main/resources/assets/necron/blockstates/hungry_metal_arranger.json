@@ -1,10 +1,5 @@
 {
   "variants": {
-    "facing=north": { "model": "necron:block/hungry_metal_arranger" },
-    "facing=south": { "model": "necron:block/hungry_metal_arranger", "y": 180 },
-    "facing=west": { "model": "necron:block/hungry_metal_arranger", "y": 270 },
-    "facing=east": { "model": "necron:block/hungry_metal_arranger", "y": 90 },
-    "facing=up": { "model": "necron:block/hungry_metal_arranger", "x": -90 },
-    "facing=down": { "model": "necron:block/hungry_metal_arranger", "x": 90 }
+    "": { "model": "necron:block/hungry_metal_arranger" }
   }
 }

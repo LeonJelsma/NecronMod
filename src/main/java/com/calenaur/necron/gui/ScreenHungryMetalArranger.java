@@ -27,7 +27,7 @@ public class ScreenHungryMetalArranger extends ContainerScreen<ContainerHungryMe
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        drawString(Minecraft.getInstance().fontRenderer, "Hungry Metal Arranger", 44 ,4, 0xffffff);
+        drawString(Minecraft.getInstance().fontRenderer, "Hungry Metal Arranger", 40 ,4, 0xffffff);
     }
 
     @Override
