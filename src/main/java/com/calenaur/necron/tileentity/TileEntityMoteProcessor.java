@@ -1,14 +1,18 @@
 package com.calenaur.necron.tileentity;
 
+import com.calenaur.necron.block.BlockMoteProcessor;
 import com.calenaur.necron.inventory.container.ContainerMoteProcessor;
 import com.calenaur.necron.recipe.ProcessingRecipe;
 import com.calenaur.necron.recipe.RecipeTypes;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipe;
@@ -16,15 +20,22 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import javax.annotation.Nullable;
 
-public class TileEntityMoteProcessor extends TileEntity implements IInventory, ITickableTileEntity, INamedContainerProvider {
+public class TileEntityMoteProcessor extends TileEntity implements ISidedInventory, IInventory, ITickableTileEntity, INamedContainerProvider {
     public static final String NAME = "mote_processor_tile";
     private static final int DEFAULT_PROCESSING_TIME = 300;
+    private static final int[] SLOTS_UP = new int[]{ContainerMoteProcessor.SLOT_INPUT};
+    private static final int[] SLOTS_DOWN = new int[]{ContainerMoteProcessor.SLOT_OUTPUT};
+    private static final int[] SLOTS_HORIZONTAL = new int[]{ContainerMoteProcessor.SLOT_FUEL_LEFT, ContainerMoteProcessor.SLOT_FUEL_RIGHT};
+    private static final ImmutableList<Item> FUEL = ImmutableList.of(Items.MAGMA_CREAM, Items.BLAZE_POWDER);
+    private static final int FUEL_BURN_TIME = 200;
+
     public final IIntArray processorData = new IIntArray() {
         public int get(int index) {
             switch(index) {
@@ -70,9 +81,9 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
     
     @Override
     public void tick() {
-        boolean isProcessingFlag = this.isProcessing();
-        boolean tileCHanged = false;
-        
+        boolean wasProcessing = isProcessing();
+        boolean tileChanged = false;
+
         if (this.world == null)
             return;
         
@@ -85,9 +96,9 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
             if (!this.isProcessing() && this.canProcess(recipe)) {
                 this.requiredProcessingProgress = this.getProcessingTime();
                 if (!this.isProcessing()) {
-                    tileCHanged = true;
+                    tileChanged = true;
                     if (isFuel(fuel[0]) && isFuel(fuel[1])){
-                        processingChargeLeft += 200;
+                        processingChargeLeft += FUEL_BURN_TIME;
                         if (fuel[0].hasContainerItem()) {
                             this.items.set(ContainerMoteProcessor.SLOT_FUEL_LEFT, fuel[0].getContainerItem());
                         } else
@@ -107,6 +118,7 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
                 }
             }
 
+            world.setBlockState(pos, world.getBlockState(pos).with(BlockMoteProcessor.LIT, isProcessing()), 3);
             if (this.isProcessing() && this.canProcess(recipe)) {
                 --this.processingChargeLeft;
                 ++this.processingProgress;
@@ -114,18 +126,19 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
                     this.processingProgress = 0;
                     this.requiredProcessingProgress = this.getProcessingTime();
                     this.useRecipe(recipe);
-                    tileCHanged = true;
+                    tileChanged = true;
                 }
             } else {
                 --this.processingChargeLeft;
                 this.processingProgress = 0;
             }
-        }
+        } else
+            world.setBlockState(pos, world.getBlockState(pos).with(BlockMoteProcessor.LIT, isProcessing()), 3);
 
-        if (isProcessingFlag != this.isProcessing())
-            tileCHanged = true;
+        if (wasProcessing != this.isProcessing())
+            tileChanged = true;
 
-        if (tileCHanged)
+        if (tileChanged)
             this.markDirty();
     }
 
@@ -156,7 +169,7 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
     }
 
     public static boolean isFuel(ItemStack itemStack) {
-        return itemStack.getItem() == Items.MAGMA_CREAM || itemStack.getItem() == Items.BLAZE_POWDER;
+        return FUEL.contains(itemStack.getItem()) || FUEL.contains(itemStack.getItem());
     }
 
     private boolean isProcessing() {
@@ -186,6 +199,24 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
 
         return outputStack.getCount() + resultStack.getCount() <= resultStack.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
     }
+
+    /**
+     * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot. For
+     * guis use Slot.isItemValid
+     */
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+        if (index == ContainerMoteProcessor.SLOT_OUTPUT)
+            return false;
+
+        if (index == ContainerMoteProcessor.SLOT_INPUT)
+            return true;
+
+        if (index == ContainerMoteProcessor.SLOT_FUEL_LEFT && stack.getItem() == FUEL.get(0))
+            return true;
+
+        return index == ContainerMoteProcessor.SLOT_FUEL_RIGHT && stack.getItem() == FUEL.get(1);
+    }
+
     @Override
     public ITextComponent getDisplayName() {
         return new StringTextComponent(getType().getRegistryName().getPath());
@@ -272,5 +303,22 @@ public class TileEntityMoteProcessor extends TileEntity implements IInventory, I
     public void clear() {
         this.items.clear();
     }
-}
 
+    public int[] getSlotsForFace(Direction side) {
+        return side == Direction.DOWN ? SLOTS_DOWN : (side == Direction.UP ? SLOTS_UP : SLOTS_HORIZONTAL);
+    }
+
+    /**
+     * Returns true if automation can insert the given item in the given slot from the given side.
+     */
+    public boolean canInsertItem(int index, ItemStack itemStackIn, @Nullable Direction direction) {
+        return isItemValidForSlot(index, itemStackIn);
+    }
+
+    /**
+     * Returns true if automation can extract the given item in the given slot from the given side.
+     */
+    public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
+        return direction == Direction.DOWN && index == ContainerMoteProcessor.SLOT_OUTPUT;
+    }
+}
