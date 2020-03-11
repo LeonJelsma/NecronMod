@@ -12,6 +12,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 
+import java.util.Random;
+
 public class TileEntityHungryMetal extends TileEntity implements ITickableTileEntity {
 
     public static final String NAME = "hungry_metal_tile";
@@ -21,8 +23,9 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
     private boolean configured = false;
     private boolean removeMe = false;
     private int maxDistance = 0;
-    private int speed = 0;
+    private int delay = 5;
     private int timer = 0;
+    private Random random = new Random();
 
 
     public void setStartingPos(BlockPos startingPos) {
@@ -37,8 +40,8 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
         this.targetBlock = target;
     }
 
-    public void setSpeed(int speed){
-        this.speed = speed;
+    public void setDelay(int delay){
+        this.delay = delay;
     }
 
     public void activate(){
@@ -52,9 +55,8 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
     @Override
     public void tick() {
         if(configured) {
-            if (timer > speed) {
-                timer = 0;
-
+            if (timer > delay) {
+                timer = random.nextInt(delay);
                 BlockPos pos = getPos();
                 IWorld world = getWorld();
                 if (world == null)
@@ -100,6 +102,7 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
                     tileEntity.setStartingPos(this.startingPos);
                     tileEntity.setMaxDistance(this.maxDistance);
                     tileEntity.setTargetBlock(this.targetBlock);
+                    tileEntity.setDelay(this.delay);
                     tileEntity.activate();
                 }
             }
@@ -139,7 +142,7 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
         this.configured = compound.getBoolean("configured");
         this.removeMe = compound.getBoolean("removeme");
         this.maxDistance = compound.getInt("maxdistance");
-        this.speed = compound.getInt("speed");
+        this.delay = compound.getInt("delay");
         this.timer = compound.getInt("timer");
     }
 
@@ -152,7 +155,7 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
         compound.putBoolean("configured", this.configured);
         compound.putBoolean("removeme", this.removeMe);
         compound.putInt("maxdistance", this.maxDistance);
-        compound.putInt("speed", this.speed);
+        compound.putInt("delay", this.delay);
         compound.putInt("timer", this.timer);
         super.write(compound);
         return compound;

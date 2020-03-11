@@ -13,6 +13,7 @@ import net.minecraft.nbt.*;
 import net.minecraft.state.IProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.LanguageMap;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
@@ -45,7 +46,7 @@ public class ItemHungryMetal extends BlockItem {
                     TileEntityHungryMetal tileEntityHungryMetal = (TileEntityHungryMetal) worldIn.getTileEntity(pos);
                     tileEntityHungryMetal.setTargetBlock(getTarget(stack));
                     tileEntityHungryMetal.setMaxDistance(getRadius(stack));
-                    tileEntityHungryMetal.setSpeed(getSpeed(stack));
+                    tileEntityHungryMetal.setDelay(getSpeed(stack));
                     tileEntityHungryMetal.setStartingPos(pos);
                     tileEntityHungryMetal.activate();
                 }
@@ -57,7 +58,13 @@ public class ItemHungryMetal extends BlockItem {
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
         if(isTargetSet(stack)) {
-                list.add(new StringTextComponent("Target: " + Block.getStateById(Integer.parseInt(stack.getTag().get(TARGET).getString())).getBlock()));
+
+                list.add(new StringTextComponent("Target: " + LanguageMap.getInstance()
+                        .translateKey(Block.getStateById(Integer.parseInt(stack.getTag()
+                                .get(TARGET).getString()))
+                                .getBlock()
+                                .getTranslationKey()
+                        )));
                 list.add(new StringTextComponent("Radius: " + Integer.parseInt(stack.getTag().get(RADIUS).getString())));
             } else {
                 list.add(new StringTextComponent("Target: Unconfigured"));

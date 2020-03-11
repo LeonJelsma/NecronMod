@@ -65,6 +65,7 @@ public class BlockHungryMetalArranger extends Block {
         }
     }
 
+    @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             TileEntity tileentity = worldIn.getTileEntity(pos);

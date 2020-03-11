@@ -48,10 +48,10 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
                 ItemStack newStack;
                 if (items.get(1).getItem() instanceof BlockItem) {
                     BlockItem targetItem = (BlockItem) items.get(1).getItem();
-                    newStack = ItemHungryMetal.configure(stack, targetItem.getBlock().getDefaultState(), items.get(2).getCount(), 10);
+                    newStack = ItemHungryMetal.configure(stack, targetItem.getBlock().getDefaultState(), items.get(2).getCount(), 40);
                 } else {
                     BucketItem targetItem = (BucketItem) items.get(1).getItem();
-                    newStack = ItemHungryMetal.configure(stack, targetItem.getFluid().getDefaultState().getBlockState(), items.get(2).getCount() * 2, 10);
+                    newStack = ItemHungryMetal.configure(stack, targetItem.getFluid().getDefaultState().getBlockState(), items.get(2).getCount(), 40);
                 }
                 items.set(3, newStack);
                 preview = true;
@@ -110,6 +110,8 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
     @Override
     public CompoundNBT write(CompoundNBT compound) {
         super.write(compound);
+        NonNullList<ItemStack> itemToSave = this.items;
+        itemToSave.set(3, ItemStack.EMPTY);
         ItemStackHelper.saveAllItems(compound, this.items);
         return compound;
     }

@@ -41,4 +41,6 @@ public class BlockHungryMetal extends Block {
         //stateBuilder.add(alive);
         //stateBuilder.add(startingLocation);
     }
+
+
 }
