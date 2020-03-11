@@ -32,4 +32,6 @@ public class Blocks {
     public static BlockHungryMetal HUNGRY_METAL;
     @ObjectHolder("necron:stone_selection")
     public static BlockStoneSelection STONE_SELECTION;
+    @ObjectHolder("necron:wood_selection")
+    public static BlockWoodSelection WOOD_SELECTION;
 }

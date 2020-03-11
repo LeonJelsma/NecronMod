@@ -53,6 +53,7 @@ public class Registrar {
 		event.getRegistry().register(new BlockMoteProcessor());
 		event.getRegistry().register(new BlockHungryMetalArranger());
 		event.getRegistry().register(new BlockHungryMetal());
+		event.getRegistry().register(new BlockWoodSelection());
 		event.getRegistry().register(new BlockNecronCorner());
 		event.getRegistry().register(new BlockNecronCrescent());
 		event.getRegistry().register(new BlockNecronIntersection());
@@ -90,6 +91,7 @@ public class Registrar {
 		event.getRegistry().register(new ItemBlockNecronStraightCircuit());
 		event.getRegistry().register(new ItemBlockNecronStraightSingle());
 		event.getRegistry().register(new ItemStoneSelection());
+		event.getRegistry().register(new ItemWoodSelection());
 		event.getRegistry().register(new ItemJeffPickaxe());
 		event.getRegistry().register(new ItemMoteProcessor());
 		event.getRegistry().register(new ItemHungryMetalArranger());
