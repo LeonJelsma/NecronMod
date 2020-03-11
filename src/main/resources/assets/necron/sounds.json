@@ -1,0 +1,7 @@
+{
+    "mote_processor_lit": {
+        "category": "block",
+        "subtitle": "necron.subtitle.mote_processor.lit",
+        "sounds": [ "necron:mote_processor_lit" ]
+    }
+}

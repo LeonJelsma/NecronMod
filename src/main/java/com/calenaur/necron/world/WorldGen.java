@@ -13,7 +13,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class WorldGen {
     public static void register() {
         for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-            System.out.println("NecronMod: Registering Generation -> " + biome.getRegistryName());
             addStructures(biome); //Add all structures as a no-place-feature to all biome's to prevent structures from being cutoff when overlapping into a new biome.
             if (StructureNecronRuin.BIOME_WHITELIST.contains(biome.getCategory()))
                 addNecronRuins(biome);
