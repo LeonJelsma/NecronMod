@@ -48,7 +48,7 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
                 ItemStack newStack;
                 if (items.get(1).getItem() instanceof BlockItem) {
                     BlockItem targetItem = (BlockItem) items.get(1).getItem();
-                    newStack = ItemHungryMetal.configure(stack, targetItem.getBlock().getDefaultState(), items.get(2).getCount() * 2, 10);
+                    newStack = ItemHungryMetal.configure(stack, targetItem.getBlock().getDefaultState(), items.get(2).getCount(), 10);
                 } else {
                     BucketItem targetItem = (BucketItem) items.get(1).getItem();
                     newStack = ItemHungryMetal.configure(stack, targetItem.getFluid().getDefaultState().getBlockState(), items.get(2).getCount() * 2, 10);

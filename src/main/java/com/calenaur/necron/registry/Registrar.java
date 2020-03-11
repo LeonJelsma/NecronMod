@@ -63,6 +63,7 @@ public class Registrar {
 		event.getRegistry().register(new BlockNecronStraightSingle());
 		event.getRegistry().register(new BlockNecronStraightCircuit());
 		event.getRegistry().register(new BlockNecrodermisOre());
+		event.getRegistry().register(new BlockStoneSelection());
 	}
 
 	@SubscribeEvent
@@ -88,6 +89,7 @@ public class Registrar {
 		event.getRegistry().register(new ItemBlockNecronStraightDouble());
 		event.getRegistry().register(new ItemBlockNecronStraightCircuit());
 		event.getRegistry().register(new ItemBlockNecronStraightSingle());
+		event.getRegistry().register(new ItemStoneSelection());
 		event.getRegistry().register(new ItemJeffPickaxe());
 		event.getRegistry().register(new ItemMoteProcessor());
 		event.getRegistry().register(new ItemHungryMetalArranger());

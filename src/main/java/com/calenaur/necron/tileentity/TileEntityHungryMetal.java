@@ -123,8 +123,8 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
                     return true;
                 }
             }
-            if (targetBlock == net.minecraft.block.Blocks.STONE.getBlock()) {
-                if((state.getBlock() == net.minecraft.block.Blocks.ANDESITE.getBlock()) || (state.getBlock() == net.minecraft.block.Blocks.GRANITE.getBlock()) || ((state.getBlock() == net.minecraft.block.Blocks.DIORITE.getBlock()))){
+            if (targetBlock == Blocks.STONE_SELECTION) {
+                if( (state.getBlock() == net.minecraft.block.Blocks.STONE || (state.getBlock()) == net.minecraft.block.Blocks.ANDESITE.getBlock()) || (state.getBlock() == net.minecraft.block.Blocks.GRANITE.getBlock()) || ((state.getBlock() == net.minecraft.block.Blocks.DIORITE.getBlock()))){
                     return true;
                 }
             }
