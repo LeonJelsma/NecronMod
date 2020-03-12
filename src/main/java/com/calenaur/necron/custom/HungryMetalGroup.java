@@ -1,10 +1,7 @@
-package com.calenaur.necron.Custom;
+package com.calenaur.necron.custom;
 
-import com.calenaur.necron.block.Blocks;
 import net.minecraft.block.Block;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 import java.util.HashSet;
 

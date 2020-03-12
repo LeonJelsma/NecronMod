@@ -1,21 +1,13 @@
 package com.calenaur.necron.event;
 
-import com.calenaur.necron.Custom.HungryMetalGroup;
-import com.calenaur.necron.Custom.HungryMetalGroupRegistry;
-import com.calenaur.necron.Custom.HungryMetalHandler;
-import com.calenaur.necron.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
+import com.calenaur.necron.custom.HungryMetalGroupRegistry;
+import com.calenaur.necron.custom.HungryMetalHandler;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.apache.commons.lang3.SerializationUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

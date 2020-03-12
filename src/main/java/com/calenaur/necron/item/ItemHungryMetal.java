@@ -1,8 +1,7 @@
 package com.calenaur.necron.item;
 
-import com.calenaur.necron.Custom.HungryMetalGroupRegistry;
+import com.calenaur.necron.custom.HungryMetalGroupRegistry;
 import com.calenaur.necron.block.Blocks;
-import com.calenaur.necron.tileentity.TileEntityHungryMetal;
 import com.calenaur.necron.util.StringProperty;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

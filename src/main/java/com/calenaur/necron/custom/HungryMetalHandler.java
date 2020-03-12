@@ -1,10 +1,9 @@
-package com.calenaur.necron.Custom;
+package com.calenaur.necron.custom;
 
 import com.calenaur.necron.util.Calculations;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
