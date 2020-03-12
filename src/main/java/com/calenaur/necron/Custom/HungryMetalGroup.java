@@ -15,7 +15,8 @@ public class HungryMetalGroup {
     private HashSet<Block> targetBlocks;
     private BlockPos startingPos;
     private boolean configured = false;
-    private boolean removeMe = false;
+    public boolean hasSpread = true;
+    public boolean retrieved = false;
     private int maxDistance = 0;
     private int delay = 5;
     private int timer = 0;

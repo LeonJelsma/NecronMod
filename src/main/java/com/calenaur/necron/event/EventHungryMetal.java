@@ -52,11 +52,15 @@ public class EventHungryMetal {
             hungryMetalHandler.setWorld(event.world);
             for (HungryMetalGroup group: HungryMetalGroupRegistry.getHungryMetalGroups()){
                 HashSet<BlockPos> changedBlocks = new HashSet<>();
-                for (BlockPos pos: group.getBlocksToSpan()){
-                    if (world.setBlockState(pos, Blocks.HUNGRY_METAL.getDefaultState())){
-                        changedBlocks.add(pos);
+                if (!group.hasSpread) {
+                    for (BlockPos pos: group.getBlocksToSpan()){
+                        if (world.setBlockState(pos, Blocks.HUNGRY_METAL.getDefaultState())) {
+                            changedBlocks.add(pos);
+                        }
                     }
                 }
+                group.setSpanningBlocks(changedBlocks);
+                group.hasSpread = true;
             }
         }
     }

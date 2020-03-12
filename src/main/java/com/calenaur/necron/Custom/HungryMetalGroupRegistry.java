@@ -16,7 +16,7 @@ public class HungryMetalGroupRegistry {
 
     }
 
-    public static void addGroup(BlockPos startingPos, HashSet<Block> targetBlocks, int maxDistance, int delay){
+    public synchronized static void addGroup(BlockPos startingPos, HashSet<Block> targetBlocks, int maxDistance, int delay){
         HungryMetalGroup group = new HungryMetalGroup(targetBlocks, startingPos, maxDistance, delay);
         HashSet<BlockPos> blocks = new HashSet<BlockPos>();
         blocks.add(startingPos);
@@ -24,11 +24,24 @@ public class HungryMetalGroupRegistry {
         hungryMetalGroups.add(group);
     }
 
-    public static HashSet<HungryMetalGroup> getHungryMetalGroups(){
+    public synchronized static HashSet<HungryMetalGroup> getHungryMetalGroups(){
+        for (HungryMetalGroup group: hungryMetalGroups) {
+            group.retrieved = true;
+        }
         return hungryMetalGroups;
     }
 
-    public synchronized static void setHungryMetalGroups(HashSet<HungryMetalGroup> groups){
+    public synchronized static void mergeHungryMetalGroups(HashSet<HungryMetalGroup> groups){
+        HashSet<HungryMetalGroup> mergedGroups = new HashSet<>();
+        for (HungryMetalGroup localGroup: hungryMetalGroups){
+            if (!localGroup.retrieved){
+                mergedGroups.add(localGroup);
+            }
+        }
+
+        for (HungryMetalGroup handlerGroup: groups){
+            mergedGroups.add(handlerGroup);
+        }
         hungryMetalGroups = groups;
     }
 }

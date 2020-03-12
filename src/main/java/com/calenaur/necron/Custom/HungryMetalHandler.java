@@ -23,13 +23,9 @@ public class HungryMetalHandler implements Runnable {
             for (HungryMetalGroup group : hungryGroups) {
                     addBlocksToChange(group);
             }
-            HungryMetalGroupRegistry.setHungryMetalGroups(hungryGroups);
+            HungryMetalGroupRegistry.mergeHungryMetalGroups(hungryGroups);
         }
     }
-
-   private BlockPos[] getBlockPositionsToChange(HungryMetalGroup group){
-        return null;
-   }
 
    public void setWorld(World world){
         this.world = world;
@@ -70,6 +66,7 @@ public class HungryMetalHandler implements Runnable {
             }
         }
         group.setBlocksToSpan(blocksToTarget);
+        group.hasSpread = false;
     }
 
     public HashMap<HungryMetalGroup, HashSet<BlockPos>> getBlocksToSpreadTo(){
