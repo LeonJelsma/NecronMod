@@ -32,6 +32,7 @@ public class BlockMoteProcessor extends Block {
     public BlockMoteProcessor() {
         super(Properties.create(Material.ROCK)
                 .harvestLevel(3)
+                .lightValue(10)
                 .hardnessAndResistance(3)
                 .sound(SoundType.METAL)
 
