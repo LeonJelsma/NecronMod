@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 
 public class ItemRiftSack extends Item implements INamedContainerProvider {
 	public ItemRiftSack() {
-		super(new Properties().group(ItemGroup.NECRON));
+		super(new Properties().maxStackSize(1).group(ItemGroup.NECRON));
 		setRegistryName("rift_sack");
 	}
 
