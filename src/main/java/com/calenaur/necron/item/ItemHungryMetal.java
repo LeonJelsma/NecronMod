@@ -1,5 +1,6 @@
 package com.calenaur.necron.item;
 
+import com.calenaur.necron.Custom.HungryMetalGroupRegistry;
 import com.calenaur.necron.block.Blocks;
 import com.calenaur.necron.tileentity.TileEntityHungryMetal;
 import com.calenaur.necron.util.StringProperty;
@@ -18,6 +19,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.HashSet;
 import java.util.List;
 
 public class ItemHungryMetal extends BlockItem {
@@ -25,9 +27,10 @@ public class ItemHungryMetal extends BlockItem {
     IProperty<String> targetBlock = StringProperty.create("targetBlockName", "minecraft:air");
 
     public static int NO_TARGET = -1;
-    public static String TARGET = "goo_target";
-    public static String RADIUS = "goo_radius";
-    public static String SPEED = "goo_speed";
+    public static String TARGET = "hungry_metal_target";
+    public static String TARGETS = "hungry_metal_targets";
+    public static String RADIUS = "hungry_metal_radius";
+    public static String SPEED = "hungry_metal_radius";
 
     public ItemHungryMetal() {
         super(Blocks.HUNGRY_METAL, new Properties().group(ItemGroup.NECRON).maxStackSize(1));
@@ -41,16 +44,22 @@ public class ItemHungryMetal extends BlockItem {
 
     protected boolean onBlockPlaced(BlockPos pos, World worldIn, @Nullable PlayerEntity player, ItemStack stack, BlockState state) {
         if (!worldIn.isRemote()) {
-            if (worldIn.getTileEntity(pos) instanceof TileEntityHungryMetal) {
-                if (isTargetSet(stack)) {
-                    TileEntityHungryMetal tileEntityHungryMetal = (TileEntityHungryMetal) worldIn.getTileEntity(pos);
-                    tileEntityHungryMetal.setTargetBlock(getTarget(stack));
-                    tileEntityHungryMetal.setMaxDistance(getRadius(stack));
-                    tileEntityHungryMetal.setDelay(getSpeed(stack));
-                    tileEntityHungryMetal.setStartingPos(pos);
-                    tileEntityHungryMetal.activate();
-                }
-            }
+
+            HungryMetalGroupRegistry.addGroup(
+                    pos,
+                    new HashSet<Block>(),
+                    getRadius(stack),
+                    getSpeed(stack)
+            );
+
+            //TileEntityHungryMetal tileEntityHungryMetal = (TileEntityHungryMetal) worldIn.getTileEntity(pos);
+            //tileEntityHungryMetal.setTargetBlock(getTarget(stack));
+            //tileEntityHungryMetal.setMaxDistance(getRadius(stack));
+            //tileEntityHungryMetal.setDelay(getSpeed(stack));
+            //tileEntityHungryMetal.setStartingPos(pos);
+            //tileEntityHungryMetal.activate();
+
+
         }
         return setTileEntityNBT(worldIn, player, pos, stack);
     }

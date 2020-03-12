@@ -1,5 +1,6 @@
 package com.calenaur.necron.registry;
 
+import com.calenaur.necron.Custom.HungryMetalGroupRegistry;
 import com.calenaur.necron.NecronMod;
 import com.calenaur.necron.block.*;
 import com.calenaur.necron.block.necron.*;
@@ -32,6 +33,7 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.particles.ParticleType;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.registry.Registry;
@@ -43,9 +45,14 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 
 @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
 public class Registrar {
+
+	public static final HungryMetalGroupRegistry  HUNGRY_METAL_REGISTRY= new HungryMetalGroupRegistry();
+
+
 	public static void clientSetup(final FMLClientSetupEvent event) {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes.NECRON_SOLDIER, RendererNecronSoldier::new);
     	ScreenManager.registerFactory(ContainerTypes.MOTE_PROCESSOR, ScreenMoteProcessor::new);
@@ -55,6 +62,8 @@ public class Registrar {
 	public static void commonSetup(final FMLCommonSetupEvent event) {
 		WorldGen.register();
 	}
+
+
 
 	@SubscribeEvent
 	public static void onBlockRegistry(final RegistryEvent.Register<Block> event){

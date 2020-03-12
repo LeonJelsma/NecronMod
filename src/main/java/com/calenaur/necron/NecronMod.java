@@ -1,5 +1,6 @@
 package com.calenaur.necron;
 
+import com.calenaur.necron.event.EventHungryMetal;
 import com.calenaur.necron.event.EventNecrodermisItem;
 import com.calenaur.necron.registry.Registrar;
 import net.minecraftforge.common.MinecraftForge;
@@ -14,6 +15,7 @@ public class NecronMod {
     public NecronMod() {
         MinecraftForge.EVENT_BUS.register(new Registrar());
         MinecraftForge.EVENT_BUS.register(new EventNecrodermisItem());
+        MinecraftForge.EVENT_BUS.register(new EventHungryMetal());
         FMLJavaModLoadingContext.get().getModEventBus().addListener(Registrar::clientSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(Registrar::commonSetup);
     }

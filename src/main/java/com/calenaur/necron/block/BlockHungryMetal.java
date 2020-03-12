@@ -1,13 +1,19 @@
 package com.calenaur.necron.block;
 
 import com.calenaur.necron.tileentity.TileEntityHungryMetal;
+import com.calenaur.necron.tileentity.TileEntityHungryMetalArranger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
@@ -24,23 +30,17 @@ public class BlockHungryMetal extends Block {
 
     @Override
     public boolean hasTileEntity(BlockState state){
-        return true;
+        return false;
     }
-
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TileEntityHungryMetal();
-    }
-
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> stateBuilder) {
-        super.fillStateContainer(stateBuilder);
-        //stateBuilder.add(spread);
-        //stateBuilder.add(alive);
-        //stateBuilder.add(startingLocation);
+    public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
+        if (worldIn.getTileEntity(pos) instanceof TileEntityHungryMetal){
+            TileEntityHungryMetal hungryMetal = (TileEntityHungryMetal) worldIn.getTileEntity(pos);
+            if (hungryMetal.getActivated()){
+                stack = ItemStack.EMPTY;
+            }
+        }
+        super.harvestBlock(worldIn, player, pos, state, te, stack);
     }
-
-
 }

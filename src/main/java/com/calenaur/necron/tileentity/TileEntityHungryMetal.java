@@ -1,6 +1,7 @@
 package com.calenaur.necron.tileentity;
 
 import com.calenaur.necron.block.Blocks;
+import com.calenaur.necron.registry.Registrar;
 import com.calenaur.necron.util.Calculations;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -9,16 +10,19 @@ import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 
+import java.util.HashSet;
 import java.util.Random;
 
-public class TileEntityHungryMetal extends TileEntity implements ITickableTileEntity {
+public class TileEntityHungryMetal extends TileEntity {
 
     public static final String NAME = "hungry_metal_tile";
 
     private Block targetBlock;
+    private HashSet<Block> targetBlocks = new HashSet<>();
     private BlockPos startingPos;
     private boolean configured = false;
     private boolean removeMe = false;
@@ -48,10 +52,19 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
         this.configured = true;
     }
 
-    public TileEntityHungryMetal() {
-        super(TileEntities.HUNGRY_METAL);
+    public boolean getActivated(){
+        return configured;
     }
 
+    public TileEntityHungryMetal() {
+        super(TileEntities.HUNGRY_METAL);
+        /*
+        Registrar.HUNGRY_METAL_REGISTRY.addGroup(startingPos, targetBlocks, maxDistance, delay);
+        this.targetBlocks.add(net.minecraft.block.Blocks.DIRT);
+         */
+    }
+
+    /*
     @Override
     public void tick() {
         if(configured) {
@@ -89,7 +102,9 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
             timer++;
         }
     }
+     */
 
+    /*
     private void spread(IWorld world, BlockPos pos) {
         for (int[] neighbour : Calculations.NEIGHBOURS){
             int x = neighbour[0];
@@ -133,6 +148,8 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
             }
         return false;
     }
+
+     */
 
     @Override
     public void read(CompoundNBT compound) {

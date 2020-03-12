@@ -1,5 +1,7 @@
 package com.calenaur.necron.block;
 
+import com.calenaur.necron.tileentity.TileEntities;
+import com.calenaur.necron.tileentity.TileEntityHungryMetal;
 import com.calenaur.necron.tileentity.TileEntityHungryMetalArranger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
