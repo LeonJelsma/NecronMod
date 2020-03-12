@@ -19,6 +19,22 @@ public class HungryMetalGroup {
     private int timer = 0;
 
 
+    public synchronized boolean getHasSpread() {
+        return hasSpread;
+    }
+
+    public synchronized void setHasSpread(boolean hasSpread) {
+        this.hasSpread = hasSpread;
+    }
+
+    public synchronized boolean getRetrieved() {
+        return retrieved;
+    }
+
+    public synchronized void setRetrieved(boolean retrieved) {
+        this.retrieved = retrieved;
+    }
+
     public HungryMetalGroup(HashSet<Block> targetBlocks, BlockPos startingPos, int maxDistance, int delay){
         this.targetBlocks = targetBlocks;
         this.startingPos = startingPos;

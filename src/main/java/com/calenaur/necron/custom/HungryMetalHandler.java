@@ -12,17 +12,15 @@ import java.util.HashSet;
 
 public class HungryMetalHandler implements Runnable {
 
-
-    private HashMap<HungryMetalGroup, HashSet<BlockPos>> blocksToSpreadTo = new HashMap<>();
     private World world;
     @Override
     public void run() {
 
         while(true){
-            HashSet<HungryMetalGroup> remoteHungryGroups = (HashSet<HungryMetalGroup>)HungryMetalGroupRegistry.getHungryMetalGroups().clone();
+            HashSet<HungryMetalGroup> remoteHungryGroups = (HashSet<HungryMetalGroup>)HungryMetalGroupRegistry.getHungryMetalGroups();
             HashSet<HungryMetalGroup> hungryGroups;
             synchronized (remoteHungryGroups) {
-                hungryGroups = (HashSet<HungryMetalGroup>) HungryMetalGroupRegistry.getHungryMetalGroups().clone();
+                hungryGroups = (HashSet<HungryMetalGroup>) HungryMetalGroupRegistry.getHungryMetalGroups();
             }
             for (HungryMetalGroup group : hungryGroups) {
                 if (group.hasSpread) {
@@ -35,7 +33,7 @@ public class HungryMetalHandler implements Runnable {
                     }
                 }
             }
-            HungryMetalGroupRegistry.mergeHungryMetalGroups(hungryGroups);
+            HungryMetalGroupRegistry.mergeHungryMetalGroups((HashSet<HungryMetalGroup>)hungryGroups.clone());
         }
     }
 
@@ -46,7 +44,6 @@ public class HungryMetalHandler implements Runnable {
     private boolean canSpread(HashSet<Block> targets, BlockPos pos){
         if (world != null) {
             BlockState state = world.getBlockState(pos);
-
             if (state.getBlock() instanceof FlowingFluidBlock) {
                 FlowingFluidBlock block = (FlowingFluidBlock) state.getBlock();
                 if (block.getFluidState(state).getLevel() == 0) {
@@ -55,7 +52,6 @@ public class HungryMetalHandler implements Runnable {
                     return false;
                 }
             }
-
             if (state.getBlock() != net.minecraft.block.Blocks.AIR.getBlock()) {
                 if (targets.contains(state.getBlock())) {
                     return true;
@@ -91,11 +87,5 @@ public class HungryMetalHandler implements Runnable {
             }
         }
         group.setBlocksToSpan(blocksToTarget);
-    }
-
-    public HashMap<HungryMetalGroup, HashSet<BlockPos>> getBlocksToSpreadTo(){
-        synchronized (blocksToSpreadTo){
-            return blocksToSpreadTo;
-        }
     }
 }
