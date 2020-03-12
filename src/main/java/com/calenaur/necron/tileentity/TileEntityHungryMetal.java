@@ -12,13 +12,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 
+import java.util.HashSet;
 import java.util.Random;
 
 public class TileEntityHungryMetal extends TileEntity implements ITickableTileEntity {
 
     public static final String NAME = "hungry_metal_tile";
 
-    private Block targetBlock;
+    private HashSet<BlockState> targetBlocks;
     private BlockPos startingPos;
     private boolean configured = false;
     private boolean removeMe = false;
@@ -36,8 +37,8 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
         this.maxDistance = maxDistance;
     }
 
-    public void setTargetBlock(Block target){
-        this.targetBlock = target;
+    public void setTargetBlocks(HashSet<BlockState> target){
+        this.targetBlocks = target;
     }
 
     public void setDelay(int delay){
@@ -69,7 +70,7 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
                 if (tileEntity == null)
                     return;
 
-                if (startingPos == null || targetBlock == null || maxDistance == 0) {
+                if (startingPos == null || targetBlocks == null || maxDistance == 0) {
                     return;
                 }
 
@@ -101,7 +102,7 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
                     TileEntityHungryMetal tileEntity = (TileEntityHungryMetal) world.getTileEntity(newPos);
                     tileEntity.setStartingPos(this.startingPos);
                     tileEntity.setMaxDistance(this.maxDistance);
-                    tileEntity.setTargetBlock(this.targetBlock);
+                    tileEntity.setTargetBlocks(this.targetBlocks);
                     tileEntity.setDelay(this.delay);
                     tileEntity.activate();
                 }
@@ -113,23 +114,13 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
     private boolean canSpread(BlockPos pos){
         BlockState state = world.getBlockState(pos);
             if (state.getBlock() instanceof FlowingFluidBlock){
-                FlowingFluidBlock block = (FlowingFluidBlock) state.getBlock();
-                if (block.getFluidState(state).getLevel() == 0){
-                    return true;
+                FlowingFluidBlock fluid = (FlowingFluidBlock) state.getBlock();
+                if (fluid.getFluidState(state).getLevel() == 0){
+                    if (targetBlocks.contains(fluid.getBlock().getDefaultState()));
                 }
             }
-            if (state.getBlock() == targetBlock){
+            if (targetBlocks.contains(state)){
                 return true;
-            }
-            if (targetBlock == net.minecraft.block.Blocks.DIRT.getBlock()){
-                if (state.getBlock() == net.minecraft.block.Blocks.GRASS_BLOCK.getBlock() || state.getBlock() == net.minecraft.block.Blocks.COARSE_DIRT.getBlock()){
-                    return true;
-                }
-            }
-            if (targetBlock == Blocks.STONE_SELECTION) {
-                if( (state.getBlock() == net.minecraft.block.Blocks.STONE || (state.getBlock()) == net.minecraft.block.Blocks.ANDESITE.getBlock()) || (state.getBlock() == net.minecraft.block.Blocks.GRANITE.getBlock()) || ((state.getBlock() == net.minecraft.block.Blocks.DIORITE.getBlock()))){
-                    return true;
-                }
             }
         return false;
     }
@@ -138,7 +129,7 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
     public void read(CompoundNBT compound) {
         super.read(compound);
         this.startingPos = new BlockPos(compound.getInt("startx"), compound.getInt("starty"), compound.getInt("startz"));
-        this.targetBlock = Block.getStateById(compound.getInt("target")).getBlock();
+        this.targetBlocks = getTargetBlocksFromIntArray(compound.getIntArray("targets"));
         this.configured = compound.getBoolean("configured");
         this.removeMe = compound.getBoolean("removeme");
         this.maxDistance = compound.getInt("maxdistance");
@@ -148,10 +139,16 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
-        compound.putInt("startx", startingPos.getX());
-        compound.putInt("starty", startingPos.getY());
-        compound.putInt("startz", startingPos.getZ());
-        compound.putInt("target", Block.getStateId(targetBlock.getDefaultState()));
+        if (startingPos != null) {
+            compound.putInt("startx", startingPos.getX());
+            compound.putInt("starty", startingPos.getY());
+            compound.putInt("startz", startingPos.getZ());
+        } else {
+            compound.putInt("startx", 0);
+            compound.putInt("starty",0);
+            compound.putInt("startz", 0);
+        }
+        compound.putIntArray("targets", getIntArrayFromTargetBlocks());
         compound.putBoolean("configured", this.configured);
         compound.putBoolean("removeme", this.removeMe);
         compound.putInt("maxdistance", this.maxDistance);
@@ -159,5 +156,25 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
         compound.putInt("timer", this.timer);
         super.write(compound);
         return compound;
+    }
+
+    private int[] getIntArrayFromTargetBlocks(){
+        int[] targetIds = new int[targetBlocks.size()];
+        int i = 0;
+
+        for (BlockState target: targetBlocks){
+            targetIds[i] = Block.getStateId(target);
+            i++;
+        }
+        return targetIds;
+    }
+
+    private HashSet<BlockState> getTargetBlocksFromIntArray(int[] blockIds){
+        HashSet<BlockState> blocks = new HashSet<>();
+
+        for (int id : blockIds){
+            blocks.add(Block.getStateById(id));
+        }
+        return blocks;
     }
 }

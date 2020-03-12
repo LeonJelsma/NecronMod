@@ -53,7 +53,6 @@ public class Registrar {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes.NECRON_SOLDIER, RendererNecronSoldier::new);
     	ScreenManager.registerFactory(ContainerTypes.MOTE_PROCESSOR, ScreenMoteProcessor::new);
     	ScreenManager.registerFactory(ContainerTypes.HUNGRY_METAL_ARRANGER, ScreenHungryMetalArranger::new);
-		ScreenManager.registerFactory(ContainerTypes.MOTE_PROCESSOR, ScreenMoteProcessor::new);
 		ScreenManager.registerFactory(ContainerTypes.RIFT_SACK, ScreenRiftSack::new);
 	}
 

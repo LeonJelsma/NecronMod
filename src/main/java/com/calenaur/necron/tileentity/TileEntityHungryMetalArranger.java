@@ -6,6 +6,7 @@ import com.calenaur.necron.item.ItemHungryMetal;
 import com.calenaur.necron.item.ItemRiftSack;
 import com.calenaur.necron.item.Items;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluids;
@@ -50,13 +51,7 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
         if(items.get(3).isEmpty() || preview){
                 ItemStack stack = new ItemStack(Items.HUNGRY_METAL);
                 ItemStack newStack;
-                if (items.get(1).getItem() instanceof BlockItem) {
-                    BlockItem targetItem = (BlockItem) items.get(1).getItem();
-                    newStack = ItemHungryMetal.configure(stack, targetItem.getBlock().getDefaultState(), items.get(2).getCount(), 40);
-                } else {
-                    BucketItem targetItem = (BucketItem) items.get(1).getItem();
-                    newStack = ItemHungryMetal.configure(stack, targetItem.getFluid().getDefaultState().getBlockState(), items.get(2).getCount(), 40);
-                }
+                newStack = ItemHungryMetal.configure(stack, getBlockListFromRiftSack(items.get(1)), items.get(2).getCount(), 40);
                 items.set(3, newStack);
                 preview = true;
         }
@@ -64,17 +59,17 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
 
     public void take(){
         items.get(0).shrink(1);
-        items.get(1).shrink(1);
         items.set(2, ItemStack.EMPTY);
         preview = false;
     }
 
     private boolean canMake() {
         if (!this.items.get(0).isEmpty() && this.items.get(0).getItem() != null) {
-            if (this.items.get(1).getItem() != net.minecraft.item.Items.SHULKER_BOX) {
+            if (this.items.get(1).getItem() != Items.RIFT_SACK) {
                 return false;
-            } else {
-
+            }
+            if (getBlockListFromRiftSack(this.items.get(1)).size() <= 0 ){
+                return true;
             }
             if(this.items.get(0).getItem() == Items.HUNGRY_METAL) {
                 if (!ItemHungryMetal.isTargetSet(this.items.get(0))) {
@@ -89,10 +84,21 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
 
 
 
-    public NonNullList<Block> getBlockListFromRiftSack(ItemStack riftSack){
+    public NonNullList<ItemStack> getBlockListFromRiftSack(ItemStack riftSack)  {
+        NonNullList<ItemStack> blocks = NonNullList.create();
         Inventory inventory = ItemRiftSack.read(riftSack, ContainerRiftSack.INVENTORY_SIZE);
 
+        for (int i = 0; i < ContainerRiftSack.INVENTORY_SIZE; i++){
+            ItemStack stack = inventory.getStackInSlot(i);
+            if (stack.getItem() instanceof BlockItem){
+                blocks.add(stack);
+            }
 
+            if (stack.getItem() instanceof BucketItem){
+                blocks.add(stack);
+            }
+        }
+        return blocks;
     }
 
     @Override
