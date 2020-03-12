@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 public class ScreenMoteProcessor extends ContainerScreen<ContainerMoteProcessor> {
-    private ResourceLocation GUI = new ResourceLocation(NecronMod.MOD_ID, "textures/gui/mote_processor_gui.png");
+    private ResourceLocation GUI = new ResourceLocation(NecronMod.MOD_ID, "textures/gui/mote_processor.png");
 
     public ScreenMoteProcessor(Container container, PlayerInventory inventory, ITextComponent textComponent) {
         super((ContainerMoteProcessor) container, inventory, textComponent);
@@ -41,8 +41,8 @@ public class ScreenMoteProcessor extends ContainerScreen<ContainerMoteProcessor>
         int k = getProgressScaled(13, 200, this.container.processorData.get(0));
 
         this.blit(80 + i, 34 + j, 176, 14, l, 17);
-        this.blit(44 + i, 50 + j - k, 176, 13 - k, 19, 0 + k);
-        }
+        this.blit(44 + i, 50 + j - k, 176, 13 - k, 19, k);
+    }
 
     public int getProgressScaled(int width, int progress, int max_value) {
         return max_value != 0 && progress != 0 ? max_value * width / progress : 0;

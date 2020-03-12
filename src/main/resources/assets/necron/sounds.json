@@ -3,5 +3,10 @@
         "category": "block",
         "subtitle": "necron.subtitle.mote_processor.lit",
         "sounds": [ "necron:mote_processor_lit" ]
+    },
+    "rift_sack_open": {
+        "category": "item",
+        "subtitle": "necron.subtitle.rift_sack.open",
+        "sounds": [ "necron:rift_sack_open" ]
     }
 }

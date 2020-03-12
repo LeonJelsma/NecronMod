@@ -36,4 +36,6 @@ public class Items {
     public static ItemNecrodermisMote NECRON_MOTE;
     @ObjectHolder("necron:mote_processor")
     public static ItemMoteProcessor MOTE_PROCESSOR;
+    @ObjectHolder("necron:rift_sack")
+    public static ItemRiftSack RIFT_SACK;
 }
