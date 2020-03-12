@@ -19,12 +19,11 @@ public class HungryMetalHandler implements Runnable {
     @Override
     public void run() {
         while(true){
-            HashSet<HungryMetalGroup> hungryGroups = HungryMetalGroupRegistry.getHungryMetalGroups();
-            for (HungryMetalGroup group: hungryGroups){
-                synchronized (group) {
+            HashSet<HungryMetalGroup> hungryGroups = (HashSet<HungryMetalGroup>) HungryMetalGroupRegistry.getHungryMetalGroups().clone();
+            for (HungryMetalGroup group : hungryGroups) {
                     addBlocksToChange(group);
-                }
             }
+            HungryMetalGroupRegistry.setHungryMetalGroups(hungryGroups);
         }
     }
 
@@ -37,11 +36,13 @@ public class HungryMetalHandler implements Runnable {
    }
 
     private boolean canSpread(HashSet<Block> targets, BlockPos pos){
-        BlockState state = world.getBlockState(pos);
+        if (world != null) {
+            BlockState state = world.getBlockState(pos);
 
-        if (state.getBlock() != net.minecraft.block.Blocks.AIR.getBlock()){
-            if (targets.contains(state.getBlock())){
-                return true;
+            if (state.getBlock() != net.minecraft.block.Blocks.AIR.getBlock()) {
+                if (targets.contains(state.getBlock())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -59,9 +60,9 @@ public class HungryMetalHandler implements Runnable {
                 int y = neighbour[1];
                 int z = neighbour[2];
                 BlockPos newPos = pos.add(x, y, z);
-                if (Calculations.GetDistance(newPos, startingPos) > maxDistance) {
+                if (Calculations.GetDistance(newPos, startingPos) < maxDistance) {
                     if (canSpread(group.getTargetBlocks(), newPos)) {
-                        if (blocksToTarget.contains(newPos)) {
+                        if (!blocksToTarget.contains(newPos)) {
                             blocksToTarget.add(newPos);
                         }
                     }

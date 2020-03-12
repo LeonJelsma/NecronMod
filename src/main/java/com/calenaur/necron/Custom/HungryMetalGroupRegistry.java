@@ -27,4 +27,8 @@ public class HungryMetalGroupRegistry {
     public static HashSet<HungryMetalGroup> getHungryMetalGroups(){
         return hungryMetalGroups;
     }
+
+    public synchronized static void setHungryMetalGroups(HashSet<HungryMetalGroup> groups){
+        hungryMetalGroups = groups;
+    }
 }

@@ -31,6 +31,10 @@ public class EventHungryMetal {
     ExecutorService executor = Executors.newFixedThreadPool(2);
     HungryMetalHandler hungryMetalHandler = new HungryMetalHandler();
 
+    public EventHungryMetal(){
+        executor.execute(hungryMetalHandler);
+    }
+
 
 
     @SubscribeEvent
@@ -45,6 +49,7 @@ public class EventHungryMetal {
         tick++;
         if (tick > 20){
             tick = 0;
+            hungryMetalHandler.setWorld(event.world);
             for (HungryMetalGroup group: HungryMetalGroupRegistry.getHungryMetalGroups()){
                 HashSet<BlockPos> changedBlocks = new HashSet<>();
                 for (BlockPos pos: group.getBlocksToSpan()){
@@ -52,7 +57,6 @@ public class EventHungryMetal {
                         changedBlocks.add(pos);
                     }
                 }
-                group.setSpanningBlocks(changedBlocks);
             }
         }
     }
