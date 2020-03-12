@@ -1,12 +1,16 @@
 package com.calenaur.necron.tileentity;
 
 import com.calenaur.necron.inventory.container.ContainerHungryMetalArranger;
+import com.calenaur.necron.inventory.container.ContainerRiftSack;
 import com.calenaur.necron.item.ItemHungryMetal;
+import com.calenaur.necron.item.ItemRiftSack;
 import com.calenaur.necron.item.Items;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -85,13 +89,11 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
 
 
 
-    public NonNullList<ItemStack> getItemsFromDataPad(){
+    public NonNullList<Block> getBlockListFromRiftSack(ItemStack riftSack){
+        Inventory inventory = ItemRiftSack.read(riftSack, ContainerRiftSack.INVENTORY_SIZE);
 
-        NonNullList<ItemStack> contents = new NonNullList<ItemStack>();
 
-        CompoundNBT compoundNBT = this.items.get(1).getTag();
-        ItemStackHelper.loadAllItems(compoundNBT, this.items);
-    };
+    }
 
     @Override
     public ITextComponent getDisplayName() {
