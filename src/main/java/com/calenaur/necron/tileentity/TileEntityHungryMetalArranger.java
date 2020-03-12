@@ -67,15 +67,10 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
 
     private boolean canMake() {
         if (!this.items.get(0).isEmpty() && this.items.get(0).getItem() != null) {
-            if (!(this.items.get(1).getItem() instanceof BlockItem)){
-                if (this.items.get(1).getItem() instanceof BucketItem) {
-                    BucketItem bucket = (BucketItem) this.items.get(1).getItem();
-                    if (bucket.getFluid() == Fluids.EMPTY){
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
+            if (this.items.get(1).getItem() != net.minecraft.item.Items.SHULKER_BOX) {
+                return false;
+            } else {
+
             }
             if(this.items.get(0).getItem() == Items.HUNGRY_METAL) {
                 if (!ItemHungryMetal.isTargetSet(this.items.get(0))) {
@@ -87,6 +82,16 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
         }
         return false;
     }
+
+
+
+    public NonNullList<ItemStack> getItemsFromDataPad(){
+
+        NonNullList<ItemStack> contents = new NonNullList<ItemStack>();
+
+        CompoundNBT compoundNBT = this.items.get(1).getTag();
+        ItemStackHelper.loadAllItems(compoundNBT, this.items);
+    };
 
     @Override
     public ITextComponent getDisplayName() {
