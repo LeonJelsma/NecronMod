@@ -27,7 +27,6 @@ public class EventHungryMetal {
     private int tick = 0;
     private static HashSet<BlockPos> blocksToChange = new HashSet<>();
     private static boolean haveBlocksBeenChanged = false;
-    private World world;
     ExecutorService executor = Executors.newFixedThreadPool(2);
     HungryMetalHandler hungryMetalHandler = new HungryMetalHandler();
 
@@ -47,21 +46,35 @@ public class EventHungryMetal {
             return;
 
         tick++;
-        if (tick > 20){
+        if (tick > 4) {
             tick = 0;
+
+            HungryMetalGroupRegistry.doSpread(event.world);
             hungryMetalHandler.setWorld(event.world);
-            for (HungryMetalGroup group: HungryMetalGroupRegistry.getHungryMetalGroups()){
-                HashSet<BlockPos> changedBlocks = new HashSet<>();
-                if (!group.hasSpread) {
-                    for (BlockPos pos: group.getBlocksToSpan()){
-                        if (world.setBlockState(pos, Blocks.HUNGRY_METAL.getDefaultState())) {
-                            changedBlocks.add(pos);
+            /*
+            hungryMetalHandler.setWorld(event.world);
+            HashSet<HungryMetalGroup> groups = HungryMetalGroupRegistry.getHungryMetalGroups();
+            synchronized (groups) {
+                for (HungryMetalGroup group : groups) {
+                    HashSet<BlockPos> changedBlocks = new HashSet<>();
+                    if (!group.hasSpread && group.retrieved) {
+                        for (BlockPos pos : group.getBlocksToSpan()) {
+                            if (event.world.setBlockState(pos, Blocks.HUNGRY_METAL.getDefaultState())) {
+                                changedBlocks.add(pos);
+                            }
+                        }
+                        removeOldBlocks(event.world, group.getSpanningBlocks());
+                        group.setSpanningBlocks(changedBlocks);
+                        group.hasSpread = true;
+                        group.retrieved = false;
+                        if (group.getSpanningBlocks().isEmpty()) {
+                            HungryMetalGroupRegistry.getHungryMetalGroups().remove(group);
                         }
                     }
                 }
-                group.setSpanningBlocks(changedBlocks);
-                group.hasSpread = true;
             }
+
+             */
         }
     }
 
@@ -74,4 +87,9 @@ public class EventHungryMetal {
         blocksToChange = blocks;
     }
 
+    public void removeOldBlocks(World world, HashSet<BlockPos> blocks){
+        for (BlockPos block: blocks){
+            world.setBlockState(block, net.minecraft.block.Blocks.AIR.getDefaultState());
+        }
+    }
 }

@@ -3,6 +3,7 @@ package com.calenaur.necron.Custom;
 import com.calenaur.necron.util.Calculations;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -15,13 +16,25 @@ public class HungryMetalHandler implements Runnable {
 
     private HashMap<HungryMetalGroup, HashSet<BlockPos>> blocksToSpreadTo = new HashMap<>();
     private World world;
-
     @Override
     public void run() {
+
         while(true){
-            HashSet<HungryMetalGroup> hungryGroups = (HashSet<HungryMetalGroup>) HungryMetalGroupRegistry.getHungryMetalGroups().clone();
+            HashSet<HungryMetalGroup> remoteHungryGroups = (HashSet<HungryMetalGroup>)HungryMetalGroupRegistry.getHungryMetalGroups().clone();
+            HashSet<HungryMetalGroup> hungryGroups;
+            synchronized (remoteHungryGroups) {
+                hungryGroups = (HashSet<HungryMetalGroup>) HungryMetalGroupRegistry.getHungryMetalGroups().clone();
+            }
             for (HungryMetalGroup group : hungryGroups) {
+                if (group.hasSpread) {
                     addBlocksToChange(group);
+                    group.retrieved = true;
+                    group.hasSpread = false;
+
+                    if (group.getSpanningBlocks().isEmpty()) {
+                        hungryGroups.remove(group);
+                    }
+                }
             }
             HungryMetalGroupRegistry.mergeHungryMetalGroups(hungryGroups);
         }
@@ -35,8 +48,19 @@ public class HungryMetalHandler implements Runnable {
         if (world != null) {
             BlockState state = world.getBlockState(pos);
 
+            if (state.getBlock() instanceof FlowingFluidBlock) {
+                FlowingFluidBlock block = (FlowingFluidBlock) state.getBlock();
+                if (block.getFluidState(state).getLevel() == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
             if (state.getBlock() != net.minecraft.block.Blocks.AIR.getBlock()) {
                 if (targets.contains(state.getBlock())) {
+                    return true;
+                } else {
                     return true;
                 }
             }
@@ -56,6 +80,8 @@ public class HungryMetalHandler implements Runnable {
                 int y = neighbour[1];
                 int z = neighbour[2];
                 BlockPos newPos = pos.add(x, y, z);
+                //System.out.println(Calculations.GetDistance(newPos, startingPos));
+                //System.out.println(maxDistance);
                 if (Calculations.GetDistance(newPos, startingPos) < maxDistance) {
                     if (canSpread(group.getTargetBlocks(), newPos)) {
                         if (!blocksToTarget.contains(newPos)) {
@@ -66,7 +92,6 @@ public class HungryMetalHandler implements Runnable {
             }
         }
         group.setBlocksToSpan(blocksToTarget);
-        group.hasSpread = false;
     }
 
     public HashMap<HungryMetalGroup, HashSet<BlockPos>> getBlocksToSpreadTo(){

@@ -45,10 +45,14 @@ public class ItemHungryMetal extends BlockItem {
     protected boolean onBlockPlaced(BlockPos pos, World worldIn, @Nullable PlayerEntity player, ItemStack stack, BlockState state) {
         if (!worldIn.isRemote()) {
 
+            HashSet<Block> targets = new HashSet<>();
+            targets.add(net.minecraft.block.Blocks.DIRT);
+
             HungryMetalGroupRegistry.addGroup(
                     pos,
-                    new HashSet<Block>(),
-                    getRadius(stack),
+                    targets,
+                    //getRadius(stack),
+                    30,
                     getSpeed(stack)
             );
 
