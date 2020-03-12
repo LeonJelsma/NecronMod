@@ -1,6 +1,7 @@
 package com.calenaur.necron.tileentity;
 
 import com.calenaur.necron.block.BlockMoteProcessor;
+import com.calenaur.necron.block.Blocks;
 import com.calenaur.necron.inventory.container.ContainerMoteProcessor;
 import com.calenaur.necron.recipe.ProcessingRecipe;
 import com.calenaur.necron.recipe.RecipeTypes;
@@ -24,6 +25,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.LanguageMap;
 import net.minecraft.util.text.StringTextComponent;
 import javax.annotation.Nullable;
 
@@ -219,13 +221,13 @@ public class TileEntityMoteProcessor extends TileEntity implements ISidedInvento
 
     @Override
     public ITextComponent getDisplayName() {
-        return new StringTextComponent(getType().getRegistryName().getPath());
+    return new StringTextComponent(LanguageMap.getInstance().translateKey(Blocks.MOTE_PROCESSOR.getTranslationKey()));
     }
 
     @Nullable
     @Override
     public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new ContainerMoteProcessor(id, playerInventory, this, this. processorData);
+        return new ContainerMoteProcessor(id, playerInventory, this, this.processorData);
     }
 
     @Override

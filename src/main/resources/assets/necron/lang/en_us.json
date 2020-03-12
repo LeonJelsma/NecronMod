@@ -25,5 +25,7 @@
   "item.necron.necrodermis_shovel": "Necrodermis Shovel",
   "item.necron.necrodermis_mote": "Necrodermis Mote",
   "item.necron.necron_soldier_spawn_egg": "Necron Soldier Spawn Egg",
-  "subtitles.block.mote_processor.lit": "Mote Processor Processing"
+  "item.necron.rift_sack": "Rift Sack",
+  "subtitles.block.mote_processor.lit": "Mote Processor Processing",
+  "subtitles.block.rift_sack.open": "Rift Sack Opens"
 }

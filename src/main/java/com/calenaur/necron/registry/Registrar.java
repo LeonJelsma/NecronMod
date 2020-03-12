@@ -7,7 +7,9 @@ import com.calenaur.necron.entity.type.EntityTypes;
 import com.calenaur.necron.gui.ScreenHungryMetalArranger;
 import com.calenaur.necron.gui.ScreenMoteProcessor;
 import com.calenaur.necron.inventory.container.ContainerHungryMetalArranger;
+import com.calenaur.necron.gui.ScreenRiftSack;
 import com.calenaur.necron.inventory.container.ContainerMoteProcessor;
+import com.calenaur.necron.inventory.container.ContainerRiftSack;
 import com.calenaur.necron.inventory.container.ContainerTypes;
 import com.calenaur.necron.item.*;
 import com.calenaur.necron.particles.ParticleMoteProcessorFlame;
@@ -19,6 +21,7 @@ import com.calenaur.necron.renderer.RendererNecronSoldier;
 import com.calenaur.necron.sound.SoundMoteProcessorLit;
 import com.calenaur.necron.tileentity.TileEntityHungryMetalArranger;
 import com.calenaur.necron.tileentity.TileEntityHungryMetal;
+import com.calenaur.necron.sound.SoundRiftSackOpen;
 import com.calenaur.necron.tileentity.TileEntityMoteProcessor;
 import com.calenaur.necron.world.WorldGen;
 import com.calenaur.necron.world.gen.feature.structure.ruin.StructureNecronRuin;
@@ -50,6 +53,8 @@ public class Registrar {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes.NECRON_SOLDIER, RendererNecronSoldier::new);
     	ScreenManager.registerFactory(ContainerTypes.MOTE_PROCESSOR, ScreenMoteProcessor::new);
     	ScreenManager.registerFactory(ContainerTypes.HUNGRY_METAL_ARRANGER, ScreenHungryMetalArranger::new);
+		ScreenManager.registerFactory(ContainerTypes.MOTE_PROCESSOR, ScreenMoteProcessor::new);
+		ScreenManager.registerFactory(ContainerTypes.RIFT_SACK, ScreenRiftSack::new);
 	}
 
 	public static void commonSetup(final FMLCommonSetupEvent event) {
@@ -112,6 +117,7 @@ public class Registrar {
 		event.getRegistry().register(new ItemNecrodermisOre());
 		event.getRegistry().register(new ItemNecrodermisMote());
 		event.getRegistry().register(new ItemNecronSoldierSpawnEgg());
+		event.getRegistry().register(new ItemRiftSack());
 	}
 
 	@SubscribeEvent
@@ -124,6 +130,7 @@ public class Registrar {
 	public static void onContainerTypeRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
 		event.getRegistry().register(new ContainerType<>(ContainerMoteProcessor::new).setRegistryName(ContainerMoteProcessor.NAME));
 		event.getRegistry().register(new ContainerType<>(ContainerHungryMetalArranger::new).setRegistryName(ContainerHungryMetalArranger.NAME));
+		event.getRegistry().register(new ContainerType<>(ContainerRiftSack::new).setRegistryName(ContainerRiftSack.NAME));
 	}
 
 	@SubscribeEvent
@@ -136,6 +143,7 @@ public class Registrar {
 	@SubscribeEvent
 	public static void onSoundRegistry(final RegistryEvent.Register<SoundEvent> event){
 		event.getRegistry().register(new SoundMoteProcessorLit());
+		event.getRegistry().register(new SoundRiftSackOpen());
 	}
 
 	@SubscribeEvent
