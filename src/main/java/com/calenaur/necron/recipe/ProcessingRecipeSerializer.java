@@ -12,8 +12,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 
 public class ProcessingRecipeSerializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ProcessingRecipe> {
-
-
 	public ProcessingRecipe read(ResourceLocation recipeId, JsonObject json) {
 		String s = JSONUtils.getString(json, "group", "");
 		JsonElement jsonelement = (JsonElement)(JSONUtils.isJsonArray(json, "ingredient") ? JSONUtils.getJsonArray(json, "ingredient") : JSONUtils.getJsonObject(json, "ingredient"));
@@ -26,9 +24,7 @@ public class ProcessingRecipeSerializer extends net.minecraftforge.registries.Fo
 		else {
 			String s1 = JSONUtils.getString(json, "result");
 			ResourceLocation resourcelocation = new ResourceLocation(s1);
-			itemstack = new ItemStack(Registry.ITEM.getValue(resourcelocation).orElseThrow(() -> {
-				return new IllegalStateException("Item: " + s1 + " does not exist");
-			}));
+			itemstack = new ItemStack(Registry.ITEM.getValue(resourcelocation).orElseThrow(() -> new IllegalStateException("Item: " + s1 + " does not exist")));
 		}
 		float f = JSONUtils.getFloat(json, "experience", 0.0F);
 		int i = JSONUtils.getInt(json, "processingtime", 200);
@@ -51,9 +47,5 @@ public class ProcessingRecipeSerializer extends net.minecraftforge.registries.Fo
 		buffer.writeItemStack(recipe.result);
 		buffer.writeFloat(recipe.experience);
 		buffer.writeVarInt(recipe.processingTime);
-	}
-
-	interface IFactory<T extends ProcessingRecipe> {
-		T create(ResourceLocation resourceLocation, String name, Ingredient ingredient, ItemStack itemStack, float experience, int processingTime);
 	}
 }

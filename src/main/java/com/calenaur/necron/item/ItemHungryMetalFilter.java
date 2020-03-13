@@ -1,7 +1,6 @@
 package com.calenaur.necron.item;
 
-import com.calenaur.necron.inventory.container.ContainerRiftSack;
-import com.calenaur.necron.sound.Sounds;
+import com.calenaur.necron.inventory.container.ContainerHungryMetalFilter;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -14,18 +13,18 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.LanguageMap;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
+
 import javax.annotation.Nullable;
 
-public class ItemRiftSack extends Item implements INamedContainerProvider {
-	public ItemRiftSack() {
+public class ItemHungryMetalFilter extends Item implements INamedContainerProvider {
+	public ItemHungryMetalFilter() {
 		super(new Properties().maxStackSize(1).group(ItemGroup.NECRON));
-		setRegistryName("rift_sack");
+		setRegistryName("hungry_metal_filter");
 	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		playerIn.openContainer(this);
-		playerIn.playSound(Sounds.SOUND_EVENT_RIFT_SACK_OPEN, 1.0F, 1.0F);
 		return super.onItemRightClick(worldIn, playerIn, handIn);
 	}
 
@@ -47,6 +46,6 @@ public class ItemRiftSack extends Item implements INamedContainerProvider {
 		if (itemStack == null)
 			return null;
 
-		return ContainerRiftSack.fromItemStack(id, playerInventory, itemStack);
+		return ContainerHungryMetalFilter.fromItemStack(id, playerInventory, itemStack);
 	}
 }

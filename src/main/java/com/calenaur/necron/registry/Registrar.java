@@ -5,9 +5,11 @@ import com.calenaur.necron.block.*;
 import com.calenaur.necron.block.necron.*;
 import com.calenaur.necron.entity.type.EntityTypes;
 import com.calenaur.necron.gui.ScreenHungryMetalArranger;
+import com.calenaur.necron.gui.ScreenHungryMetalFilter;
 import com.calenaur.necron.gui.ScreenMoteProcessor;
 import com.calenaur.necron.inventory.container.ContainerHungryMetalArranger;
 import com.calenaur.necron.gui.ScreenRiftSack;
+import com.calenaur.necron.inventory.container.ContainerHungryMetalFilter;
 import com.calenaur.necron.inventory.container.ContainerMoteProcessor;
 import com.calenaur.necron.inventory.container.ContainerRiftSack;
 import com.calenaur.necron.inventory.container.ContainerTypes;
@@ -54,6 +56,7 @@ public class Registrar {
     	ScreenManager.registerFactory(ContainerTypes.MOTE_PROCESSOR, ScreenMoteProcessor::new);
     	ScreenManager.registerFactory(ContainerTypes.HUNGRY_METAL_ARRANGER, ScreenHungryMetalArranger::new);
 		ScreenManager.registerFactory(ContainerTypes.RIFT_SACK, ScreenRiftSack::new);
+		ScreenManager.registerFactory(ContainerTypes.HUNGRY_METAL_FILTER, ScreenHungryMetalFilter::new);
 	}
 
 	public static void commonSetup(final FMLCommonSetupEvent event) {
@@ -117,6 +120,7 @@ public class Registrar {
 		event.getRegistry().register(new ItemNecrodermisMote());
 		event.getRegistry().register(new ItemNecronSoldierSpawnEgg());
 		event.getRegistry().register(new ItemRiftSack());
+		event.getRegistry().register(new ItemHungryMetalFilter());
 	}
 
 	@SubscribeEvent
@@ -130,6 +134,7 @@ public class Registrar {
 		event.getRegistry().register(new ContainerType<>(ContainerMoteProcessor::new).setRegistryName(ContainerMoteProcessor.NAME));
 		event.getRegistry().register(new ContainerType<>(ContainerHungryMetalArranger::new).setRegistryName(ContainerHungryMetalArranger.NAME));
 		event.getRegistry().register(new ContainerType<>(ContainerRiftSack::new).setRegistryName(ContainerRiftSack.NAME));
+		event.getRegistry().register(new ContainerType<>(ContainerHungryMetalFilter::new).setRegistryName(ContainerHungryMetalFilter.NAME));
 	}
 
 	@SubscribeEvent
