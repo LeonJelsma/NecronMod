@@ -122,6 +122,11 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
             if (targetBlocks.contains(state)){
                 return true;
             }
+
+            //Special cases cases
+            if (state == net.minecraft.block.Blocks.GRASS_BLOCK.getDefaultState() && targetBlocks.contains(net.minecraft.block.Blocks.DIRT.getDefaultState())){
+                return true;
+            }
         return false;
     }
 

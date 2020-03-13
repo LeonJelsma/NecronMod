@@ -1,5 +1,6 @@
 package com.calenaur.necron.inventory.container;
 
+import com.calenaur.necron.item.ItemRiftSack;
 import com.calenaur.necron.item.Items;
 import com.calenaur.necron.tileentity.TileEntityHungryMetalArranger;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,8 +10,6 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -21,7 +20,7 @@ public class ContainerHungryMetalArranger extends Container {
 	private World world;
 	private TileEntityHungryMetalArranger tileEntityHungryMetalArranger;
 	public static final int SLOT_HUNGRY_METAL_IN = 0;
-	public static final int SLOT_TARGET_MATERIAL = 1;
+	public static final int SLOT_RIFT_SACK = 1;
 	public static final int SLOT_NECRON_INGOT = 2;
 	public static final int SLOT_OUTPUT = 3;
 	private static final int MINECRAFT_INVENTORY_SIZE = 27;
@@ -85,8 +84,8 @@ public class ContainerHungryMetalArranger extends Container {
 			}else if (originItemStack.getItem() == Items.NECRON_INGOT) {//Is the item a necron ingot?
 					if (!mergeItemStack(originItemStack, SLOT_NECRON_INGOT, SLOT_NECRON_INGOT + 1, false))//Place in the hungry metal slot
 						return ItemStack.EMPTY;
-			} else if (originItemStack.getItem() instanceof BlockItem || originItemStack.getItem() instanceof BucketItem) {//Does the item provide a valid target??
-				if (!mergeItemStack(originItemStack, SLOT_TARGET_MATERIAL, SLOT_TARGET_MATERIAL + 1, false))//Place in the target material slot
+			} else if (originItemStack.getItem() instanceof ItemRiftSack && hungryMetalArrangerinventory.getStackInSlot(SLOT_RIFT_SACK) == ItemStack.EMPTY) {//Does the item provide a valid target??
+				if (!mergeItemStack(originItemStack, SLOT_RIFT_SACK, SLOT_RIFT_SACK + 1, false))//Place in the target material slot
 					return ItemStack.EMPTY;
 			} else if (slotIndex < hungryMetalArrangerinventory.getSizeInventory() + MINECRAFT_INVENTORY_SIZE) { //Is the item in the players inventory?
 				if (!mergeItemStack(originItemStack, hungryMetalArrangerinventory.getSizeInventory() + MINECRAFT_INVENTORY_SIZE, this.inventorySlots.size(), false)) //Place in hotbar

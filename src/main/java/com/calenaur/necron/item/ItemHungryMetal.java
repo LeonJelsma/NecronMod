@@ -102,8 +102,14 @@ public class ItemHungryMetal extends BlockItem {
         String targets = "";
         if (isTargetSet(stack)){
             HashSet<BlockState> states = getTargets(stack);
+
+            int i = states.size()-2;
             for (BlockState state: states){
-                targets += LanguageMap.getInstance().translateKey(state.getBlock().getTranslationKey()) + ", ";
+                i++;
+                targets += LanguageMap.getInstance().translateKey(state.getBlock().getTranslationKey());
+                if (i >0){
+                    targets += ", ";
+                }
             }
         }
         return targets;
