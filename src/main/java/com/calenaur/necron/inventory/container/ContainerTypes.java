@@ -8,4 +8,7 @@ public class ContainerTypes {
     public static ContainerType<ContainerMoteProcessor> MOTE_PROCESSOR;
     @ObjectHolder("necron:rift_sack")
     public static ContainerType<ContainerRiftSack> RIFT_SACK;
+
+    @ObjectHolder("necron:hungry_metal_arranger")
+    public static ContainerType<ContainerHungryMetalArranger> HUNGRY_METAL_ARRANGER;
 }

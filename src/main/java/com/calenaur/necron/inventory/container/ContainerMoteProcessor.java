@@ -40,7 +40,7 @@ public class ContainerMoteProcessor extends Container {
 		this.processorInventory = processorInventory;
 		this.world = playerInventoryIn.player.world;
 		addSlot(new Slot(processorInventory, SLOT_INPUT, 45, 17));
-    	addSlot(new SlotMoteProcessorFuel(processorInventory, SLOT_FUEL_LEFT, 34, 53, Items.MAGMA_CREAM));
+		addSlot(new SlotMoteProcessorFuel(processorInventory, SLOT_FUEL_LEFT, 34, 53, Items.MAGMA_CREAM));
 		addSlot(new SlotMoteProcessorFuel(processorInventory, SLOT_FUEL_RIGHT, 56, 53, Items.BLAZE_POWDER));
 		addSlot(new SlotMoteProcessorResult(processorInventory, SLOT_OUTPUT, 116, 35));
 		layoutPlayerInventorySlots(playerInventoryIn);
@@ -60,7 +60,7 @@ public class ContainerMoteProcessor extends Container {
 		}
 	}
 
-    @Override
+	@Override
 	public boolean canInteractWith(PlayerEntity playerIn) {
 		return this.processorInventory.isUsableByPlayer(playerIn);
 	}

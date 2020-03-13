@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:stone",
+      "item": "minecraft:andesite",
+      "item": "minecraft:diorite",
+      "item": "minecraft:granite"
+    },
+    {
+      "item": "necron:necrodermis_ingot"
+    }
+  ],
+  "result": {
+    "item": "necron:stone_selection"
+  }
+}

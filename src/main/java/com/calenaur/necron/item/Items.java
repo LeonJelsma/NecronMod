@@ -38,4 +38,14 @@ public class Items {
     public static ItemMoteProcessor MOTE_PROCESSOR;
     @ObjectHolder("necron:rift_sack")
     public static ItemRiftSack RIFT_SACK;
+    @ObjectHolder("necron:necrodermis_ingot")
+    public static ItemNecrodermisIngot NECRON_INGOT;
+    @ObjectHolder("necron:hungry_metal")
+    public static ItemHungryMetal HUNGRY_METAL;
+    @ObjectHolder("necron:hungry_metal_arranger")
+    public static ItemHungryMetalArranger HUNGRY_METAL_ARRANGER;
+    @ObjectHolder("necron:stone_selection")
+    public static ItemStoneSelection STONE_SELECTION;
+    @ObjectHolder("necron:wood_selection")
+    public static ItemWoodSelection WOOD_SELECTION;
 }
