@@ -1,15 +1,14 @@
 package com.calenaur.necron.tileentity;
 
 import com.calenaur.necron.inventory.container.ContainerHungryMetalArranger;
+import com.calenaur.necron.inventory.container.ContainerHungryMetalFilter;
 import com.calenaur.necron.inventory.container.ContainerRiftSack;
 import com.calenaur.necron.item.ItemHungryMetal;
 import com.calenaur.necron.item.ItemRiftSack;
 import com.calenaur.necron.item.Items;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.ItemStackHelper;
@@ -52,7 +51,7 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
         if(items.get(3).isEmpty() || preview){
                 ItemStack stack = new ItemStack(Items.HUNGRY_METAL);
                 ItemStack newStack;
-                newStack = ItemHungryMetal.configure(stack, getBlockListFromRiftSack(items.get(1)), items.get(2).getCount(), 40);
+                newStack = ItemHungryMetal.configure(stack, getBlockListFromFilter(items.get(1)), items.get(2).getCount(), 40);
                 items.set(3, newStack);
                 preview = true;
         }
@@ -66,10 +65,10 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
 
     private boolean canMake() {
         if (!this.items.get(0).isEmpty() && this.items.get(0).getItem() != null) {
-            if (this.items.get(1).getItem() != Items.RIFT_SACK) {
+            if (this.items.get(1).getItem() != Items.HUNGRY_METAL_FILTER) {
                 return false;
             }
-            if (getBlockListFromRiftSack(this.items.get(1)).size() <= 0 ){
+            if (getBlockListFromFilter(this.items.get(1)).size() <= 0 ){
                 return true;
             }
             if(this.items.get(0).getItem() == Items.HUNGRY_METAL) {
@@ -85,9 +84,9 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
 
 
 
-    public HashSet<BlockState> getBlockListFromRiftSack(ItemStack riftSack)  {
+    public HashSet<BlockState> getBlockListFromFilter(ItemStack filter)  {
         HashSet<BlockState> blocks = new HashSet<>();
-        Inventory inventory = ItemRiftSack.read(riftSack, ContainerRiftSack.INVENTORY_SIZE);
+        Inventory inventory = com.calenaur.necron.inventory.ItemStackHelper.readInventory(filter, ContainerHungryMetalFilter.INVENTORY_SIZE);
 
         for (int i = 0; i < ContainerRiftSack.INVENTORY_SIZE; i++){
             ItemStack stack = inventory.getStackInSlot(i);
