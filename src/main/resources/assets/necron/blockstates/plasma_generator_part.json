@@ -1,0 +1,25 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cube_all",
+    "textures": {
+      "all": "necron:blocks/plasma_generator_part"
+    },
+    "transform": "forge:default-block"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}],
+    "formed": {
+      "unformed": { },
+      "p000": { "model": "necron:necrodermis_ore" },
+      "p001": { "model": "necron:necrodermis_ore" },
+      "p010": { "model": "necron:necrodermis_ore" },
+      "p011": { "model": "necron:necrodermis_ore" },
+      "p100": { "model": "necron:necrodermis_ore" },
+      "p101": { "model": "necron:necrodermis_ore" },
+      "p110": { "model": "necron:necrodermis_ore" },
+      "p111": { "model": "necron:necrodermis_ore" }
+    }
+  }
+}

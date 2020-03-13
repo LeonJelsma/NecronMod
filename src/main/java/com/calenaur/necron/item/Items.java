@@ -48,4 +48,8 @@ public class Items {
     public static ItemStoneSelection STONE_SELECTION;
     @ObjectHolder("necron:wood_selection")
     public static ItemWoodSelection WOOD_SELECTION;
+    @ObjectHolder("necron:plasma_generator")
+    public static ItemBlockPlasmaGenerator PLASMA_GENERATOR;
+    @ObjectHolder("necron:plasma_generator_part")
+    public static ItemBlockPlasmaGeneratorPart PLASMA_GENERATOR_PART;
 }

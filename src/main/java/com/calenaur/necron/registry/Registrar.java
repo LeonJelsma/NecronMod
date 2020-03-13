@@ -12,6 +12,7 @@ import com.calenaur.necron.inventory.container.ContainerMoteProcessor;
 import com.calenaur.necron.inventory.container.ContainerRiftSack;
 import com.calenaur.necron.inventory.container.ContainerTypes;
 import com.calenaur.necron.item.*;
+import com.calenaur.necron.multiblock.*;
 import com.calenaur.necron.particles.ParticleMoteProcessorFlame;
 import com.calenaur.necron.particles.ParticleTypeMoteProcessorFlame;
 import com.calenaur.necron.particles.ParticleTypes;
@@ -53,6 +54,7 @@ public class Registrar {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes.NECRON_SOLDIER, RendererNecronSoldier::new);
     	ScreenManager.registerFactory(ContainerTypes.MOTE_PROCESSOR, ScreenMoteProcessor::new);
     	ScreenManager.registerFactory(ContainerTypes.HUNGRY_METAL_ARRANGER, ScreenHungryMetalArranger::new);
+		ScreenManager.registerFactory(ContainerTypes.PLASMA_GENERATOR, ScreenPlasmaGenerator::new);
 		ScreenManager.registerFactory(ContainerTypes.RIFT_SACK, ScreenRiftSack::new);
 	}
 
@@ -77,6 +79,8 @@ public class Registrar {
 		event.getRegistry().register(new BlockNecronStraightCircuit());
 		event.getRegistry().register(new BlockNecrodermisOre());
 		event.getRegistry().register(new BlockStoneSelection());
+		event.getRegistry().register(new BlockPlasmaGenerator());
+		event.getRegistry().register(new BlockPlasmaGeneratorPart());
 	}
 
 	@SubscribeEvent
@@ -89,10 +93,14 @@ public class Registrar {
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityMoteProcessor::new, Blocks.MOTE_PROCESSOR).build(null).setRegistryName(TileEntityMoteProcessor.NAME));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityHungryMetalArranger::new, Blocks.HUNGRY_METAL_ARRANGER).build(null).setRegistryName(TileEntityHungryMetalArranger.NAME));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityHungryMetal::new, Blocks.HUNGRY_METAL).build(null).setRegistryName(TileEntityHungryMetal.NAME));
+		event.getRegistry().register(TileEntityType.Builder.create(TilePlasmaGenerator::new, Blocks.PLASMA_GENERATOR).build(null).setRegistryName(TilePlasmaGenerator.NAME));
+		event.getRegistry().register(TileEntityType.Builder.create(TilePlasmaGeneratorPart::new, Blocks.PLASMA_GENERATOR_PART).build(null).setRegistryName(TilePlasmaGeneratorPart.NAME));
 	}
 
 	@SubscribeEvent
 	public static void onItemRegistry(final RegistryEvent.Register<Item> event) {
+		event.getRegistry().register(new ItemBlockPlasmaGenerator());
+		event.getRegistry().register(new ItemBlockPlasmaGeneratorPart());
 		event.getRegistry().register(new ItemBlockNecronCorner());
 		event.getRegistry().register(new ItemBlockNecronCrescent());
 		event.getRegistry().register(new ItemBlockNecronIntersection());

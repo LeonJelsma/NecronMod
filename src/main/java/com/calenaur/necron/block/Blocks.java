@@ -1,6 +1,8 @@
 package com.calenaur.necron.block;
 
 import com.calenaur.necron.block.necron.*;
+import com.calenaur.necron.multiblock.BlockPlasmaGenerator;
+import com.calenaur.necron.multiblock.BlockPlasmaGeneratorPart;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class Blocks {
@@ -34,4 +36,10 @@ public class Blocks {
     public static BlockStoneSelection STONE_SELECTION;
     @ObjectHolder("necron:wood_selection")
     public static BlockWoodSelection WOOD_SELECTION;
+    @ObjectHolder("necron:plasma_generator")
+    public static BlockPlasmaGenerator PLASMA_GENERATOR;
+    @ObjectHolder("necron:plasma_generator_part")
+    public static BlockPlasmaGeneratorPart PLASMA_GENERATOR_PART;
+    //@ObjectHolder("necron:plasma_generator_formed")
+    //public static BlockPlas PLASMA_GENERATOR_FORMED;
 }
