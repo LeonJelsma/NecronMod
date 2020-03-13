@@ -25,6 +25,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import javax.annotation.Nullable;
+import java.util.HashSet;
 
 public class TileEntityHungryMetalArranger extends TileEntity implements IInventory, ITickableTileEntity, INamedContainerProvider {
     public static final String NAME = "hungry_metal_arranger_tile";
@@ -84,18 +85,20 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
 
 
 
-    public NonNullList<ItemStack> getBlockListFromRiftSack(ItemStack riftSack)  {
-        NonNullList<ItemStack> blocks = NonNullList.create();
+    public HashSet<BlockState> getBlockListFromRiftSack(ItemStack riftSack)  {
+        HashSet<BlockState> blocks = new HashSet<>();
         Inventory inventory = ItemRiftSack.read(riftSack, ContainerRiftSack.INVENTORY_SIZE);
 
         for (int i = 0; i < ContainerRiftSack.INVENTORY_SIZE; i++){
             ItemStack stack = inventory.getStackInSlot(i);
             if (stack.getItem() instanceof BlockItem){
-                blocks.add(stack);
+                BlockItem blockItem = (BlockItem)  stack.getItem();
+                blocks.add(blockItem.getBlock().getDefaultState());
             }
 
             if (stack.getItem() instanceof BucketItem){
-                blocks.add(stack);
+                BucketItem bucketItem = (BucketItem)  stack.getItem();
+                blocks.add(bucketItem.getFluid().getDefaultState().getBlockState());
             }
         }
         return blocks;

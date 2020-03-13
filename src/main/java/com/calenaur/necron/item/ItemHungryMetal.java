@@ -28,8 +28,9 @@ public class ItemHungryMetal extends BlockItem {
 
     IProperty<String> targetBlock = StringProperty.create("targetBlockName", "minecraft:air");
 
-    public static String RADIUS = "goo_radius";
-    public static String SPEED = "goo_speed";
+    public static String TARGETS = "hungry_targets";
+    public static String RADIUS = "hungry_radius";
+    public static String SPEED = "speed_speed";
 
     public ItemHungryMetal() {
         super(Blocks.HUNGRY_METAL, new Properties().group(ItemGroup.NECRON).maxStackSize(1));
@@ -70,43 +71,31 @@ public class ItemHungryMetal extends BlockItem {
 
     public static boolean isTargetSet(ItemStack stack){
         if(stack.getTag() != null) {
-            ListNBT items = stack.getTag().getList("Items", 10 );
-                if (items.size() > 0) {
+            int[] items = stack.getTag().getIntArray(TARGETS);
+                if (items.length > 0) {
                     return true;
                 }
             }
         return false;
     }
 
-    public static ItemStack configure(ItemStack itemStack, NonNullList<ItemStack> targets, int radius, int speed){
+    public static ItemStack configure(ItemStack itemStack, HashSet<BlockState> targets, int radius, int speed){
         CompoundNBT configuration;
         if (itemStack.getTag() != null){
             configuration = itemStack.getTag();
         } else {
             configuration = new CompoundNBT();
         }
-        ItemStackHelper.saveAllItems(configuration, targets);
+        configuration.putIntArray(TARGETS, TileEntityHungryMetal.getIntArrayFromTargetBlocks(targets));
         configuration.put(RADIUS, IntNBT.func_229692_a_(radius));
         configuration.put(SPEED, IntNBT.func_229692_a_(speed));
         itemStack.setTag(configuration);
-        itemStack.write(configuration);
         return  itemStack;
     }
 
 
     private HashSet<BlockState> getTargets(ItemStack stack){
-
-
-        //NonNullList<ItemStack> items = NonNullList.create();
-        //ItemStackHelper.loadAllItems(stack.getTag(), items);
-        ListNBT itemList = stack.getTag().getList("Items", 10);
-        HashSet<BlockState> targets = new HashSet<>();
-
-        for (ItemStack item : itemList){
-            targets.add(getBlockStateFromItemStack(item));
-        }
-
-        return targets;
+        return TileEntityHungryMetal.getTargetBlocksFromIntArray(stack.getTag().getIntArray(TARGETS));
     }
 
     private String getTargetNames(ItemStack stack){

@@ -148,7 +148,7 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
             compound.putInt("starty",0);
             compound.putInt("startz", 0);
         }
-        compound.putIntArray("targets", getIntArrayFromTargetBlocks());
+        compound.putIntArray("targets", getIntArrayFromTargetBlocks(targetBlocks));
         compound.putBoolean("configured", this.configured);
         compound.putBoolean("removeme", this.removeMe);
         compound.putInt("maxdistance", this.maxDistance);
@@ -158,18 +158,18 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
         return compound;
     }
 
-    private int[] getIntArrayFromTargetBlocks(){
-        int[] targetIds = new int[targetBlocks.size()];
+    public static int[] getIntArrayFromTargetBlocks(HashSet<BlockState> states){
+        int[] targetIds = new int[states.size()];
         int i = 0;
 
-        for (BlockState target: targetBlocks){
+        for (BlockState target: states){
             targetIds[i] = Block.getStateId(target);
             i++;
         }
         return targetIds;
     }
 
-    private HashSet<BlockState> getTargetBlocksFromIntArray(int[] blockIds){
+    public static HashSet<BlockState> getTargetBlocksFromIntArray(int[] blockIds){
         HashSet<BlockState> blocks = new HashSet<>();
 
         for (int id : blockIds){
