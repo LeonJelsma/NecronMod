@@ -1,6 +1,6 @@
 package com.calenaur.necron.inventory.container;
 
-import com.calenaur.necron.item.ItemRiftSack;
+import com.calenaur.necron.inventory.ItemStackHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -16,7 +16,7 @@ public class ContainerRiftSack extends Container {
 	private final ItemStack itemStack;
 
 	public static ContainerRiftSack fromItemStack(int id, PlayerInventory playerInventory, ItemStack itemStack) {
-		return new ContainerRiftSack(id, playerInventory, ItemRiftSack.read(itemStack, INVENTORY_SIZE), itemStack);
+		return new ContainerRiftSack(id, playerInventory, ItemStackHelper.readInventory(itemStack, INVENTORY_SIZE), itemStack);
 	}
 
 	public ContainerRiftSack(int id, PlayerInventory playerInventory) {
@@ -78,7 +78,7 @@ public class ContainerRiftSack extends Container {
 	public void onContainerClosed(PlayerEntity playerIn) {
 		super.onContainerClosed(playerIn);
 		if (itemStack != null)
-			ItemRiftSack.write(itemStack, inventory);
+			ItemStackHelper.writeInventory(itemStack, inventory);
 
 		this.inventory.closeInventory(playerIn);
 	}

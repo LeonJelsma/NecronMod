@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:processing",
+  "type": "necron:processing",
   "ingredient": {
     "item": "necron:necrodermis_mote"
   },
