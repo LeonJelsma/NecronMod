@@ -2,11 +2,11 @@ package com.calenaur.necron.tileentity;
 
 import com.calenaur.necron.block.Blocks;
 import com.calenaur.necron.util.Math;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.*;
 
-import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.IProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -24,6 +24,7 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
     private BlockPos startingPos;
     private boolean configured = false;
     private boolean removeMe = false;
+    private int totalSpreads = 0;
     private int maxDistance = 0;
     private int delay = 5;
     private int timer = 0;
@@ -39,6 +40,10 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
 
     public void setTargetBlocks(HashSet<BlockState> target){
         this.targetBlocks = target;
+    }
+
+    public void setTotalSpreads(int spreads){
+        this.totalSpreads = spreads;
     }
 
     public void setDelay(int delay){
@@ -75,14 +80,17 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
                 }
 
                 if (removeMe) {
-                    tileEntity.remove();
-                    world.setBlockState(pos, net.minecraft.block.Blocks.AIR.getDefaultState(), 3);
+                    removeSelf();
+                    return;
+                }
+
+                if (totalSpreads > maxDistance * 2) {
+                    removeSelf();
                     return;
                 }
 
                  if (Math.GetDistance(getPos(), startingPos) > maxDistance) {
-                    tileEntity.remove();
-                    world.setBlockState(pos, net.minecraft.block.Blocks.AIR.getDefaultState(), 3);
+                    removeSelf();
                     return;
                 }
                 spread(world, pos);
@@ -105,6 +113,7 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
                     tileEntity.setStartingPos(this.startingPos);
                     tileEntity.setMaxDistance(this.maxDistance);
                     tileEntity.setTargetBlocks(this.targetBlocks);
+                    tileEntity.setTotalSpreads(this.totalSpreads + 1);
                     tileEntity.setDelay(this.delay);
                     tileEntity.activate();
                 }
@@ -118,6 +127,11 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
             return false;
 
         BlockState state = world.getBlockState(pos);
+        if (state instanceof IWaterLoggable){
+            IWaterLoggable container = (IWaterLoggable) state;
+            container.pickupFluid(world, pos, state);
+        }
+
         if (state.getBlock() instanceof FlowingFluidBlock) {
             FlowingFluidBlock fluid = (FlowingFluidBlock) state.getBlock();
             if (fluid.getFluidState(state).getLevel() == 0)
@@ -183,5 +197,10 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
             blocks.add(Block.getStateById(id));
         }
         return blocks;
+    }
+
+    private void removeSelf(){
+        world.getTileEntity(getPos()).remove();
+        world.setBlockState(pos, net.minecraft.block.Blocks.AIR.getDefaultState(), 3);
     }
 }
