@@ -24,10 +24,10 @@ public class ContainerMoteProcessor extends Container {
 	private static final int MINECRAFT_INVENTORY_SIZE = 27;
 	private static final int MINECRAFT_HOTBAR_SIZE = 9;
 
-	public IIntArray processorData;
-	private World world;
-	private IInventory processorInventory;
-	private IRecipeType<ProcessingRecipe> recipeType;
+	public final IIntArray processorData;
+	private final World world;
+	private final IInventory processorInventory;
+	private final IRecipeType<ProcessingRecipe> recipeType;
 
 	public ContainerMoteProcessor(int id, PlayerInventory playerInventory) {
 		this(id, playerInventory, new Inventory(4), new IntArray(3));

@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 public class SlotGooMakerResult extends Slot {
 
 	private int removeCount;
-	private ContainerHungryMetalArranger containerGooMaker;
+	private final ContainerHungryMetalArranger containerGooMaker;
 
 	public SlotGooMakerResult(IInventory inventoryIn, int index, int xPosition, int yPosition, ContainerHungryMetalArranger containerGooMaker) {
 		super(inventoryIn, index, xPosition, yPosition);
@@ -49,7 +49,4 @@ public class SlotGooMakerResult extends Slot {
 		this.onCrafting(stack);
 	}
 
-	/**
-	 * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood.
-	 */
 }

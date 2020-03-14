@@ -11,8 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 public class ScreenHungryMetalArranger extends ContainerScreen<ContainerHungryMetalArranger> {
-
-    private ResourceLocation GUI = new ResourceLocation(NecronMod.MOD_ID, "textures/gui/hungry_metal_arranger_gui.png");
+    private final ResourceLocation GUI = new ResourceLocation(NecronMod.MOD_ID, "textures/gui/hungry_metal_arranger_gui.png");
 
     public ScreenHungryMetalArranger(Container container, PlayerInventory inventory, ITextComponent textComponent) {
         super((ContainerHungryMetalArranger) container, inventory, textComponent);
@@ -32,8 +31,11 @@ public class ScreenHungryMetalArranger extends ContainerScreen<ContainerHungryMe
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+        if (minecraft == null)
+            return;
+
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bindTexture(GUI);
+        minecraft.getTextureManager().bindTexture(GUI);
         int i = this.guiLeft;
         int j = this.guiTop;
         this.blit(i, j, 0, 0, this.xSize, this.ySize);

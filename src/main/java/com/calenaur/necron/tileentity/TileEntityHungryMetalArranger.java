@@ -1,10 +1,10 @@
 package com.calenaur.necron.tileentity;
 
+import com.calenaur.necron.block.Blocks;
 import com.calenaur.necron.inventory.container.ContainerHungryMetalArranger;
 import com.calenaur.necron.inventory.container.ContainerHungryMetalFilter;
 import com.calenaur.necron.inventory.container.ContainerRiftSack;
 import com.calenaur.necron.item.ItemHungryMetal;
-import com.calenaur.necron.item.ItemRiftSack;
 import com.calenaur.necron.item.Items;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,6 +22,7 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.LanguageMap;
 import net.minecraft.util.text.StringTextComponent;
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -38,6 +39,9 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
 
     @Override
     public void tick() {
+        if (world == null)
+            return;
+
         if(!world.isRemote){
             if(canMake()){
                 make();
@@ -51,7 +55,7 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
         if(items.get(3).isEmpty() || preview){
                 ItemStack stack = new ItemStack(Items.HUNGRY_METAL);
                 ItemStack newStack;
-                newStack = ItemHungryMetal.configure(stack, getBlockListFromFilter(items.get(1)), items.get(2).getCount(), 40);
+                newStack = ItemHungryMetal.configure(stack, getBlockListFromFilter(items.get(1)), items.get(2).getCount(), TileEntityHungryMetal.DEFAULT_SPEED);
                 items.set(3, newStack);
                 preview = true;
         }
@@ -64,20 +68,16 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
     }
 
     private boolean canMake() {
-        if (!this.items.get(0).isEmpty() && this.items.get(0).getItem() != null) {
-            if (this.items.get(1).getItem() != Items.HUNGRY_METAL_FILTER) {
+        if (!this.items.get(0).isEmpty()) {
+            if (this.items.get(1).getItem() != Items.HUNGRY_METAL_FILTER)
                 return false;
-            }
-            if (getBlockListFromFilter(this.items.get(1)).size() <= 0 ){
+
+            if (getBlockListFromFilter(this.items.get(1)).size() <= 0 )
                 return true;
-            }
-            if(this.items.get(0).getItem() == Items.HUNGRY_METAL) {
-                if (!ItemHungryMetal.isTargetSet(this.items.get(0))) {
-                    if (this.items.get(2).getItem() == Items.NECRON_INGOT) {
-                        return true;
-                    }
-                }
-            }
+
+            if(this.items.get(0).getItem() == Items.HUNGRY_METAL)
+                if (!ItemHungryMetal.isTargetSet(this.items.get(0)))
+                    return this.items.get(2).getItem() == Items.NECRON_INGOT;
         }
         return false;
     }
@@ -105,7 +105,7 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
 
     @Override
     public ITextComponent getDisplayName() {
-        return new StringTextComponent(getType().getRegistryName().getPath());
+        return new StringTextComponent(LanguageMap.getInstance().translateKey(Blocks.HUNGRY_METAL_ARRANGER.getTranslationKey()));
     }
 
     @Nullable
@@ -188,6 +188,5 @@ public class TileEntityHungryMetalArranger extends TileEntity implements IInvent
     public void clear() {
         this.items.clear();
     }
-
 }
 

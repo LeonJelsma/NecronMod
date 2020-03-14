@@ -25,7 +25,6 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class BlockHungryMetalArranger extends Block {
-
     public BlockHungryMetalArranger() {
         super(Properties.create(Material.ROCK)
                 .harvestLevel(3)

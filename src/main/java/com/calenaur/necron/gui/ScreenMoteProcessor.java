@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 public class ScreenMoteProcessor extends ContainerScreen<ContainerMoteProcessor> {
-    private ResourceLocation GUI = new ResourceLocation(NecronMod.MOD_ID, "textures/gui/mote_processor.png");
+    private final ResourceLocation GUI = new ResourceLocation(NecronMod.MOD_ID, "textures/gui/mote_processor.png");
 
     public ScreenMoteProcessor(Container container, PlayerInventory inventory, ITextComponent textComponent) {
         super((ContainerMoteProcessor) container, inventory, textComponent);
@@ -31,6 +31,9 @@ public class ScreenMoteProcessor extends ContainerScreen<ContainerMoteProcessor>
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+        if (minecraft == null)
+            return;
+
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(GUI);
         int i = this.guiLeft;

@@ -1,7 +1,7 @@
 package com.calenaur.necron.tileentity;
 
 import com.calenaur.necron.block.Blocks;
-import com.calenaur.necron.util.Calculations;
+import com.calenaur.necron.util.Math;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 
@@ -16,8 +16,9 @@ import java.util.HashSet;
 import java.util.Random;
 
 public class TileEntityHungryMetal extends TileEntity implements ITickableTileEntity {
-
     public static final String NAME = "hungry_metal_tile";
+    public static final int DEFAULT_RADIUS = 1;
+    public static final int DEFAULT_SPEED = 40;
 
     private HashSet<BlockState> targetBlocks;
     private BlockPos startingPos;
@@ -26,8 +27,7 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
     private int maxDistance = 0;
     private int delay = 5;
     private int timer = 0;
-    private Random random = new Random();
-
+    private final Random random = new Random();
 
     public void setStartingPos(BlockPos startingPos) {
         this.startingPos = startingPos;
@@ -80,7 +80,7 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
                     return;
                 }
 
-                 if (Calculations.GetDistance(getPos(), startingPos) > maxDistance) {
+                 if (Math.GetDistance(getPos(), startingPos) > maxDistance) {
                     tileEntity.remove();
                     world.setBlockState(pos, net.minecraft.block.Blocks.AIR.getDefaultState(), 3);
                     return;
@@ -92,7 +92,7 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
     }
 
     private void spread(IWorld world, BlockPos pos) {
-        for (int[] neighbour : Calculations.NEIGHBOURS){
+        for (int[] neighbour : Math.NEIGHBOURS){
             int x = neighbour[0];
             int y = neighbour[1];
             int z = neighbour[2];
@@ -100,6 +100,8 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
             if (canSpread(newPos)) {
                 if (world.setBlockState(newPos, Blocks.HUNGRY_METAL.getDefaultState(), 1)) {
                     TileEntityHungryMetal tileEntity = (TileEntityHungryMetal) world.getTileEntity(newPos);
+                    if (tileEntity == null)
+                        continue;
                     tileEntity.setStartingPos(this.startingPos);
                     tileEntity.setMaxDistance(this.maxDistance);
                     tileEntity.setTargetBlocks(this.targetBlocks);
@@ -112,22 +114,22 @@ public class TileEntityHungryMetal extends TileEntity implements ITickableTileEn
     }
 
     private boolean canSpread(BlockPos pos){
-        BlockState state = world.getBlockState(pos);
-            if (state.getBlock() instanceof FlowingFluidBlock){
-                FlowingFluidBlock fluid = (FlowingFluidBlock) state.getBlock();
-                if (fluid.getFluidState(state).getLevel() == 0){
-                    if (targetBlocks.contains(fluid.getBlock().getDefaultState()));
-                }
-            }
-            if (targetBlocks.contains(state)){
-                return true;
-            }
+        if (world == null)
+            return false;
 
-            //Special cases cases
-            if (state == net.minecraft.block.Blocks.GRASS_BLOCK.getDefaultState() && targetBlocks.contains(net.minecraft.block.Blocks.DIRT.getDefaultState())){
-                return true;
-            }
-        return false;
+        BlockState state = world.getBlockState(pos);
+        if (state.getBlock() instanceof FlowingFluidBlock) {
+            FlowingFluidBlock fluid = (FlowingFluidBlock) state.getBlock();
+            if (fluid.getFluidState(state).getLevel() == 0)
+                if (targetBlocks.contains(fluid.getBlock().getDefaultState()))
+                    return true;
+        }
+
+        if (targetBlocks.contains(state)){
+            return true;
+        }
+
+        return state == net.minecraft.block.Blocks.GRASS_BLOCK.getDefaultState() && targetBlocks.contains(net.minecraft.block.Blocks.DIRT.getDefaultState());
     }
 
     @Override

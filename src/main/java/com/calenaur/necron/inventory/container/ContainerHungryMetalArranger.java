@@ -1,7 +1,6 @@
 package com.calenaur.necron.inventory.container;
 
 import com.calenaur.necron.item.ItemHungryMetalFilter;
-import com.calenaur.necron.item.ItemRiftSack;
 import com.calenaur.necron.item.Items;
 import com.calenaur.necron.tileentity.TileEntityHungryMetalArranger;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,14 +11,12 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 public class ContainerHungryMetalArranger extends Container {
 	public static final String NAME = "hungry_metal_arranger";
 
-	private IInventory hungryMetalArrangerinventory;
-	private World world;
-	private TileEntityHungryMetalArranger tileEntityHungryMetalArranger;
+	private final IInventory hungryMetalArrangerInventory;
+	private final TileEntityHungryMetalArranger tileEntityHungryMetalArranger;
 	public static final int SLOT_HUNGRY_METAL_IN = 0;
 	public static final int SLOT_FILTER = 1;
 	public static final int SLOT_NECRON_INGOT = 2;
@@ -36,8 +33,7 @@ public class ContainerHungryMetalArranger extends Container {
 
 	public ContainerHungryMetalArranger(ContainerType<ContainerHungryMetalArranger> containerTypeIn, int windowId, PlayerInventory playerInventoryIn, IInventory processorInventory, TileEntityHungryMetalArranger tileEntityHungryMetalArranger) {
 		super(containerTypeIn, windowId);
-		this.hungryMetalArrangerinventory = processorInventory;
-		this.world = playerInventoryIn.player.world;
+		this.hungryMetalArrangerInventory = processorInventory;
 		this.tileEntityHungryMetalArranger = tileEntityHungryMetalArranger;
 		addSlot(new Slot(processorInventory, 0, 32, 22));
 		addSlot(new Slot(processorInventory, 1, 68, 22));
@@ -61,7 +57,7 @@ public class ContainerHungryMetalArranger extends Container {
 
     @Override
 	public boolean canInteractWith(PlayerEntity playerIn) {
-		return this.hungryMetalArrangerinventory.isUsableByPlayer(playerIn);
+		return this.hungryMetalArrangerInventory.isUsableByPlayer(playerIn);
 	}
 
 	@Override
@@ -84,13 +80,13 @@ public class ContainerHungryMetalArranger extends Container {
 			}else if (originItemStack.getItem() == Items.NECRON_INGOT) {//Is the item a necron ingot?
 					if (!mergeItemStack(originItemStack, SLOT_NECRON_INGOT, SLOT_NECRON_INGOT + 1, false))//Place in the hungry metal slot
 						return ItemStack.EMPTY;
-			} else if (originItemStack.getItem() instanceof ItemHungryMetalFilter && hungryMetalArrangerinventory.getStackInSlot(SLOT_FILTER) == ItemStack.EMPTY) {//Does the item provide a valid target??
+			} else if (originItemStack.getItem() instanceof ItemHungryMetalFilter && hungryMetalArrangerInventory.getStackInSlot(SLOT_FILTER) == ItemStack.EMPTY) {//Does the item provide a valid target??
 				if (!mergeItemStack(originItemStack, SLOT_FILTER, SLOT_FILTER + 1, false))//Place in the target material slot
 					return ItemStack.EMPTY;
-			} else if (slotIndex < hungryMetalArrangerinventory.getSizeInventory() + MINECRAFT_INVENTORY_SIZE) { //Is the item in the players inventory?
-				if (!mergeItemStack(originItemStack, hungryMetalArrangerinventory.getSizeInventory() + MINECRAFT_INVENTORY_SIZE, this.inventorySlots.size(), false)) //Place in hotbar
+			} else if (slotIndex < hungryMetalArrangerInventory.getSizeInventory() + MINECRAFT_INVENTORY_SIZE) { //Is the item in the players inventory?
+				if (!mergeItemStack(originItemStack, hungryMetalArrangerInventory.getSizeInventory() + MINECRAFT_INVENTORY_SIZE, this.inventorySlots.size(), false)) //Place in hotbar
 					return ItemStack.EMPTY;
-			} else if (slotIndex < this.inventorySlots.size() && !mergeItemStack(originItemStack, SLOT_OUTPUT + 1, hungryMetalArrangerinventory.getSizeInventory() + MINECRAFT_INVENTORY_SIZE, false)) //Is the item in the players? then place in inventory
+			} else if (slotIndex < this.inventorySlots.size() && !mergeItemStack(originItemStack, SLOT_OUTPUT + 1, hungryMetalArrangerInventory.getSizeInventory() + MINECRAFT_INVENTORY_SIZE, false)) //Is the item in the players? then place in inventory
 				return ItemStack.EMPTY;
 		} else if (!mergeItemStack(originItemStack, SLOT_OUTPUT + 1, this.inventorySlots.size(), false))
 			return ItemStack.EMPTY;

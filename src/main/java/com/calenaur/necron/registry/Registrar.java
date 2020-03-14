@@ -105,8 +105,6 @@ public class Registrar {
 		event.getRegistry().register(new ItemBlockNecronStraightDouble());
 		event.getRegistry().register(new ItemBlockNecronStraightCircuit());
 		event.getRegistry().register(new ItemBlockNecronStraightSingle());
-		event.getRegistry().register(new ItemStoneSelection());
-		event.getRegistry().register(new ItemWoodSelection());
 		event.getRegistry().register(new ItemJeffPickaxe());
 		event.getRegistry().register(new ItemMoteProcessor());
 		event.getRegistry().register(new ItemHungryMetalArranger());

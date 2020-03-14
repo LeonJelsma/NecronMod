@@ -71,7 +71,7 @@ public class TileEntityMoteProcessor extends TileEntity implements ISidedInvento
         }
     };
 
-    private IRecipeType<ProcessingRecipe> recipeType = RecipeTypes.MOTE_PROCESSING;
+    private final IRecipeType<ProcessingRecipe> recipeType = RecipeTypes.MOTE_PROCESSING;
     private NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
     private int processingChargeLeft;
     private int processingProgress;
