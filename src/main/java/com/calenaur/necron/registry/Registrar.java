@@ -80,6 +80,7 @@ public class Registrar {
 		event.getRegistry().register(new BlockNecronStraightCircuit());
 		event.getRegistry().register(new BlockNecrodermisOre());
 		event.getRegistry().register(new BlockStoneSelection());
+		event.getRegistry().register(new BlockTest());
 	}
 
 	@SubscribeEvent
@@ -97,6 +98,7 @@ public class Registrar {
 	@SubscribeEvent
 	public static void onItemRegistry(final RegistryEvent.Register<Item> event) {
 		event.getRegistry().register(new ItemBlockNecronCorner());
+		event.getRegistry().register(new ItemTest());
 		event.getRegistry().register(new ItemBlockNecronCrescent());
 		event.getRegistry().register(new ItemBlockNecronIntersection());
 		event.getRegistry().register(new ItemBlockNecronPlain());

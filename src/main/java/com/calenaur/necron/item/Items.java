@@ -50,4 +50,6 @@ public class Items {
     public static ItemStoneSelection STONE_SELECTION;
     @ObjectHolder("necron:wood_selection")
     public static ItemWoodSelection WOOD_SELECTION;
+    @ObjectHolder("necron:test")
+    public static ItemTest TEST;
 }

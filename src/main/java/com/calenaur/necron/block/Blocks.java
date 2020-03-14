@@ -34,4 +34,6 @@ public class Blocks {
     public static BlockStoneSelection STONE_SELECTION;
     @ObjectHolder("necron:wood_selection")
     public static BlockWoodSelection WOOD_SELECTION;
+    @ObjectHolder("necron:test")
+    public static BlockTest TEST;
 }
