@@ -40,4 +40,10 @@ public class Items {
     public static ItemRiftSack RIFT_SACK;
     @ObjectHolder("necron:hungry_metal_filter")
     public static ItemHungryMetalFilter HUNGRY_METAL_FILTER;
+    @ObjectHolder("necron:necrodermis_ingot")
+    public static ItemNecrodermisIngot NECRON_INGOT;
+    @ObjectHolder("necron:hungry_metal")
+    public static ItemHungryMetal HUNGRY_METAL;
+    @ObjectHolder("necron:hungry_metal_arranger")
+    public static ItemHungryMetalArranger HUNGRY_METAL_ARRANGER;
 }

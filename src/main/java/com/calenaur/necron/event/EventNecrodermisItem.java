@@ -18,10 +18,10 @@ import java.util.Set;
 @Mod.EventBusSubscriber
 public class EventNecrodermisItem {
 	private static Set<ItemStack> NECRODERMIS_ITEMS;
-	private static int TICKS_PER_SECOND = 20;
-	private static int REGEN_INTERVAL_SECONDS = 10;
-	private static int REGEN_REPAIR_AMOUNT = 2;
-	private static int REGEN_INTERVAL_TICKS = TICKS_PER_SECOND * REGEN_INTERVAL_SECONDS;
+	private static final int TICKS_PER_SECOND = 20;
+	private static final int REGEN_INTERVAL_SECONDS = 10;
+	private static final int REGEN_REPAIR_AMOUNT = 2;
+	private static final int REGEN_INTERVAL_TICKS = TICKS_PER_SECOND * REGEN_INTERVAL_SECONDS;
 	private int tick = 0;
 
 	@SubscribeEvent

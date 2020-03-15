@@ -1,13 +1,13 @@
 package com.calenaur.necron.registry;
 
 import com.calenaur.necron.NecronMod;
-import com.calenaur.necron.block.BlockMoteProcessor;
-import com.calenaur.necron.block.BlockNecrodermisOre;
-import com.calenaur.necron.block.Blocks;
+import com.calenaur.necron.block.*;
 import com.calenaur.necron.block.necron.*;
 import com.calenaur.necron.entity.type.EntityTypes;
+import com.calenaur.necron.gui.ScreenHungryMetalArranger;
 import com.calenaur.necron.gui.ScreenHungryMetalFilter;
 import com.calenaur.necron.gui.ScreenMoteProcessor;
+import com.calenaur.necron.inventory.container.ContainerHungryMetalArranger;
 import com.calenaur.necron.gui.ScreenRiftSack;
 import com.calenaur.necron.inventory.container.ContainerHungryMetalFilter;
 import com.calenaur.necron.inventory.container.ContainerMoteProcessor;
@@ -21,6 +21,8 @@ import com.calenaur.necron.recipe.RecipeSerializerTypes;
 import com.calenaur.necron.item.necron.*;
 import com.calenaur.necron.renderer.RendererNecronSoldier;
 import com.calenaur.necron.sound.SoundMoteProcessorLit;
+import com.calenaur.necron.tileentity.TileEntityHungryMetalArranger;
+import com.calenaur.necron.tileentity.TileEntityHungryMetal;
 import com.calenaur.necron.sound.SoundRiftSackOpen;
 import com.calenaur.necron.tileentity.TileEntityMoteProcessor;
 import com.calenaur.necron.world.WorldGen;
@@ -51,7 +53,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 public class Registrar {
 	public static void clientSetup(final FMLClientSetupEvent event) {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes.NECRON_SOLDIER, RendererNecronSoldier::new);
-		ScreenManager.registerFactory(ContainerTypes.MOTE_PROCESSOR, ScreenMoteProcessor::new);
+    	ScreenManager.registerFactory(ContainerTypes.MOTE_PROCESSOR, ScreenMoteProcessor::new);
+    	ScreenManager.registerFactory(ContainerTypes.HUNGRY_METAL_ARRANGER, ScreenHungryMetalArranger::new);
 		ScreenManager.registerFactory(ContainerTypes.RIFT_SACK, ScreenRiftSack::new);
 		ScreenManager.registerFactory(ContainerTypes.HUNGRY_METAL_FILTER, ScreenHungryMetalFilter::new);
 	}
@@ -63,6 +66,9 @@ public class Registrar {
 	@SubscribeEvent
 	public static void onBlockRegistry(final RegistryEvent.Register<Block> event){
 		event.getRegistry().register(new BlockMoteProcessor());
+		event.getRegistry().register(new BlockHungryMetalArranger());
+		event.getRegistry().register(new BlockHungryMetal());
+		event.getRegistry().register(new BlockWoodSelection());
 		event.getRegistry().register(new BlockNecronCorner());
 		event.getRegistry().register(new BlockNecronCrescent());
 		event.getRegistry().register(new BlockNecronIntersection());
@@ -73,6 +79,7 @@ public class Registrar {
 		event.getRegistry().register(new BlockNecronStraightSingle());
 		event.getRegistry().register(new BlockNecronStraightCircuit());
 		event.getRegistry().register(new BlockNecrodermisOre());
+		event.getRegistry().register(new BlockStoneSelection());
 	}
 
 	@SubscribeEvent
@@ -83,6 +90,8 @@ public class Registrar {
 	@SubscribeEvent
 	public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityMoteProcessor::new, Blocks.MOTE_PROCESSOR).build(null).setRegistryName(TileEntityMoteProcessor.NAME));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityHungryMetalArranger::new, Blocks.HUNGRY_METAL_ARRANGER).build(null).setRegistryName(TileEntityHungryMetalArranger.NAME));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityHungryMetal::new, Blocks.HUNGRY_METAL).build(null).setRegistryName(TileEntityHungryMetal.NAME));
 	}
 
 	@SubscribeEvent
@@ -98,6 +107,8 @@ public class Registrar {
 		event.getRegistry().register(new ItemBlockNecronStraightSingle());
 		event.getRegistry().register(new ItemJeffPickaxe());
 		event.getRegistry().register(new ItemMoteProcessor());
+		event.getRegistry().register(new ItemHungryMetalArranger());
+		event.getRegistry().register(new ItemHungryMetal());
 		event.getRegistry().register(new ItemNecrodermisAxe());
 		event.getRegistry().register(new ItemNecrodermisHoe());
 		event.getRegistry().register(new ItemNecrodermisPickaxe());
@@ -119,6 +130,7 @@ public class Registrar {
 	@SubscribeEvent
 	public static void onContainerTypeRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
 		event.getRegistry().register(new ContainerType<>(ContainerMoteProcessor::new).setRegistryName(ContainerMoteProcessor.NAME));
+		event.getRegistry().register(new ContainerType<>(ContainerHungryMetalArranger::new).setRegistryName(ContainerHungryMetalArranger.NAME));
 		event.getRegistry().register(new ContainerType<>(ContainerRiftSack::new).setRegistryName(ContainerRiftSack.NAME));
 		event.getRegistry().register(new ContainerType<>(ContainerHungryMetalFilter::new).setRegistryName(ContainerHungryMetalFilter.NAME));
 	}

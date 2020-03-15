@@ -26,4 +26,12 @@ public class Blocks {
     public static BlockNecrodermisOre NECRON_ORE;
     @ObjectHolder("necron:mote_processor")
     public static BlockMoteProcessor MOTE_PROCESSOR;
+    @ObjectHolder("necron:hungry_metal_arranger")
+    public static BlockHungryMetalArranger HUNGRY_METAL_ARRANGER;
+    @ObjectHolder("necron:hungry_metal")
+    public static BlockHungryMetal HUNGRY_METAL;
+    @ObjectHolder("necron:stone_selection")
+    public static BlockStoneSelection STONE_SELECTION;
+    @ObjectHolder("necron:wood_selection")
+    public static BlockWoodSelection WOOD_SELECTION;
 }

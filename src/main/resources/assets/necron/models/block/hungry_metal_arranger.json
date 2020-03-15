@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "necron:block/hungry_metal_arranger_bottom",
+    "down": "necron:block/hungry_metal_arranger_bottom",
+    "up": "necron:block/hungry_metal_arranger_top",
+    "east": "necron:block/hungry_metal_arranger_side",
+    "west": "necron:block/hungry_metal_arranger_side",
+    "north": "necron:block/hungry_metal_arranger_front",
+    "south": "necron:block/hungry_metal_arranger_front"
+  }
+}
