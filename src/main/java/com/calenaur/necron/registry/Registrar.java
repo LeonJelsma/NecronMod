@@ -19,6 +19,7 @@ import com.calenaur.necron.particles.ParticleTypeMoteProcessorFlame;
 import com.calenaur.necron.particles.ParticleTypes;
 import com.calenaur.necron.recipe.RecipeSerializerTypes;
 import com.calenaur.necron.item.necron.*;
+import com.calenaur.necron.renderer.RendererNecronExplosive;
 import com.calenaur.necron.renderer.RendererNecronSoldier;
 import com.calenaur.necron.sound.SoundMoteProcessorLit;
 import com.calenaur.necron.tileentity.TileEntityHungryMetalArranger;
@@ -53,6 +54,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 public class Registrar {
 	public static void clientSetup(final FMLClientSetupEvent event) {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes.NECRON_SOLDIER, RendererNecronSoldier::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityTypes.NECRON_EXPLOSIVE, RendererNecronExplosive::new);
     	ScreenManager.registerFactory(ContainerTypes.MOTE_PROCESSOR, ScreenMoteProcessor::new);
     	ScreenManager.registerFactory(ContainerTypes.HUNGRY_METAL_ARRANGER, ScreenHungryMetalArranger::new);
 		ScreenManager.registerFactory(ContainerTypes.RIFT_SACK, ScreenRiftSack::new);
@@ -80,11 +82,13 @@ public class Registrar {
 		event.getRegistry().register(new BlockNecronStraightCircuit());
 		event.getRegistry().register(new BlockNecrodermisOre());
 		event.getRegistry().register(new BlockStoneSelection());
+		event.getRegistry().register(new BlockNecronExplosive());
 	}
 
 	@SubscribeEvent
 	public static void onEntityTypeRegistry(final RegistryEvent.Register<EntityType<?>> event) {
 		event.getRegistry().register(EntityTypes.NECRON_SOLDIER);
+		event.getRegistry().register(EntityTypes.NECRON_EXPLOSIVE);
 	}
 
 	@SubscribeEvent
@@ -119,6 +123,7 @@ public class Registrar {
 		event.getRegistry().register(new ItemNecronSoldierSpawnEgg());
 		event.getRegistry().register(new ItemRiftSack());
 		event.getRegistry().register(new ItemHungryMetalFilter());
+		event.getRegistry().register(new ItemNecronExplosive());
 	}
 
 	@SubscribeEvent

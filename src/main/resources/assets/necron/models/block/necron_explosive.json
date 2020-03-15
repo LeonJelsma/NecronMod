@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "necron:block/necron_explosive_side",
+    "down": "necron:block/necron_explosive_bottom",
+    "up": "necron:block/necron_explosive_top",
+    "east": "necron:block/necron_explosive_side",
+    "west": "necron:block/necron_explosive_side",
+    "north": "necron:block/necron_explosive_side",
+    "south": "necron:block/necron_explosive_side"
+  }
+}

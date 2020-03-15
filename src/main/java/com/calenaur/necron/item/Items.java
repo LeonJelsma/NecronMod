@@ -46,4 +46,6 @@ public class Items {
     public static ItemHungryMetal HUNGRY_METAL;
     @ObjectHolder("necron:hungry_metal_arranger")
     public static ItemHungryMetalArranger HUNGRY_METAL_ARRANGER;
+    @ObjectHolder("necron:necron_explosive")
+    public static ItemNecronExplosive NECRON_EXPLOSIVE;
 }
