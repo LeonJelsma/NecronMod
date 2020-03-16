@@ -9,6 +9,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class EntityNecronExplosive extends TNTEntity {
     public EntityNecronExplosive(EntityType<? extends TNTEntity> entityType, World world) {
@@ -32,10 +33,20 @@ public class EntityNecronExplosive extends TNTEntity {
     @Override
     protected void explode() {
         float f = 4.0F;
-        for (int i = 2000; i > 0; i--) {
-            this.world.createExplosion(this, this.func_226277_ct_(), this.func_226283_e_(0.0625D), this.func_226281_cx_(), 4.0F, Explosion.Mode.BREAK);
+        Random random = new Random();
+
+        BlockPos pos = getPosition();
+        for (int i = 5; i > 0; i--) {
+            //this.world.createExplosion(this, this.func_226277_ct_(), this.func_226283_e_(0.0625D), this.func_226281_cx_(), 4.0F, Explosion.Mode.BREAK);
+            this.world.createExplosion(this, pos.getX(), pos.getY(), pos.getZ(), 40.0F,true, Explosion.Mode.BREAK);
+
+            //new Explosion(getEntityWorld(), pos.getX(), pos.getY(), pos.getY());
+
+            Explosion test = new Explosion(getEntityWorld(), null, pos.getX() + random.nextInt(i), pos.getY() + random.nextInt(i), pos.getY() + random.nextInt(i), 20, true, Explosion.Mode.BREAK);
+
+            test.doExplosionA();
+            test.doExplosionB(true);
         }
     }
-
 
 }
