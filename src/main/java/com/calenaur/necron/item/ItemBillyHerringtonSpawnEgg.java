@@ -3,9 +3,9 @@ package com.calenaur.necron.item;
 import com.calenaur.necron.entity.type.EntityTypes;
 import net.minecraft.item.SpawnEggItem;
 
-public class ItemNecronSoldierSpawnEgg extends SpawnEggItem {
-	public ItemNecronSoldierSpawnEgg() {
-    	super(EntityTypes.NECRON_SOLDIER, 0x121212, 0x008000, new Properties().group(ItemGroup.NECRON));
-    	setRegistryName("necron_soldier_spawn_egg");
+public class ItemBillyHerringtonSpawnEgg extends SpawnEggItem {
+	public ItemBillyHerringtonSpawnEgg() {
+    	super(EntityTypes.BILLY_HERRINGTON, 0xa83299, 0xf00e96, new Properties().group(ItemGroup.NECRON));
+    	setRegistryName("billy_herrington_spawn_egg");
 	}
 }

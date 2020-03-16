@@ -8,5 +8,16 @@
         "category": "item",
         "subtitle": "necron.subtitle.rift_sack.open",
         "sounds": [ "necron:rift_sack_open" ]
+    },
+
+    "billy_herrington_ambient": {
+        "category": "entity",
+        "subtitle": "necron.subtitle.billy_herrington.ambient",
+        "sounds": [ "necron:billy_herrington_ambient" ]
+    },
+    "billy_herrington_hurt": {
+        "category": "entity",
+        "subtitle": "necron.subtitle.billy_herrington.hurt",
+        "sounds": [ "necron:billy_herrington_hurt" ]
     }
 }

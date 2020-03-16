@@ -4,9 +4,9 @@ import com.calenaur.necron.NecronMod;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
-public class SoundBillyTaunt extends SoundEvent {
-	public SoundBillyTaunt() {
-		super(new ResourceLocation(NecronMod.MOD_ID, "billy_herrington_taunt"));
-		setRegistryName("billy_herrington_taunt");
+public class SoundBillyHurt extends SoundEvent {
+	public SoundBillyHurt() {
+		super(new ResourceLocation(NecronMod.MOD_ID, "billy_herrington_hurt"));
+		setRegistryName("billy_herrington_hurt");
 	}
 }

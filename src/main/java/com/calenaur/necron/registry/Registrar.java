@@ -19,8 +19,11 @@ import com.calenaur.necron.particles.ParticleTypeMoteProcessorFlame;
 import com.calenaur.necron.particles.ParticleTypes;
 import com.calenaur.necron.recipe.RecipeSerializerTypes;
 import com.calenaur.necron.item.necron.*;
+import com.calenaur.necron.renderer.RendererBillyHerrington;
 import com.calenaur.necron.renderer.RendererNecronExplosive;
 import com.calenaur.necron.renderer.RendererNecronSoldier;
+import com.calenaur.necron.sound.SoundBillyHurt;
+import com.calenaur.necron.sound.SoundBillyAmbient;
 import com.calenaur.necron.sound.SoundMoteProcessorLit;
 import com.calenaur.necron.tileentity.TileEntityHungryMetalArranger;
 import com.calenaur.necron.tileentity.TileEntityHungryMetal;
@@ -55,6 +58,7 @@ public class Registrar {
 	public static void clientSetup(final FMLClientSetupEvent event) {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes.NECRON_SOLDIER, RendererNecronSoldier::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTypes.NECRON_EXPLOSIVE, RendererNecronExplosive::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityTypes.BILLY_HERRINGTON, RendererBillyHerrington::new);
     	ScreenManager.registerFactory(ContainerTypes.MOTE_PROCESSOR, ScreenMoteProcessor::new);
     	ScreenManager.registerFactory(ContainerTypes.HUNGRY_METAL_ARRANGER, ScreenHungryMetalArranger::new);
 		ScreenManager.registerFactory(ContainerTypes.RIFT_SACK, ScreenRiftSack::new);
@@ -88,6 +92,7 @@ public class Registrar {
 	@SubscribeEvent
 	public static void onEntityTypeRegistry(final RegistryEvent.Register<EntityType<?>> event) {
 		event.getRegistry().register(EntityTypes.NECRON_SOLDIER);
+		event.getRegistry().register(EntityTypes.BILLY_HERRINGTON);
 		event.getRegistry().register(EntityTypes.NECRON_EXPLOSIVE);
 	}
 
@@ -124,6 +129,7 @@ public class Registrar {
 		event.getRegistry().register(new ItemRiftSack());
 		event.getRegistry().register(new ItemHungryMetalFilter());
 		event.getRegistry().register(new ItemNecronExplosive());
+		event.getRegistry().register(new ItemBillyHerringtonSpawnEgg());
 	}
 
 	@SubscribeEvent
@@ -151,6 +157,8 @@ public class Registrar {
 	public static void onSoundRegistry(final RegistryEvent.Register<SoundEvent> event){
 		event.getRegistry().register(new SoundMoteProcessorLit());
 		event.getRegistry().register(new SoundRiftSackOpen());
+		event.getRegistry().register(new SoundBillyAmbient());
+		event.getRegistry().register(new SoundBillyHurt());
 	}
 
 	@SubscribeEvent
