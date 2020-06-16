@@ -1,5 +1,5 @@
 # NecronMod
-_Authorded by Calenaur & Soviet Space Dodo_
+_Authorded by Tim & Leon_
 
 # Gameplay
 First and foremost this mod aims to recreate a semi-authentic warcraft 40k experience in minecraft. After that we hope to make an enjoyable mid-end game combat and farming experience.
