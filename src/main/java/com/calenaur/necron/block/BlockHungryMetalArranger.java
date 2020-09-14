@@ -46,7 +46,7 @@ public class BlockHungryMetalArranger extends Block {
     }
 
     @Override
-    public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
         if (world.isRemote)
             return ActionResultType.SUCCESS;
 

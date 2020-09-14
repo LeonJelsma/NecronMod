@@ -96,7 +96,7 @@ public class StructureNecronRuinPiece extends TemplateStructurePiece {
 	 * As an example, this sets the y-level to the average height of the terrain under the structure
 	 */
 	@Override
-	public boolean func_225577_a_(IWorld world, ChunkGenerator<?> chunkGenerator, Random rand, MutableBoundingBox boundingBox, ChunkPos chunkPos) {
+	public boolean create(IWorld world, ChunkGenerator<?> chunkGenerator, Random rand, MutableBoundingBox boundingBox, ChunkPos chunkPos) {
 		BlockPos size = this.template.getSize();
 		BlockPos startPos = this.templatePosition;
 		BlockPos endPos = this.templatePosition.add(size.getX()-1, 0, size.getZ()-1);
@@ -111,6 +111,6 @@ public class StructureNecronRuinPiece extends TemplateStructurePiece {
 		}
 
 		this.templatePosition = new BlockPos(x, ceiling - size.getY() / 2 - rand.nextInt(2), z);
-		return super.func_225577_a_(world, chunkGenerator, rand, boundingBox, chunkPos);
+		return super.create(world, chunkGenerator, rand, boundingBox, chunkPos);
 	}
 }

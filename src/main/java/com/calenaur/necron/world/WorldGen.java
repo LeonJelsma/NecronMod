@@ -22,14 +22,14 @@ public class WorldGen {
     }
 
     public static void addStructures(Biome biomeIn) {
-        biomeIn.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Structures.NECRON_RUIN.func_225566_b_(IFeatureConfig.NO_FEATURE_CONFIG).func_227228_a_(Placement.NOPE.func_227446_a_(IPlacementConfig.NO_PLACEMENT_CONFIG)));
+        biomeIn.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Structures.NECRON_RUIN.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.NOPE.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
     }
 
     public static void addNecronRuins(Biome biomeIn) {
-        biomeIn.func_226711_a_(Structures.NECRON_RUIN.func_225566_b_(IFeatureConfig.NO_FEATURE_CONFIG));
+        biomeIn.addStructure(Structures.NECRON_RUIN.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
     }
 
     public static void addNecronOres(Biome biomeIn) {
-        biomeIn.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.func_225566_b_(new OreNecrodermis()).func_227228_a_(OreNecrodermis.CONFIGURED_PLACEMENT));
+        biomeIn.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreNecrodermis()).withPlacement(OreNecrodermis.CONFIGURED_PLACEMENT));
     }
 }

@@ -11,7 +11,7 @@ import net.minecraft.world.gen.placement.Placement;
 import static net.minecraft.world.biome.Biome.Category.*;
 
 public class OreNecrodermis extends OreFeatureConfig {
-	public static final ConfiguredPlacement<?> CONFIGURED_PLACEMENT = Placement.COUNT_DEPTH_AVERAGE.func_227446_a_(new DepthAverageConfig(10, 60, 16));
+	public static final ConfiguredPlacement<?> CONFIGURED_PLACEMENT = Placement.COUNT_DEPTH_AVERAGE.configure(new DepthAverageConfig(10, 60, 16));
 	public static final ImmutableList<Biome.Category> BIOME_WHITELIST = ImmutableList.of(
 			TAIGA,
 			EXTREME_HILLS,
