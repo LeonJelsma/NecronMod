@@ -78,8 +78,8 @@ public class ItemHungryMetal extends BlockItem {
             configuration = new CompoundNBT();
 
         configuration.putIntArray(TARGETS, TileEntityHungryMetal.getIntArrayFromTargetBlocks(targets));
-        configuration.put(RADIUS, IntNBT.func_229692_a_(radius));
-        configuration.put(SPEED, IntNBT.func_229692_a_(speed));
+        configuration.put(RADIUS, IntNBT.valueOf(radius));
+        configuration.put(SPEED, IntNBT.valueOf(speed));
         itemStack.setTag(configuration);
         return  itemStack;
     }
